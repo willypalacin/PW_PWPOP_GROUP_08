@@ -1,4 +1,17 @@
 {% extends "base.twig" %} {% block title %} Hello page {% endblock %} {% block
     content %}
-    <p>Hello! {{ name }}!</p>
+    <p>Hello {{ name }}!</p>
+    <p>You visited this page {{ visits }} times.</p>
+
+    {% if not isWarned %}
+        <p>This site uses cookies...</p>
+    {% endif %}
+
+    {% if messages|length > 0 %}
+        <ol>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ol>
+    {% endif %}
 {% endblock %}
