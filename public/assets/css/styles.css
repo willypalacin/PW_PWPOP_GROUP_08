@@ -1,5 +1,4 @@
 
-
 .search_div{
     background-color: white;
     display: flex;
@@ -9,6 +8,7 @@
     height: 45px;
     background-size: cover;
 
+    width: 400px;
     margin: auto;
 
 
@@ -54,7 +54,7 @@ body{
     margin-right: 16px;
     font-size: 17px;
     border-bottom: 2px solid gray;
-    padding-bottom: 9px;
+    padding-bottom : 9px;
     width: 380px
 }
 
