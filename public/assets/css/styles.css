@@ -72,7 +72,7 @@ body{
 .product_image {
     height: 129px;
     width: 229px;
-    background-color: blue;
+    background-color: GREEN;
 }
 
 .title_box{
@@ -163,6 +163,6 @@ body{
     font-family: sans-serif;
     background-color: white;
     border: 1px;
-    color: #4A00A0;
+    color: red;
     letter-spacing: 1px;
 }
