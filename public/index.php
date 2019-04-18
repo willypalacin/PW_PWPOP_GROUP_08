@@ -10,5 +10,5 @@ require_once __DIR__ . '/../config/routes.php';
 
 require_once __DIR__ . '/../config/dependencies.php';
 
-$app->run();
+$app->run() ;
 
