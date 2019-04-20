@@ -14,7 +14,7 @@ use Dflydev\FigCookies\SetCookie;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-
+use SallePW\SlimApp\Model\Product;
 
 final class SearchController {
     private $container;
@@ -27,8 +27,31 @@ final class SearchController {
     public function __invoke(Request $request, Response $response)
     {
 
+        $products = $this->container
+            ->get('search');
 
-        return $this->container->get('view')->render($response, 'search.twig',[]);
+
+        $names = [];
+        $descriptions = [];
+        $prices = [];
+        $categories = [];
+        $i = 0;
+
+        foreach ($products as &$product) {
+            $names[$i] = $product -> getTitle();
+            $descriptions[$i] = $product->getDescription();
+            $prices[$i] = $product ->getPrice();
+            $categories[$i] = $product-> getCategory();
+            $i = $i + 1;
+        }
+
+        return $this->container->get('view')->render($response, 'search.twig',[
+            'names' => $names,
+            'descriptions' => $descriptions,
+            'prices' => $prices,
+            '$categories' => $categories,
+        ]);
+
     }
 
 

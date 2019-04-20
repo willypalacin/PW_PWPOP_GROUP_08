@@ -1,18 +1,19 @@
+
 {% extends "base.twig" %} {% block title %} Search page {% endblock %}
 
 {% block content %}
-
     <div id="logo" >PWPOP </div>
     <div class="search_div">
         <img id = "lupa"src="{{ base_url() }}/assets/lupa.png">
         <input id=search type="search"> </input>
-
     </div>
-    <div class= body_product>
+    {% set counter = 0 %}
+    {% for name in names %}
+        <div class= body_product>
         <div class="product_card">
             <div class="product_image"> </div>
             <div class="title_box">
-                <div class="title">Producto 1</div>
+                <div class="title">{{names[counter]}}</div>
                 <div class="rating_box">
                     <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
                     <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
@@ -21,10 +22,10 @@
                     <img class="cor" src= "{{ base_url() }}/assets/cor_vacio.png">
                 </div>
             </div>
-            <div class ="tag"> BLANCA · Motor </div>
-            <div class ="description"> Es un coche magnifico, con el podras recorrer miles y miles de kilometros sin cansarte </div>
+            <div class ="tag"> {{categories[counter]}}</div>
+            <div class ="description"> {{descriptions[counter]}} </div>
             <div class ="price_title"> Price </div>
-            <div class ="price_box"> <div class = "price">120€</div> </div>
+            <div class ="price_box"> <div class = "price">{{prices[counter]}}</div> </div>
             <div class = "button_container">
                 <button class = "button_buy" type="button">BUY</button>
                 <button class = "button_like" type="button">LIKE</button>
@@ -32,118 +33,7 @@
         </div>
 
 
-        <div class="product_card">
-            <div class="product_image"> </div>
-            <div class="title_box">
-                <div class="title">Producto 1</div>
-                <div class="rating_box">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_vacio.png">
-                </div>
-            </div>
-            <div class ="tag"> Coches · Motor </div>
-            <div class ="description"> Es un coche magnifico, con el podras recorrer miles y miles de kilometros sin cansarte </div>
-            <div class ="price_title"> Price </div>
-            <div class ="price_box"> <div class = "price">120€</div> </div>
-            <div class = "button_container">
-                <button class = "button_buy" type="button">BUY</button>
-                <button class = "button_like" type="button">LIKE</button>
-            </div>
-        </div>
-
-        <div class="product_card">
-            <div class="product_image"> </div>
-            <div class="title_box">
-                <div class="title">Producto 1</div>
-                <div class="rating_box">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_vacio.png">
-                </div>
-            </div>
-            <div class ="tag"> Coches · Motor </div>
-            <div class ="description"> Es un coche magnifico, con el podras recorrer miles y miles de kilometros sin cansarte </div>
-            <div class ="price_title"> Price </div>
-            <div class ="price_box"> <div class = "price">120€</div> </div>
-            <div class = "button_container">
-                <button class = "button_buy" type="button">BUY</button>
-                <button class = "button_like" type="button">LIKE</button>
-            </div>
-        </div>
-
-        <div class="product_card">
-            <div class="product_image"> </div>
-            <div class="title_box">
-                <div class="title">Producto 1</div>
-                <div class="rating_box">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_vacio.png">
-                </div>
-            </div>
-            <div class ="tag"> Coches · Motor </div>
-            <div class ="description"> Es un coche magnifico, con el podras recorrer miles y miles de kilometros sin cansarte </div>
-            <div class ="price_title"> Price </div>
-            <div class ="price_box"> <div class = "price">120€</div> </div>
-            <div class = "button_container">
-                <button class = "button_buy" type="button">BUY</button>
-                <button class = "button_like" type="button">LIKE</button>
-            </div>
-        </div>
-
-        <div class="product_card">
-            <div class="product_image"> </div>
-            <div class="title_box">
-                <div class="title">Producto 1</div>
-                <div class="rating_box">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_vacio.png">
-                </div>
-            </div>
-            <div class ="tag"> Coches · Motor </div>
-            <div class ="description"> Es un coche magnifico, con el podras recorrer miles y miles de kilometros sin cansarte </div>
-            <div class ="price_title"> Price </div>
-            <div class ="price_box"> <div class = "price">120€</div> </div>
-            <div class = "button_container">
-                <button class = "button_buy" type="button">BUY</button>
-                <button class = "button_like" type="button">LIKE</button>
-            </div>
-        </div>
-
-        <div class="product_card">
-            <div class="product_image"> </div>
-            <div class="title_box">
-                <div class="title">Producto 1</div>
-                <div class="rating_box">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_vacio.png">
-                </div>
-            </div>
-            <div class ="tag"> Coches · Motor </div>
-            <div class ="description"> Es un coche magnifico, con el podras recorrer miles y miles de kilometros sin cansarte </div>
-            <div class ="price_title"> Price </div>
-            <div class ="price_box"> <div class = "price">120€</div> </div>
-            <div class = "button_container">
-                <button class = "button_buy" type="button">BUY</button>
-                <button class = "button_like" type="button">LIKE</button>
-            </div>
-        </div>
-
-
-    </div>
-
+        {% set counter = counter + 1 %}
+    {% endfor %}
 
 {% endblock %}

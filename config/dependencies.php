@@ -5,6 +5,7 @@ use Slim\Http\Environment;
 use Slim\Http\Uri;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
+use \SallePW\SlimApp\Model\Product;
 
 $container = $app->getContainer();
 
@@ -24,4 +25,9 @@ $container['view'] = function ($c) {
 
 $container['flash'] = function () {
     return new Messages();
+};
+
+$container['search'] = function () {
+    $a = [new Product("iPhone 7", "Telefono semi-nuevo 32GB", "435", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" )];
+  return $a;
 };
