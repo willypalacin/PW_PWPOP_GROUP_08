@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %} {% endblock %}</title>
-    <link rel="stylesheet"  href="{{ base_url() }}/assets/css/styles.css" />
+    {% block head %}
+
+            <link rel="stylesheet" href="{{ base_url() }}/assets/css/upload.css" />
+        <link rel="stylesheet" href="{{ base_url() }}/assets/css/styles.css" />
+        <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+
 </head>
 <body>
 {% block content %}{% endblock %}

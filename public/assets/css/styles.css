@@ -1,3 +1,168 @@
-body {
-    background-color: greenyellow;
+
+.search_div{
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 400px;
+    height: 45px;
+    background-size: cover;
+
+    width: 400px;
+    margin: auto;
+
+
+    align-items: center;
+}
+
+.body_product{
+    display: flex;
+    margin-left:  70px;
+    margin-top:  50px;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+
+}
+
+#logo {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    font-family: sans-serif;
+}
+#lupa{
+
+    padding-top: 8px;
+    width: 34px;
+    height: 34px;
+    border-bottom: 2px solid white;
+
+
+}
+
+body{
+    background-color: white;
+
+}
+#search {
+    background-color: white;
+    float: right;
+    padding: 6px;
+    border: none;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 17px;
+    border-bottom: 2px solid gray;
+    padding-bottom : 9px;
+    width: 380px
+}
+
+.product_card{
+    margin-top: 50px;
+    height: 341px;
+    width: 229px;
+    background-color: white;
+    border-radius: 4px;
+    border-color: gray;
+    border: 1px solid gray;
+    margin-right: 50px;
+}
+
+.product_image {
+    height: 129px;
+    width: 229px;
+    background-color: GREEN;
+}
+
+.title_box{
+    margin-top: 11px;
+    height: 32px;
+    width: 208px;
+}
+.title{
+    font-family: sans-serif;
+    font-size: 16px;
+    margin-left: 8px;
+
+}
+.rating_box{
+    display: flex;
+    margin-left: 7px;
+}
+.cor{
+    height: 20px;
+    width: 20px;
+    margin-right: -8px
+}
+
+.tag{
+
+    font-family: sans-serif;
+    font-size: 10px;
+    margin-left: 8px;
+    margin-top: 12px;
+}
+
+.description {
+    font-family: sans-serif;
+    font-size: 10px;
+    margin-left: 8px;
+    color: gray;
+    margin-top: 12px;
+
+}
+
+.price_title{
+    font-family: sans-serif;
+    font-size: 12.5px;
+    margin-left: 8px;
+    margin-top: 12px;
+}
+
+.price_box {
+    width: 57px;
+    height: 21px;
+    background-color: #DDDDDD;
+    font-size: 12.5px;
+    margin-left: 8px;
+    font-family: sans-serif;
+    margin-top: 5px;
+    border-radius: 4px;
+
+}
+.price {
+    margin-left: 12px;
+    padding-top: 3px;
+    margin-top: 8px
+}
+
+.button_container {
+    display: flex;
+    margin-left: 3px;
+    margin-top: 15px;
+
+}
+
+.button_like{
+    width: 58px;
+    height: 24px;
+    font-family: sans-serif;
+    font-size: 11px;
+    background-color: white;
+    border: 0px;
+    color: #4A00A0;
+
+    letter-spacing: 1px;
+}
+.button_buy{
+    width: 58.6px;
+    height: 24px;
+    margin-right:  9px;
+    font-size: 11px;
+    font-family: sans-serif;
+    background-color: white;
+    border: 1px;
+    color: red;
+    letter-spacing: 1px;
 }

@@ -1,0 +1,56 @@
+{% extends "base.twig" %} {% block title %} Upload Product {% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <form action="upload_form.php">
+            <div class="row">
+                <div class="col-25">
+                    <label for="title">TITLE</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="title" name="titleholder" placeholder="Tennis racket">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="description">DESCRIPTION</label>
+                </div>
+                <div class="col-75">
+                    <textarea id="description" name="descriptionholder" placeholder="Second-hand tennis racket, Babolat brand..." style="height:200px"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="category">CATEGORY</label>
+                </div>
+                <div class="col-75">
+                    <select id="category" name="category">
+                        <option value="3">Sports</option>
+                        <option value="1">Computers and electronic</option>
+                        <option value="2">Cars</option>
+                        <option value="4">Games</option>
+                        <option value="5">Fashion</option>
+                        <option value="6">Home</option>
+                        <option value="7">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="image">IMAGE</label>
+                </div>
+                <div class="col-75">
+                    <textarea id="image" name="image" placeholder="Choose an image" style="height:200px"></textarea>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <input type="image" src="{{ base_url() }}/assets/submit_form.png" alt="Submit_form.png"  class="submit_form">
+            </div>
+        </form>
+    </div>
+
+
+{% endblock %}
