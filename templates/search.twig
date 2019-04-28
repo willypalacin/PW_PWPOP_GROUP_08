@@ -2,10 +2,9 @@
 {% extends "base.twig" %} {% block title %} Search page {% endblock %}
 
 {% block content %}
-    <div id="logo" >PWPOP </div>
-    <div class="search_div">
+    <!--
         <img id = "lupa"src="{{ base_url() }}/assets/lupa.png">
-        <input id=search type="search"> </input>
+        <input id=search type="search">  -->
     </div>
     {% set counter = 0 %}
     {% for name in names %}
@@ -34,6 +33,6 @@
 
 
         {% set counter = counter + 1 %}
-    {% endfor %}
 
+    {% endfor %}
 {% endblock %}
