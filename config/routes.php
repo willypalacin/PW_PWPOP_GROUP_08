@@ -15,7 +15,7 @@ $app->get('/flash', FlashController::class);
 
 $app->add(SessionMiddleware::class);
 
-$app->get('/search', SearchController::class)
+$app->get('/home', SearchController::class)
     ->add(SearchController::class);
 
 
