@@ -21,3 +21,7 @@ $app->get('/home', HomeController::class)
 
 $app->get('/upload', UploadController::class)
     ->add(UploadController::class);
+
+$app->get('/search', SearchController::class)
+    ->add(SearchController::class)
+    ->setName('search');
