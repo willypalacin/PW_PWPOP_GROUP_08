@@ -23,6 +23,7 @@
     {% endblock %}
 
 </head>
+
 <body>
 
 
@@ -49,7 +50,11 @@
     Launch demo modal
 </button>
 
+
+
+</body>
 <!-- Modal -->
+
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -60,18 +65,45 @@
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <form action="login.php" method="POST" accept-charset="utf-8">
+                    <label for="staticEmail"  class="col-sm-2 col-form-label">Title</label>
+                    <div class="col-sm-10">
+                        <input type="text" name = "title" class="form-form-control form-control-lg" id="titulo" placeholder="">
+                    </div>
+                    <label for="category" class="col-sm-2 col-form-label">Category</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option value="1">Computers and electronic</option>
+                            <option value="2">Cars</option>
+                            <option value="3">Sports</option>
+                            <option value="4">Games</option>
+                            <option value="5">Fashion</option>
+                            <option value="6">Home</option>
+                            <option value="7">Other</option>
+                        </select>
+                    </div>
+                    <label for="min_price" class="col-sm-2 col-form-label">Minimum price</label>
+                    <div class="col-sm-10">
+                        <input type="text" name = "min_price"class="form-control" id="title" placeholder="">
+                    </div>
+                    <label for="max_price" class="col-sm-2 col-form-label">Minimum price</label>
+                    <div class="col-sm-10">
+                        <input type="text" name = "max_price"class="form-control" id="title" placeholder="">
+                    </div>
+
+                    <label for="staticEmail"  class="col-sm-2 col-form-label">  </label>
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
 </div>
-
-
-</body>
 
 
 </html>
