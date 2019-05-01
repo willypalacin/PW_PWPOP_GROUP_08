@@ -1,56 +1,49 @@
-{% extends "base.twig" %} {% block title %} Upload Product {% endblock %}
-
+{% extends "base.twig" %}
+{% block title %} Upload Product {% endblock %}
 {% block content %}
+    <form>
 
-    <div class="container">
-        <form action="upload_form.php">
-            <div class="row">
-                <div class="col-25">
-                    <label for="title">TITLE</label>
-                </div>
-                <div class="col-75">
-                    <input type="text" id="title" name="titleholder" placeholder="Tennis racket">
-                </div>
+        <div class="form-group row">
+            <legend for="inputEmail3" class="col-sm-2 col-form-label">Title</legend>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="title" placeholder="What are you selling?">
             </div>
-            <div class="row">
-                <div class="col-25">
-                    <label for="description">DESCRIPTION</label>
-                </div>
-                <div class="col-75">
-                    <textarea id="description" name="descriptionholder" placeholder="Second-hand tennis racket, Babolat brand..." style="height:200px"></textarea>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-25">
-                    <label for="category">CATEGORY</label>
-                </div>
-                <div class="col-75">
-                    <select id="category" name="category">
-                        <option value="3">Sports</option>
-                        <option value="1">Computers and electronic</option>
-                        <option value="2">Cars</option>
-                        <option value="4">Games</option>
-                        <option value="5">Fashion</option>
-                        <option value="6">Home</option>
-                        <option value="7">Other</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-25">
-                    <label for="image">IMAGE</label>
-                </div>
-                <div class="col-75">
-                    <textarea id="image" name="image" placeholder="Choose an image" style="height:200px"></textarea>
+        </div>
+        <div class="form-group row">
 
-                </div>
+            <legend for="inputPassword3" class="col-sm-2 col-form-label">Price</legend>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="price" placeholder="How much does it cost?">
             </div>
-            <div class="row">
+        </div>
+        <div class="form-group row">
 
-                <input type="image" src="{{ base_url() }}/assets/submit_form.png" alt="Submit_form.png"  class="submit_form">
+            <legend for="inputPassword3" class="col-sm-2 col-form-label">Category</legend>
+            <div class="col-sm-10">
+                <select class="form-control">
+                    <option>Sports</option>
+                    <option>Fashion</option>
+                    <option>Computers and electronic</option>
+                    <option>Cars</option>
+                    <option>Games</option>
+                    <option>Home</option>
+                    <option>Other</option>
+                </select>
             </div>
-        </form>
-    </div>
+        </div>
 
+        <div class="form-group row">
+            <legend class="col-sm-2 col-form-label">Description</legend>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="description" rows="7" placeholder="Tell me something about your product!"></textarea>
+                <small id="areaTextInfo" class="form-text text-muted">It must contain a minimum of 20 characters.</small>
+            </div>
 
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Upload Product</button>
+            </div>
+        </div>
+    </form>
 {% endblock %}
