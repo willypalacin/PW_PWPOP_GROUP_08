@@ -52,3 +52,34 @@ label {
     width: 850px;
     height: 100px;
 }
+
+.submit_form:hover{
+    transform: scale(1.3);
+
+}
+
+.image-input {
+    display: block;
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center center;
+}
+.placeholder {
+    background: #f0f0f0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-size: 18px;
+    font-family: Helvetica;
+}
+.placeholder:hover {
+    background: #e0e0e0;
+}
+.file-input {
+    display: none;
+}
