@@ -16,7 +16,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use SallePW\SlimApp\Model\Product;
 
-final class SearchController {
+final class HomeController {
     private $container;
 
     public function __construct(ContainerInterface $container)
@@ -28,28 +28,13 @@ final class SearchController {
     {
 
         $products = $this->container
-            ->get('search');
+            ->get('home');
 
 
-        $names = [];
-        $descriptions = [];
-        $prices = [];
-        $categories = [];
-        $i = 0;
+        return $this->container->get('view')->render($response, 'home.twig',[
 
-        foreach ($products as &$product) {
-            $names[$i] = $product -> getTitle();
-            $descriptions[$i] = $product->getDescription();
-            $prices[$i] = $product ->getPrice();
-            $categories[$i] = $product-> getCategory();
-            $i = $i + 1;
-        }
+            'products' => $products
 
-        return $this->container->get('view')->render($response, 'search.twig',[
-            'names' => $names,
-            'descriptions' => $descriptions,
-            'prices' => $prices,
-            '$categories' => $categories,
         ]);
 
     }
