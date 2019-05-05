@@ -3,7 +3,6 @@
 
 namespace SallePW\SlimApp\Model;
 
-
 class User
 {
     private $name;
@@ -17,25 +16,18 @@ class User
 
     /**
      * User constructor.
-     * @param $name
-     * @param $username
-     * @param $email
-     * @param $birthday
-     * @param $phone_number
-     * @param $password
-     * @param $confirm_password
-     * @param $profile_image
+     * @param $data
      */
-    public function __construct($name, $username, $email, $birthday, $phone_number, $password, $confirm_password, $profile_image)
+    public function __construct($data)
     {
-        $this->name = $name;
-        $this->username = $username;
-        $this->email = $email;
-        $this->birthday = $birthday;
-        $this->phone_number = $phone_number;
-        $this->password = $password;
-        $this->confirm_password = $confirm_password;
-        $this->profile_image = $profile_image;
+        $this->name = $data['name'];
+        $this->username = $data['username'];
+        $this->email = $data['email_address'];
+        $this->birthday = $data['birthday'];
+        $this->phone_number = $data['phone_number'];
+        $this->password = $data['password'];
+        $this->confirm_password = $data['confirm_password'];
+        $this->profile_image = array();
     }
 
 
@@ -162,9 +154,10 @@ class User
     /**
      * @param mixed $profile_image
      */
-    public function setProfileImage($profile_image)
+    public function addProfileImage($profile_image)
     {
-        $this->profile_image = $profile_image;
+        var_dump($profile_image);
+        array_push($this->profile_image,$profile_image);
     }
 
 
