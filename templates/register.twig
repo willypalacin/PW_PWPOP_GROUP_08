@@ -161,7 +161,7 @@
                 <div class="card">
                     <div class="card-header">Register</div>
                     <div class="card-body">
-                        <form name="my-form" onsubmit="return validform()" action="register" method="POST">
+                        <form name="my-form" onsubmit="return validform()" action="register" method="POST" enctype="multipart/form-data">
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
                                 <div class="col-md-6">
@@ -225,7 +225,9 @@
                                 <label for="profile_image" class="col-md-4 col-form-label text-md-right"><abbr
                                             title="Only jpg or png. Not exceed 500Kb">Profile Image</abbr></label>
                                 <div class="col-md-6">
-                                    <input type="text" id="profile_image" class="form-control" name="profile_image">
+                                    <!-- Max size 500Kb = (500*1024/8) = 64000 Bytes -->
+                                    <input type="hidden" name="MAX_FILE_SIZE" value="64000" />
+                                    <input type="file" id="profile_image" name="profile_image[]" multiple="multiple">
                                     <span class="error"><p id="image_error">{{ image_error }}</p></span>
                                 </div>
                             </div>
