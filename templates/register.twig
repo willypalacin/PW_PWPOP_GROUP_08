@@ -109,10 +109,11 @@
             }else if(isNaN(Number(parts[0])) || Number(parts[0]) <= 1900 || Number(parts[0]) > new Date().getFullYear()){
                 document.getElementById('birthday_error').innerText = 'Please introduce a valid year';
                 return false;
-            }else if(isNaN(Number(parts[1])) || Number(parts[1]) <= 0 || (Number(parts[0]) >= new Date().getFullYear()) && Number(parts[1]) > new Date().getMonth()){
+            }else if(isNaN(Number(parts[1])) || Number(parts[1]) <= 0 || (Number(parts[0]) >= new Date().getFullYear()) && Number(parts[1]) > new Date().getMonth()+1){
                 document.getElementById('birthday_error').innerText = 'Please introduce a valid month';
                 return false;
-            }else if(isNaN(Number(parts[2])) || Number(parts[2]) <= 0 || (Number(parts[0]) >= new Date().getFullYear()) && Number(parts[1]) > new Date().getMonth()){
+            }else if(isNaN(Number(parts[2])) || Number(parts[2]) <= 0 || (Number(parts[0]) >= new Date().getFullYear()) && (Number(parts[1]) >= new Date().getMonth()+1) &&
+                    (Number(parts[2]) > new Date().getDate())){
                 document.getElementById('birthday_error').innerText = 'Please introduce a valid day';
                 return false;
             }
