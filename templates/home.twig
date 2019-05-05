@@ -1,18 +1,21 @@
 
 {% extends "base.twig" %} {% block title %} Search page {% endblock %}
-
+{% set maxproduct = 5 %}
 {% block content %}
     <!--
         <img id = "lupa"src="{{ base_url() }}/assets/lupa.png">
         <input id=search type="search">  -->
-    </div>
+    <div class="container">
+    <div class="row">
     {% set counter = 0 %}
-    {% for name in names %}
-        <div class= body_product>
+
+    {% for product in products if counter < maxproduct %}
+
+        <div class="col-sm">
         <div class="product_card">
             <div class="product_image"> </div>
             <div class="title_box">
-                <div class="title">{{names[counter]}}</div>
+                <div class="title">{{product.title}}</div>
                 <div class="rating_box">
                     <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
                     <img class="cor" src= "{{ base_url() }}/assets/cor_lleno.png">
@@ -21,18 +24,32 @@
                     <img class="cor" src= "{{ base_url() }}/assets/cor_vacio.png">
                 </div>
             </div>
-            <div class ="tag"> {{categories[counter]}}</div>
-            <div class ="description"> {{descriptions[counter]}} </div>
+            <div class ="tag"> {{product.category}}</div>
+            <div class ="description"> {{product.description}} </div>
             <div class ="price_title"> Price </div>
-            <div class ="price_box"> <div class = "price">{{prices[counter]}}</div> </div>
+            <div class ="price_box"> <div class = "price">{{product.price}}</div> </div>
             <div class = "button_container">
                 <button class = "button_buy" type="button">BUY</button>
                 <button class = "button_like" type="button">LIKE</button>
             </div>
         </div>
+        </div>
+
 
 
         {% set counter = counter + 1 %}
 
     {% endfor %}
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
 {% endblock %}

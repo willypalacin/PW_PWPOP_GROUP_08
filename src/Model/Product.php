@@ -17,6 +17,7 @@ class Product
     private $price;
     private $productImages;
     private $category;
+    private $counter;
 
 
    public function __construct(string $title, string $description, string $price, array $productImages, string $category) {
@@ -25,6 +26,7 @@ class Product
        $this -> price = $price;
        $this -> productImages = $productImages;
        $this -> category = $category;
+       $this -> counter = 5;
    }
 
     /**
@@ -34,7 +36,20 @@ class Product
     {
         return $this->category;
     }
+/**
+ * @return int
+ */public function getCounter()
+    {
+        return $this->counter;
+    }
 
+    /**
+     * @param int $counter
+     */
+    public function setCounter($counter)
+    {
+        $this->counter = $counter;
+    }
     /**
      * @return string
      */
