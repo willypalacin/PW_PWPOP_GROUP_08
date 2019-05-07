@@ -56,4 +56,20 @@ class UserRepository implements UserRepositoryInterface
         return true;
     }
 
+    public function findUserById(string $id): string {
+        $statement = $this->database->connection->prepare("SELECT username FROM User WHERE MD5(username) = :id");
+        $statement->bindParam('id',$id,PDO::PARAM_STR);
+        $statement->execute();
+
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if($results[0]['username'] == null) return '';
+        return $results[0]['username'];
+    }
+
+    public function validateAccount(string $username) {
+        $statement = $this->database->connection->prepare("UPDATE User SET validated = TRUE WHERE username = :username");
+        $statement->bindParam('username',$username,PDO::PARAM_STR);
+        $statement->execute();
+    }
+
 }
