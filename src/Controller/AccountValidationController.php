@@ -41,5 +41,6 @@ final class AccountValidationController
         }else{
             echo self::ID_MISSING_ERROR;
         }
+        return null;
     }
 }
