@@ -41,6 +41,14 @@ $container['db'] = function (Container $c) {
     );
 };
 
+$container['mail_address'] = function(Container $c){
+    return $c['settings']['mail']['address'];
+};
+
+$container['mail_password'] = function(Container $c){
+    return $c['settings']['mail']['password'];
+};
+
 $container['user_repo'] = function (Container $c) {
     return new UserRepository($c->get('db'));
 };
