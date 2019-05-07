@@ -3,13 +3,14 @@
 
 namespace SallePW\SlimApp\Controller;
 
-use Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use SallePW\SlimApp\Model\Database\UserRepository;
 use SallePW\SlimApp\Model\User;
 use Slim\Http\UploadedFile;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 final class RegisterController
 {
@@ -98,9 +99,14 @@ final class RegisterController
                 'confirm_password' => $user->getConfirmPassword(),
             ]);
 
-        //Save user
+        //Save image
         $this->writeImage($uploadedFiles['profile_image'],$filenames,$user);
+
+        //Save user
         $repository->save($user);
+
+        //Send mail
+        $this->sendMail($user);
 
         //Go to main page
         return $this->container->get('view')->render($response, 'index.twig');
@@ -185,7 +191,7 @@ final class RegisterController
                 try {
                     $basename = bin2hex(random_bytes(8));                                                           //Random filename
                     array_push($filenames,sprintf('%s.%0.8s',$basename,$extension));
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     echo $e->getMessage();
                     return self::IMAGE_EXCEPTION_ERROR;
                 }
@@ -199,6 +205,44 @@ final class RegisterController
         for($i = 0; $i < sizeof($pathImages); $i++){
             $pathImages[$i]->moveTo($this->container->get('upload_directory') . DIRECTORY_SEPARATOR . $filenames[$i]);      //Write image on ./uploads
             $user->addProfileImage($filenames[$i]);                                                                         //Relate user with their own images
+        }
+    }
+
+    private function sendMail(User $user){
+        try {
+            $mail = new PHPMailer(true);
+            $mail->CharSet = 'UTF-8';
+            $address = 'http://www.pwpop.test/account-validation/?id=' . md5($user->getUsername());
+            $body = "<!DOCTYPE html>
+                    <html lang='en'>
+                        <head>
+                            <title>Register Mail Validation</title>
+                        </head>
+                        <body>
+                            <div>Welcome to PWPOP. Click on the following link to validate your account</div>
+                            <div><a href = $address>VALIDATION LINK</a></div>                   
+                        </body>
+                    </html>";
+
+            $mail->IsSMTP();
+            $mail->Host = 'smtp.gmail.com';
+
+            $mail->SMTPSecure = 'tls';
+            $mail->Port       = 587;
+            $mail->SMTPDebug  = 2;
+            $mail->SMTPAuth   = true;
+
+            $mail->Username   = $this->container['mail_address'];
+            $mail->Password   = $this->container['mail_password'];
+
+            $mail->SetFrom($this->container['mail_address'], 'PWPOP' );
+            $mail->Subject    = 'PWPOP Validation Account';
+            $mail->MsgHTML($body);
+            $mail->AddAddress($user->getEmail(), 'user');
+
+            $mail->send();
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
         }
     }
 }
