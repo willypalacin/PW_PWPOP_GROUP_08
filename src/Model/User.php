@@ -156,7 +156,6 @@ class User
      */
     public function addProfileImage($profile_image)
     {
-        var_dump($profile_image);
         array_push($this->profile_image,$profile_image);
     }
 
