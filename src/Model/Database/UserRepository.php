@@ -25,7 +25,7 @@ class UserRepository implements UserRepositoryInterface
     public function save(User $user)
     {
         $statement = $this->database->connection->prepare(
-            "INSERT INTO User(name,username,email_address,birthday,phone_number,password) VALUES (:name,:username,:email,:birthday,:phone,:password);"
+            "INSERT INTO User(name,username,email_address,birthday,phone_number,password,validated) VALUES (:name,:username,:email,:birthday,:phone,MD5(:password),FALSE);"
         );
 
         $statement->bindParam('name',$user->getName(),PDO::PARAM_STR);
@@ -36,7 +36,6 @@ class UserRepository implements UserRepositoryInterface
         $statement->bindParam('password',$user->getPassword(),PDO::PARAM_STR);
 
         $statement->execute();
-        var_dump($user->getProfileImage());
         foreach ($user->getProfileImage() as $profileImage){
             $statement = $this->database->connection->prepare(
                 "INSERT INTO Image(id_user, profile_image) VALUES (:username,:image);"
