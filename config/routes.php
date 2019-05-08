@@ -6,6 +6,7 @@ use SallePW\SlimApp\Controller\HomeController;
 use SallePW\SlimApp\Controller\UploadController;
 use SallePW\SlimApp\Controller\Middleware\TestMiddleware;
 use SallePW\SlimApp\Controller\Middleware\SessionMiddleware;
+use SallePW\SlimApp\Controller\SearchController;
 
 $app
     ->get('/hello/{name}', HelloController::class)
@@ -22,6 +23,5 @@ $app->get('/home', HomeController::class)
 $app->get('/upload', UploadController::class)
     ->add(UploadController::class);
 
-$app->get('/search', SearchController::class)
-    ->add(SearchController::class)
-    ->setName('search');
+$app->post('/search', SearchController::class);
+

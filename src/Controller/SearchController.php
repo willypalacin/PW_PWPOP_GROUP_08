@@ -26,15 +26,19 @@ final class SearchController {
 
     public function __invoke(Request $request, Response $response)
     {
+
         $title = $_POST['title'];
+
+
         $products = $this->container
             ->get('home');
 
         $products2 = [];
-        for ($i = 1; $i <= sizeof($products); $i++) {
+        for ($i = 0; $i < sizeof($products); $i++) {
 
 
-            if( strpos($products[$i]->getTitle(), $title) == true ) {
+            if( strpos($products[$i]->getTitle(), $title) !== false ) {
+
                 array_push($products2, $products[$i]);
             }
         }
