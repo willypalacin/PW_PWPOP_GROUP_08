@@ -113,8 +113,13 @@
 
 
 <div class="container my-form">
-        <form role="form" data-toggle="validator"
-              name="my-form" onsubmit="return validFormUpload()" action="success.php" method="">
+        <form role="form"
+              data-toggle="validator"
+              name="my-form"
+              onsubmit="return validFormUpload()"
+              enctype="multipart/form-data"
+              action="{{ path_for('upload') }}"
+              method="POST">
 
         <div class="form-group row" novalidate>
             <legend for="title" class="col-sm-2 col-form-label">Title</legend>
@@ -154,14 +159,23 @@
         </div>
 
         <div class="form-group row">
-            <legend class="col-sm-2 col-form-label">Description</legend>
-            <div class="col-sm-6">
-                <textarea class="form-control" id="description" rows="7" placeholder="Tell me something about your product!" ></textarea>
-                <small id="areaTextInfo" class="form-text text-muted">It must contain a minimum of 20 characters.</small>
-                <p id="errorText des_error"></p>
+                <legend class="col-sm-2 col-form-label">Description</legend>
+                <div class="col-sm-6">
+                    <textarea class="form-control" id="description" rows="7" placeholder="Tell me something about your product!" ></textarea>
+                    <small id="areaTextInfo" class="form-text text-muted">It must contain a minimum of 20 characters.</small>
+                    <p id="errorText des_error"></p>
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <legend class="col-sm-2 col-form-label">Images</legend>
+                <div class="col-sm-6">
+                    <input type="file" name="files[]" multiple>
+                    <p id="errorImg des_error"></p>
+                </div>
+
             </div>
 
-        </div>
         <div class="form-group row">
             <div class="col-sm-10">
                 <button type="submit" class="btn btn-primary">Upload Product</button>

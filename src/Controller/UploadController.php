@@ -8,9 +8,6 @@
 
 namespace SallePW\SlimApp\Controller;
 
-use Dflydev\FigCookies\FigRequestCookies;
-use Dflydev\FigCookies\FigResponseCookies;
-use Dflydev\FigCookies\SetCookie;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
