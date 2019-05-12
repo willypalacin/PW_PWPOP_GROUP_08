@@ -1,7 +1,7 @@
 {% extends "base.twig" %}
 {% block title %} Upload Product {% endblock %}
 {% block content %}
-<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
+    <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
     <style>
         .container {
             margin: 0;
@@ -24,7 +24,6 @@
         }
         #errorText{
             color: darkred;
-
         }
     </style>
 
@@ -36,7 +35,6 @@
             const TITLE = document.forms["my-form"]["title"].value;
             const NUM = document.forms["my-form"]["price"].value;
             const DESCRIPTION = document.forms["my-form"]["description"].value;
-
             if (!validTitle(TITLE)| !validNumber(NUM) | !validDescription(DESCRIPTION)){
                 return false;
             }
@@ -83,9 +81,7 @@
                     return false;
                 }
             }
-
             return true;
-
         }
         function validTitle(title){
             var text;
@@ -104,7 +100,6 @@
                 document.getElementById("errorText title_error").innerHTML = text;
                 return false;
             }
-
             return true;
         }
     </script>
@@ -112,61 +107,76 @@
 
 
 
-<div class="container my-form">
-        <form role="form" data-toggle="validator"
-              name="my-form" onsubmit="return validFormUpload()" action="success.php" method="">
+    <div class="container my-form">
+        <form name="my-form"
+              id="upload-form"
+              onsubmit="return validFormUpload()"
+              action="{{ path_for('upload') }}"
+              enctype="multipart/form-data"
+              method="POST">
+
 
         <div class="form-group row" novalidate>
-            <legend for="title" class="col-sm-2 col-form-label">Title</legend>
-            <div class="col-sm-6">
-                <input type="text" class="form-control" id="title" placeholder="What are you selling?">
-                <p id="errorText title_error"></p>
+                <legend for="title" class="col-sm-2 col-form-label">Title</legend>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="title" id="title" placeholder="What are you selling?">
+                    <p id="errorText title_error"></p>
+                </div>
             </div>
-        </div>
-        <div class="form-group row">
+            <div class="form-group row">
 
-            <legend for="inputPassword3" class="col-sm-2 col-form-label">Price</legend>
-            <div class="col-sm-5">
-                <input type="number"  class="form-control" id="price" placeholder="How much does it cost?">
-                <p id="errorText num_error"></p>
+                <legend for="inputPassword3" class="col-sm-2 col-form-label">Price</legend>
+                <div class="col-sm-5">
+                    <input type="number"  class="form-control" id="price" placeholder="How much does it cost?">
+                    <p id="errorText num_error"></p>
 
 
+                </div>
+                <div class="col-sm-1">
+                    <span class="input-group-addon">€</span>
+
+                </div>
             </div>
-            <div class="col-sm-1">
-                <span class="input-group-addon">€</span>
+            <div class="form-group row">
 
-            </div>
-        </div>
-        <div class="form-group row">
-
-            <legend for="inputPassword3" class="col-sm-2 col-form-label">Category</legend>
-            <div class="col-sm-6">
-                <select class="form-control">
-                    <option>Sports</option>
-                    <option>Fashion</option>
-                    <option>Computers and electronic</option>
-                    <option>Cars</option>
-                    <option>Games</option>
-                    <option>Home</option>
-                    <option>Other</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <legend class="col-sm-2 col-form-label">Description</legend>
-            <div class="col-sm-6">
-                <textarea class="form-control" id="description" rows="7" placeholder="Tell me something about your product!" ></textarea>
-                <small id="areaTextInfo" class="form-text text-muted">It must contain a minimum of 20 characters.</small>
-                <p id="errorText des_error"></p>
+                <legend for="inputPassword3" class="col-sm-2 col-form-label">Category</legend>
+                <div class="col-sm-6">
+                    <select class="form-control">
+                        <option>Sports</option>
+                        <option>Fashion</option>
+                        <option>Computers and electronic</option>
+                        <option>Cars</option>
+                        <option>Games</option>
+                        <option>Home</option>
+                        <option>Other</option>
+                    </select>
+                </div>
             </div>
 
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Upload Product</button>
+            <div class="form-group row">
+                <legend class="col-sm-2 col-form-label">Description</legend>
+                <div class="col-sm-6">
+                    <textarea class="form-control" id="description" rows="7" placeholder="Tell me something about your product!" ></textarea>
+                    <small id="areaTextInfo" class="form-text text-muted">It must contain a minimum of 20 characters.</small>
+                    <p id="errorText des_error"></p>
+                </div>
+
             </div>
-        </div>
-    </form>
-</div>
+            <div class="form-group row">
+                <input type="file" name="files[]" multiple>
+                {% if errors is defined %}
+                    <ol>
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ol>
+                {% endif %}
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Upload Product</button>
+                </div>
+            </div>
+        </form>
+    </div>
 {% endblock %}

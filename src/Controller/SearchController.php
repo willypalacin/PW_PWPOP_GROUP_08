@@ -28,6 +28,7 @@ final class SearchController {
     {
 
         $title = $_POST['title'];
+        echo $title;
 
 
         $products = $this->container

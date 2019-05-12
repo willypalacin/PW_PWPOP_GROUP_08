@@ -1,4 +1,6 @@
+
 /vendor/
+/pictures/
 /var/
 /public/.htaccess
 /.idea/
