@@ -39,7 +39,7 @@
                 <li><a href="#">Page 2</a></li>
                 <li><a href="#">Page 3</a></li>
                 <li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                        <img width="10px" height="10px" src="{{ base_url() }}/assets/lupa.png"">
+                        <img width="10px" height="10px" src="{{ base_url() }}/assets/lupa.png">
                     </button></li>
             </ul>
         </div>
@@ -47,7 +47,7 @@
     {% block content %} {% endblock %}
 </div>
 
-
+<script src = "{{ base_url() }}/base.js"> </script>
 
 </body>
 <!-- Modal -->
@@ -56,20 +56,22 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Search</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action= "search" method="POST" accept-charset="utf-8">
+                <form  onsubmit=" return validarModal()" action= "search" method="POST" accept-charset="utf-8">
+
                     <label for="staticEmail"  class="col-sm-2 col-form-label">Title</label>
                     <div class="col-sm-10">
-                        <input type="text" name = "title" class="form-form-control form-control-lg" id="title" placeholder="">
+                        <input type="text" id = "group_modal" name = "title" class="form-form-control form-control-lg" id="title" placeholder="">
+
                     </div>
                     <label for="category" class="col-sm-2 col-form-label">Category</label>
                     <div class="col-sm-10">
-                        <select class="form-control" id="exampleFormControlSelect1">
+                        <select id = "group_modal" class="form-control" id="exampleFormControlSelect1">
                             <option value="1">Computers and electronic</option>
                             <option value="2">Cars</option>
                             <option value="3">Sports</option>
@@ -79,18 +81,18 @@
                             <option value="7">Other</option>
                         </select>
                     </div>
-                    <label for="min_price" class="col-sm-2 col-form-label">Minimum price</label>
+                    <label  for="min_price" class="col-sm-2 col-form-label">Min €</label>
                     <div class="col-sm-10">
-                        <input type="text" name = "min_price"class="form-control" id="title" placeholder="">
+                        <input id = "group_modal_min" type="text" name = "min_price" class="form-control" placeholder="">
                     </div>
-                    <label for="max_price" class="col-sm-2 col-form-label">Minimum price</label>
+                    <label  for = "max_price" class="col-sm-2 col-form-label">Max €</label>
                     <div class="col-sm-10">
-                        <input type="text" name = "max_price"class="form-control" id="title" placeholder="">
+                        <input id = "group_modal_max" type="text" name = "max_price"class="form-control" id="title" placeholder="">
                     </div>
 
                     <label for="staticEmail"  class="col-sm-2 col-form-label">  </label>
                     <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button id = "group_modal"  type="submit" id = "btn_sub" class="btn btn-primary">Submit</button>
                     </div>
 
                 </form>
@@ -101,6 +103,5 @@
         </div>
     </div>
 </div>
-
 
 </html>

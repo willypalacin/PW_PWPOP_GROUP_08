@@ -221,14 +221,30 @@ body{
 .close:hover { background: #00d9ff; }
 
 .modal-backdrop {
-    z-index: 1040 !important;
+    z-index: 1040;
     font-family: sans-serif;
+
 }
 .modal-dialog {
     margin: 2px auto;
-    z-index: 1100 !important;
+    z-index: 1100;
     font-family: sans-serif;
 }
 label {
     font-family: sans-serif;
+}
+
+#group_modal {
+
+    margin-left: 20px;
+    margin-bottom: 10px;
+
+}
+#group_modal_min {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+#group_modal_max {
+    margin-left: 20px;
+    margin-bottom: 10px;
 }
