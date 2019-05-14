@@ -16,6 +16,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use SallePW\SlimApp\Model\Product;
 
+
 final class HomeController {
     private $container;
 
@@ -26,10 +27,12 @@ final class HomeController {
 
     public function __invoke(Request $request, Response $response)
     {
+        $repository = $this->container->get('user_repo');
 
         $products = $this->container
             ->get('home');
 
+        $repository->saveProduct($products[0]);
 
         return $this->container->get('view')->render($response, 'home.twig',[
 

@@ -248,3 +248,8 @@ label {
     margin-left: 20px;
     margin-bottom: 10px;
 }
+
+#horizontal{
+    display: flex;
+    flex-direction: row;
+}

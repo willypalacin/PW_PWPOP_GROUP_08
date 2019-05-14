@@ -8,6 +8,9 @@ use SallePW\SlimApp\Controller\Middleware\TestMiddleware;
 use SallePW\SlimApp\Controller\Middleware\SessionMiddleware;
 use SallePW\SlimApp\Controller\SearchController;
 use SallePW\SlimApp\Controller\FileController;
+use SallePW\SlimApp\Controller\FavouritesController;
+use SallePW\SlimApp\Model\Database\UserRepository;
+use SallePW\SlimApp\Model\Database\Database;
 
 $app
     ->get('/hello/{name}', HelloController::class)
@@ -20,8 +23,13 @@ $app->add(SessionMiddleware::class);
 $app->get('/home', HomeController::class)
     ->add(HomeController::class);
 
+
+
 $app->get('/upload', UploadController::class)
     ->add(UploadController::class);
+
+$app->get('/favourites', FavouritesController::class);
+
 
 $app->post('/search', SearchController::class);
 
