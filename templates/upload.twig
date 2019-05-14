@@ -35,9 +35,17 @@
             const TITLE = document.forms["my-form"]["title"].value;
             const NUM = document.forms["my-form"]["price"].value;
             const DESCRIPTION = document.forms["my-form"]["description"].value;
-            if (!validTitle(TITLE)| !validNumber(NUM) | !validDescription(DESCRIPTION)){
+            const FOTO = document.forms["my-form"]["files[]"].value;
+
+            if (!validTitle(TITLE)| !validNumber(NUM) | !validDescription(DESCRIPTION) | !validFotos(FOTO)){
                 return false;
             }
+        }
+        function validDescription(files) {
+            var text;
+            text = files.length;
+            document.getElementById("errorText des_error").innerHTML = text;
+            return false;
         }
         function validDescription(des) {
             var text;
@@ -127,7 +135,7 @@
 
                 <legend for="inputPassword3" class="col-sm-2 col-form-label">Price</legend>
                 <div class="col-sm-5">
-                    <input type="number"  class="form-control" id="price" placeholder="How much does it cost?">
+                    <input type="number"  class="form-control" name="price" id="price" placeholder="How much does it cost?">
                     <p id="errorText num_error"></p>
 
 
@@ -156,7 +164,7 @@
             <div class="form-group row">
                 <legend class="col-sm-2 col-form-label">Description</legend>
                 <div class="col-sm-6">
-                    <textarea class="form-control" id="description" rows="7" placeholder="Tell me something about your product!" ></textarea>
+                    <textarea class="form-control" id="description" name="description" rows="7" placeholder="Tell me something about your product!" ></textarea>
                     <small id="areaTextInfo" class="form-text text-muted">It must contain a minimum of 20 characters.</small>
                     <p id="errorText des_error"></p>
                 </div>
