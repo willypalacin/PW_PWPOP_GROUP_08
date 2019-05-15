@@ -33,7 +33,7 @@ final class AccountValidationController
             /** @var UserRepository $repository */
             $repository = $this->container->get('user_repo');
             $username = $repository->findUserById($_GET['id']);
-            if($username == ''){
+            if(!strlen($username)){
                 echo self::ID_MISMATCH_ERROR;
             }else{
                 $repository->validateAccount($username);
