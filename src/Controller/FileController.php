@@ -31,27 +31,37 @@ final class FileController
     {
         $this->container = $container;
     }
-
+    //get de upload
     public function indexAction(Request $request, Response $response): Response
     {
         return $this->container->get('view')->render($response, 'upload.twig', []);
     }
 
+
+
+    //post del form de upload
     public function uploadAction(Request $request, Response $response): Response
     {
+        $errors = [];
+
         $title = $_POST['title'];
         $num = $_POST['price'];
         $des = $_POST['description'];
 
 
         if(!$this->validTitle($title)| !$this->validNumber($num) | !$this->validDescription($des)){
-            return $this->container->get('view')->render($response, 'home.twig', []);
+            $errors[] = "Something was wrong with your info, please try again!";
+            return $this->container->get('view')->render($response, 'upload.twig', [
+                'errors' => $errors,
+            ]);
+        }else {
+            //todo OK, ara guardo a la bbdd
+
         }
 
         //validacion de las imagenes
         $uploadedFiles = $request->getUploadedFiles();
 
-        $errors = [];
 
         /** @var UploadedFileInterface $uploadedFile */
         foreach ($uploadedFiles['files'] as $uploadedFile) {
