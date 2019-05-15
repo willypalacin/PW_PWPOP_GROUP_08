@@ -184,7 +184,7 @@ final class RegisterController
     private function validateImage(array $pathImages, array &$filenames) : string {
         /** @var UploadedFile $uploadedFile */
         foreach($pathImages as $uploadedFile){
-            if($uploadedFile->getSize() == 0 || $uploadedFile->getSize() == null) return '0';
+            if(strlen($uploadedFile->getClientFilename()) == 0) return '0';
             $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
             if(strcmp($extension,'jpg') != 0 && strcmp($extension,'png') != 0){        //Extension error?
                 return self::IMAGE_EXTENSION_ERROR;
