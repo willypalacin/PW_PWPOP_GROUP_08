@@ -205,6 +205,9 @@ final class RegisterController
     }
 
     private function writeImage(array $pathImages,array $filenames, User $user){
+        if (!file_exists($this->container->get('upload_directory'))) {
+            mkdir($this->container->get('upload_directory'), 0777, true);
+        }
         for($i = 0; $i < sizeof($pathImages); $i++){
             $pathImages[$i]->moveTo($this->container->get('upload_directory') . DIRECTORY_SEPARATOR . $filenames[$i]);      //Write image on ./uploads
             $user->addProfileImage($filenames[$i]);                                                                         //Relate user with their own images
