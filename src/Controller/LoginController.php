@@ -80,7 +80,9 @@ final class LoginController
             }
         }
         $_SESSION['user_id'] = md5($user->getUsername());
-        return $this->container->get('view')->render($response, 'index.twig');
+        return $this->container->get('view')->render($response, 'home.twig',[
+            'products' => $products = $this->container->get('home'),
+        ]);
     }
 
     private function validateUsername($username) : string {
