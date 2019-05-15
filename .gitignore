@@ -3,4 +3,5 @@
 /var/
 /public/.htaccess
 /.idea/
+/uploads/
 /config/settings.php
