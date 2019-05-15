@@ -70,7 +70,6 @@ class UserRepository implements UserRepositoryInterface
         $cat = $product->getCategory();
         $statement = $this->database->connection->prepare(
             "INSERT INTO Product (title, description, price, category) VALUES (:title, :description, :price, :category);");
-        echo $cat;
         switch ($cat){
             case "Sports":
                 $a = 0;
@@ -115,7 +114,6 @@ class UserRepository implements UserRepositoryInterface
             "INSERT INTO ImageProduct (product_image, id_product) VALUES (:product_image, :id_product);");
         $statement->bindParam('product_image',$product_image,PDO::PARAM_STR);
         $statement->bindParam('id_product', $id, PDO::PARAM_STR);
-
         $statement->execute();
 
 
