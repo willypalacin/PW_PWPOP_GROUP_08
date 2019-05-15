@@ -34,6 +34,7 @@ final class HomeController {
 
         $repository->saveProduct($products[0]);
 
+
         return $this->container->get('view')->render($response, 'home.twig',[
 
             'products' => $products

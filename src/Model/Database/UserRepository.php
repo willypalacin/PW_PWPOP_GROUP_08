@@ -86,9 +86,11 @@ class UserRepository implements UserRepositoryInterface
         $description = $product->getDescription();
         $price = $product->getPrice();
         $cat = $product->getCategory();
+
         $statement = $this->database->connection->prepare(
             "INSERT INTO Product (title, description, price, category) VALUES (:title, :description, :price, :category);");
         echo $cat;
+
         switch ($cat){
             case "Sports":
                 $a = 0;
@@ -111,8 +113,11 @@ class UserRepository implements UserRepositoryInterface
             case "Other":
                 $a = 6;
                 break;
+            default:
+                $a = 1;
+                break;
 
-        }
+            }
         $statement->bindParam('title',$title,PDO::PARAM_STR);
         $statement->bindParam('description', $description,PDO::PARAM_STR);
         $statement->bindParam('price', $price, PDO::PARAM_STR);
