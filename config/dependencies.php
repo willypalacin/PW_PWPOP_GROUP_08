@@ -74,10 +74,9 @@ $container['user_repo'] = function (Container $c) {
 };
 
 
-$container['home'] = function () {
-    $a = [new Product("iPhone 7", "Telefono semi-nuevo 32GB", "435", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" )];
-
-  return $a;
+$container['home'] = function (Container $c) {
+    $a = $c->get('user_repo')->getProductsFromDDBB();
+    return $a;
 };
 
 $container['numItems'] = function ($a) {
