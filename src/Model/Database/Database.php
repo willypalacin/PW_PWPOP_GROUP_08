@@ -8,6 +8,8 @@ class Database
     private static $instance = null;
     /** @var PDO */
     public $connection;     // ABANS ESTAVA EN PROTECTED, PREGUNTAR COM SOLUCIONAR-HO SENSE FER-LA PUBLIC!
+
+
     private function __construct(
         string $username,
         string $password,
@@ -19,9 +21,11 @@ class Database
             $username,
             $password
         );
+
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->connection = $db;
     }
+
     public static function getInstance(
         string $username,
         string $password,
