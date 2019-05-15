@@ -30,6 +30,7 @@ final class RegisterController
     const IMAGE_SIZE_ERROR = 'Images size must not exceed 500Kb';
     const IMAGE_EXCEPTION_ERROR = 'Unexpected error occurs while uploading image';
     const ALPHANUMERIC_ERROR = 'Please only use alphanumeric characters';
+    const REGISTER_SUCCESSFUL_MESSAGE = 'Register successful! Please validate your email';
 
     private $container;
 
@@ -67,7 +68,7 @@ final class RegisterController
         //Exists any error?
         if(strlen($errors['name_error']) != 0 || strlen($errors['username_error']) != 0 || strlen($errors['email_error']) != 0 ||
             strlen($errors['birthday_error']) != 0 || strlen($errors['phone_error']) != 0 || strlen($errors['password_error']) != 0 ||
-            strlen($errors['confirm_password_error']) != 0 || strlen($errors['image_error']) != 0)
+            strlen($errors['confirm_password_error']) != 0 || (strlen($errors['image_error']) != 0 && $errors['image_error'] != '0'))
                 return $this->container->get('view')->render($response, 'register.twig', [
                     'name_error' => $errors['name_error'],
                     'username_error' => $errors['username_error'],
@@ -87,7 +88,7 @@ final class RegisterController
                 ]);
 
         //Search for repeated users in DB
-        if($repository->findUser($user))
+        if($repository->findUserByUsername($user))
             return $this->container->get('view')->render($response, 'register.twig', [
                 'username_error' => 'User already registered',
                 'name' => $user->getName(),
@@ -100,7 +101,7 @@ final class RegisterController
             ]);
 
         //Save image
-        $this->writeImage($uploadedFiles['profile_image'],$filenames,$user);
+        if($errors['image_error'] == '') $this->writeImage($uploadedFiles['profile_image'],$filenames,$user);
 
         //Save user
         $repository->save($user);
@@ -108,8 +109,10 @@ final class RegisterController
         //Send mail
         $this->sendMail($user);
 
-        //Go to main page
-        return $this->container->get('view')->render($response, 'index.twig');
+        //Go to login
+        return $this->container->get('view')->render($response, 'login.twig', [
+            'message' =>self::REGISTER_SUCCESSFUL_MESSAGE,
+        ]);
     }
 
     private function validateName($name) : string {
@@ -179,11 +182,11 @@ final class RegisterController
     }
 
     private function validateImage(array $pathImages, array &$filenames) : string {
-
         /** @var UploadedFile $uploadedFile */
         foreach($pathImages as $uploadedFile){
+            if($uploadedFile->getSize() == 0 || $uploadedFile->getSize() == null) return '0';
             $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-            if(strcmp($extension,'jpg') != 0 &&  strcmp($extension,'png') != 0){                                //Extension error?
+            if(strcmp($extension,'jpg') != 0 && strcmp($extension,'png') != 0){        //Extension error?
                 return self::IMAGE_EXTENSION_ERROR;
             }else if($uploadedFile->getError() === UPLOAD_ERR_FORM_SIZE){                                                   //Surpassed file max size defined on .twig ?
                 return self::IMAGE_SIZE_ERROR;
@@ -229,7 +232,7 @@ final class RegisterController
 
             $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
-            $mail->SMTPDebug  = 2;
+            $mail->SMTPDebug  = 0;
             $mail->SMTPAuth   = true;
 
             $mail->Username   = $this->container['mail_address'];
