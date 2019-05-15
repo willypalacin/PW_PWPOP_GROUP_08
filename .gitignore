@@ -3,3 +3,4 @@
 /var/
 /public/.htaccess
 /.idea/
+/config/settings.php
