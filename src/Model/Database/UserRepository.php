@@ -4,6 +4,7 @@ use PDO;
 use SallePW\SlimApp\Model\User;
 use SallePW\SlimApp\Model\UserRepositoryInterface;
 use SallePW\SlimApp\Model\Product;
+use SallePW\SlimApp\Model\ImageProduct;
 class UserRepository implements UserRepositoryInterface
 {
     /** @var Database */
@@ -59,19 +60,65 @@ class UserRepository implements UserRepositoryInterface
         $statement->execute();
     }
 
+
+
+    //Product
     public function saveProduct(Product $product) {
         $title = $product->getTitle();
         $description = $product->getDescription();
         $price = $product->getPrice();
-        $category = $product->getCategory();
+        $cat = $product->getCategory();
         $statement = $this->database->connection->prepare(
             "INSERT INTO Product (title, description, price, category) VALUES (:title, :description, :price, :category);");
-        $a = 1;
-        $statement->bindParam('title',$product->getTitle(),PDO::PARAM_STR);
-        $statement->bindParam('description',$product->getDescription(),PDO::PARAM_STR);
-        $statement->bindParam('price', $product->getPrice(), PDO::PARAM_STR);
+        echo $cat;
+        switch ($cat){
+            case "Sports":
+                $a = 0;
+                break;
+            case "Fashion":
+                $a = 1;
+                break;
+            case "Computers and electronic":
+                $a = 2;
+                break;
+            case "Cars":
+                $a = 3;
+                break;
+            case "Games":
+                $a = 4;
+                break;
+            case "Home":
+                $a = 5;
+                break;
+            case "Other":
+                $a = 6;
+                break;
+
+        }
+        $statement->bindParam('title',$title,PDO::PARAM_STR);
+        $statement->bindParam('description', $description,PDO::PARAM_STR);
+        $statement->bindParam('price', $price, PDO::PARAM_STR);
         $statement->bindParam('category',$a,PDO::PARAM_STR);
         $statement->execute();
+    }
+
+    //imageProduct
+    public function saveImageProduct(string $product_image) {
+
+        $statement = $this->database->connection->prepare('SELECT * FROM Product ORDER BY id_product DESC LIMIT 1;');
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $id = $results[0]['id_product'];
+
+
+        $statement = $this->database->connection->prepare(
+            "INSERT INTO ImageProduct (product_image, id_product) VALUES (:product_image, :id_product);");
+        $statement->bindParam('product_image',$product_image,PDO::PARAM_STR);
+        $statement->bindParam('id_product', $id, PDO::PARAM_STR);
+
+        $statement->execute();
+
 
     }
+
 }

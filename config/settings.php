@@ -6,7 +6,7 @@ return [
         'db' => [
             'username' => 'homestead',
             'password' => 'secret',
-            'dbName' => 'PWPOP',
+            'dbName' => 'db_user',
             'host' => 'localhost',
         ],
         'mail' => [

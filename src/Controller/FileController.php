@@ -3,6 +3,7 @@
 namespace SallePW\SlimApp\Controller;
 
 use Psr\Container\ContainerInterface;
+use \SallePW\SlimApp\Model\Product;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\UploadedFileInterface;
@@ -16,7 +17,7 @@ final class FileController
     private const INVALID_EXTENSION_ERROR = "The received file extension '%s' is not valid";
 
     // We use this const to define the extensions that we are going to allow
-    private const ALLOWED_EXTENSIONS = ['jpg', 'png'];
+    private const ALLOWED_EXTENSIONS = ['jpg', 'png', 'JPG'];
 
 
 
@@ -40,29 +41,20 @@ final class FileController
 
 
     //post del form de upload
-    public function uploadAction(Request $request, Response $response): Response
-    {
+    public function uploadAction(Request $request, Response $response): Response {
         $errors = [];
+        $counterImg = 111;
+        $fileNames[] = "";
 
         $title = $_POST['title'];
         $num = $_POST['price'];
         $des = $_POST['description'];
+        $cat = $_POST['cat'];
+        echo $cat;
 
-
-        if(!$this->validTitle($title)| !$this->validNumber($num) | !$this->validDescription($des)){
-            $errors[] = "Something was wrong with your info, please try again!";
-            return $this->container->get('view')->render($response, 'upload.twig', [
-                'errors' => $errors,
-            ]);
-        }else {
-            //todo OK, ara guardo a la bbdd
-
-        }
 
         //validacion de las imagenes
         $uploadedFiles = $request->getUploadedFiles();
-
-
         /** @var UploadedFileInterface $uploadedFile */
         foreach ($uploadedFiles['files'] as $uploadedFile) {
             if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
@@ -73,39 +65,102 @@ final class FileController
             $name = $uploadedFile->getClientFilename();
 
             $fileInfo = pathinfo($name);
+            $fileNames[$counterImg] = $fileInfo;
 
             $format = $fileInfo['extension'];
+            $counterImg=3;
 
             if (!$this->isValidFormat($format)) {
                 $errors[] = sprintf(self::INVALID_EXTENSION_ERROR, $format);
-                continue;
+                return $this->container->get('view')->render($response, 'upload.twig', [
+                    'errors' => $errors,
+                ]);
+                //continue;
             }
 
             //We generate a custom name here instead of using the one coming form the form
             $uploadedFile->moveTo(self::UPLOADS_DIR . DIRECTORY_SEPARATOR . $name);
+
+
+
         }
 
-        return $this->container->get('view')->render($response, 'upload.twig', [
-            'errors' => $errors,
-        ]);
+        if(!$this->validTitle($title)| !$this->validNumber($num) | !$this->validDescription($des)){
+            $errors[] = "Something was wrong with your info, please try again!";
+            return $this->container->get('view')->render($response, 'upload.twig', [
+                'errors' => $errors,
+            ]);
+        }else {
+            //todo OK, guardo a la BBDD
+
+
+            //GUARDO PRODUCTE
+            $repository = $this->container->get('user_repo');
+            /*$p = $this->container
+                ->get('home');
+            */
+
+
+            $p = new Product($title, $des, $num, [], $cat);
+
+            $repository->saveProduct($p);
+
+            /*return $this->container->get('view')->render($response, 'home.twig',[
+
+                'products' => $p
+
+            ]);*/
+
+            //GUARDO IMATGE DEL PRODUCTE
+
+
+            $uploadedFiles = $request->getUploadedFiles();
+            foreach ($uploadedFiles['files'] as $uploadedFile) {
+                $name = $uploadedFile->getClientFilename();
+                $repository->saveImageProduct($name);
+            }
+
+
+            return $this->container->get('view')->render($response, 'upload.twig', [
+                'errors' => $errors,
+            ]);
+
+        }
 
 
 
 
-        //aqi validacio de server?
+
+
+
+
+
     }
-    private function validTitle(string $title): bool{
-            if($title==null || $title==="blanca"){
-                return false;
-            }
-            if(strlen($title)>10){
-                return false;
-            }
-            return true;
-        }
+
+
+
+
+
+
+
+
+
+
+
     private function isValidFormat(string $extension): bool
     {
         return in_array($extension, self::ALLOWED_EXTENSIONS, true);
+    }
+
+
+    private function validTitle(string $title): bool{
+        if($title==null || $title==="blanca"){
+            return false;
+        }
+        if(strlen($title)>10){
+            return false;
+        }
+        return true;
     }
     private function validNumber(string $num): bool{
 

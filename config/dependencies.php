@@ -47,7 +47,7 @@ $container['flash'] = function () {
 
 $container['home'] = function () {
     //saveProduct(new Product("iPhone 7", "Telefono semi-nuevo 32GB", "435", [],"Computers and Electronics"));
-    $a = [new Product("iPhone 7", "Telefono semi-nuevo 32GB", "435", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" )];
+    $a = [new Product("ME VENDO", "Telefono semi-nuevo 32GB", "435", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" ), new Product("MacBook Air", "13 pulgadas 2011", "735", [],"Computers and Electronics" )];
   return $a;
 };
 
