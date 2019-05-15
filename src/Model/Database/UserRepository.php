@@ -46,7 +46,7 @@ class UserRepository implements UserRepositoryInterface
         }
     }
 
-    public function findUser(User $user): bool {
+    public function findUserByUsername(User $user): bool {
         $statement = $this->database->connection->prepare("SELECT COUNT(*) FROM User WHERE username =:username");
         $statement->bindParam('username',$user->getUsername(),PDO::PARAM_STR);
         $statement->execute();
@@ -65,6 +65,30 @@ class UserRepository implements UserRepositoryInterface
         if($results[0]['username'] == null) return '';
         return $results[0]['username'];
     }
+
+    public function findUserByLoginEmail(string $email, string $pass) : bool{
+        $statement = $this->database->connection->prepare("SELECT username FROM User WHERE email_address = :email AND password = MD5(:password)");
+        $statement->bindParam('email',$email,PDO::PARAM_STR);
+        $statement->bindParam('password',$pass,PDO::PARAM_STR);
+        $statement->execute();
+
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if($results[0]['username'] == null) return '';
+        return $results[0]['username'];
+    }
+
+    public function findUserByLoginUser(string $user, string $pass) : bool{
+        $statement = $this->database->connection->prepare("SELECT username FROM User WHERE username = :user AND password = MD5(:password)");
+        $statement->bindParam('user',$user,PDO::PARAM_STR);
+        $statement->bindParam('password',$pass,PDO::PARAM_STR);
+        $statement->execute();
+
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if($results[0]['username'] == null) return '';
+        return $results[0]['username'];
+    }
+
+
 
     public function validateAccount(string $username) {
         $statement = $this->database->connection->prepare("UPDATE User SET validated = TRUE WHERE username = :username");
