@@ -2,6 +2,7 @@
 /pictures/
 /var/
 /public/.htaccess
+/public/uploads/
+/public/pictures/
 /.idea/
-/uploads/
 /config/settings.php
