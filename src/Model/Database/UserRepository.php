@@ -72,6 +72,24 @@ class UserRepository implements UserRepositoryInterface
         $statement->execute();
     }
 
+    public function isValidatedByUser(string $username, string $password) : bool {
+        $statement = $this->database->connection->prepare("SELECT validated FROM User WHERE username = :username AND password = MD5(:password)");
+        $statement->bindParam('username',$username,PDO::PARAM_STR);
+        $statement->bindParam('password',$password,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results[0]['validated'];
+    }
+
+    public function isValidatedByEmail(string $email, string $password) : bool {
+        $statement = $this->database->connection->prepare("SELECT validated FROM User WHERE email_address = :email AND password = MD5(:password)");
+        $statement->bindParam('email',$email,PDO::PARAM_STR);
+        $statement->bindParam('password',$password,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results[0]['validated'];
+    }
+
     //Product
     public function saveProduct(Product $product) {
         $title = $product->getTitle();
