@@ -35,8 +35,6 @@ final class LoginController
 
     public function __invoke(Request $request, Response $response)
     {
-        session_destroy();
-
         /** @var UserRepository $repository */
         $repository = $this->container->get('user_repo');
         if(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id'])) ||
@@ -101,6 +99,8 @@ final class LoginController
                 ]);
             }
         }
+
+        var_dump('HOLA');
 
         $_SESSION['user_id'] = md5($user->getUsername());
         if(!is_null($checkBox)) setcookie("user_id",md5($user->getUsername()),time() + 60*60*24);
