@@ -10,7 +10,7 @@ use Psr\Http\Message\UploadedFileInterface;
 
 final class FileController
 {
-    private const UPLOADS_DIR = __DIR__ . '/../../pictures';
+    private const UPLOADS_DIR = __DIR__ . '/../../public/pictures';
 
     private const UNEXPECTED_ERROR = "An unexpected error occurred uploading the file '%s'...";
 
