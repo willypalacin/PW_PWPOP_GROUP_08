@@ -202,8 +202,8 @@ final class RegisterController
     }
 
     private function prepareUploads(){
-        if (!file_exists($this->container->get('upload_directory'))) {
-            mkdir($this->container->get('upload_directory'), 0777, true);
+        if (!file_exists($this->container->get('upload_directory'))) mkdir($this->container->get('upload_directory'), 0777, true);
+        if (!file_exists($this->container->get('upload_directory') . DIRECTORY_SEPARATOR . $this->container->get('default_image'))){
             file_put_contents($this->container->get('upload_directory') . DIRECTORY_SEPARATOR . $this->container->get('default_image') ,
                 file_get_contents(self::DEFAULT_IMAGE_PATH));
         }
@@ -241,7 +241,7 @@ final class RegisterController
 
             $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
-            $mail->SMTPDebug  = 2;
+            $mail->SMTPDebug  = 0;
             $mail->SMTPAuth   = true;
 
             $mail->Username   = $this->container['mail_address'];
