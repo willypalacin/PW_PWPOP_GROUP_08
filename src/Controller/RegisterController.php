@@ -196,9 +196,9 @@ final class RegisterController
             return self::IMAGE_EXTENSION_ERROR;
         }else if($uploadedFile->getError() === UPLOAD_ERR_FORM_SIZE){                                                   //Surpassed file max size defined on .twig ?
             return self::IMAGE_SIZE_ERROR;
-        }else if($uploadedFile->getError() === UPLOAD_ERR_OK){
-            return '';
         }
+        return '';
+
     }
 
     private function prepareUploads(){
