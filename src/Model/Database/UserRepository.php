@@ -122,6 +122,16 @@ class UserRepository implements UserRepositoryInterface
         $statement->bindParam('category',$a,PDO::PARAM_STR);
         $statement->execute();
     }
+
+    public function saveFavouriteProduct($id_user, $id_product) {
+
+        $statement = $this->database->connection->prepare(
+            "INSERT INTO Favourite_Product (id_user, id_product) VALUES (:id_user, :id_product);");
+
+        $statement->bindParam('id_user',$id_user,PDO::PARAM_STR);
+        $statement->bindParam('id_product', $id_product,PDO::PARAM_STR);
+        $statement->execute();
+    }
     //imageProduct
     public function saveImageProduct(string $product_image)
     {
