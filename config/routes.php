@@ -12,6 +12,8 @@ use SallePW\SlimApp\Controller\FileController;
 use SallePW\SlimApp\Controller\FavouritesController;
 use SallePW\SlimApp\Controller\AccountValidationController;
 use SallePW\SlimApp\Controller\LoginController;
+use SallePW\SlimApp\Controller\MyProductController;
+
 
 $app
     ->get('/hello/{name}', HelloController::class)
@@ -35,6 +37,8 @@ $app->get('/upload', UploadController::class)
     ->add(UploadController::class);
 
 $app->get('/favourites', FavouritesController::class);
+
+$app->get('/myproduct', MyProductController::class);
 
 
 $app->post('/search', SearchController::class);
