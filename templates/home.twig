@@ -9,7 +9,9 @@
     <div class="row">
     {% set counter = 0 %}
 
+
     {% for product in products if counter < maxproduct %}
+
 
         <div class="col-sm">
         <div class="product_card">
@@ -47,7 +49,7 @@
                     <img class="cor" src= "{{ base_url() }}/assets/cor_vacio.png">
                 </div>
             </div>
-            <div class ="tag"> {{product.category}}</div>
+            <div class ="tag"> {{categ[counter]}}</div>
             <div class ="description"> {{product.description}} </div>
             <div class ="price_title"> Price </div>
             <div class ="price_box"> <div class = "price">{{product.price}}</div> </div>

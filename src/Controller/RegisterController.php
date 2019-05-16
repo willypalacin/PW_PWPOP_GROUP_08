@@ -184,7 +184,7 @@ final class RegisterController
     private function validateImage(array $pathImages, array &$filenames) : string {
         /** @var UploadedFile $uploadedFile */
         foreach($pathImages as $uploadedFile){
-            if($uploadedFile->getSize() == 0 || $uploadedFile->getSize() == null) return '0';
+            if(strlen($uploadedFile->getClientFilename()) == 0) return '0';
             $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
             if(strcmp($extension,'jpg') != 0 && strcmp($extension,'png') != 0){        //Extension error?
                 return self::IMAGE_EXTENSION_ERROR;
@@ -205,6 +205,9 @@ final class RegisterController
     }
 
     private function writeImage(array $pathImages,array $filenames, User $user){
+        if (!file_exists($this->container->get('upload_directory'))) {
+            mkdir($this->container->get('upload_directory'), 0777, true);
+        }
         for($i = 0; $i < sizeof($pathImages); $i++){
             $pathImages[$i]->moveTo($this->container->get('upload_directory') . DIRECTORY_SEPARATOR . $filenames[$i]);      //Write image on ./uploads
             $user->addProfileImage($filenames[$i]);                                                                         //Relate user with their own images
