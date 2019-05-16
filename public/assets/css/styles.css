@@ -75,6 +75,12 @@ body{
 
 }
 
+#product_image {
+    height: 129px;
+    width: 229px;
+
+}
+
 .title_box{
     margin-top: 11px;
     height: 32px;

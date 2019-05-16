@@ -241,7 +241,7 @@ final class RegisterController
 
             $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
-            $mail->SMTPDebug  = 0;
+            $mail->SMTPDebug  = 2;
             $mail->SMTPAuth   = true;
 
             $mail->Username   = $this->container['mail_address'];
