@@ -20,6 +20,7 @@ final class LoginController
     const PASSWORD_ERROR = 'Please introduce more than 5 characters';
     const ALPHANUMERIC_ERROR = 'Please only use alphanumeric characters';
     const USER_NOT_FOUND_ERROR = 'User not found';
+    const USER_NOT_VALIDATED_ERROR = 'User not validated';
 
     private $container;
 
@@ -34,6 +35,7 @@ final class LoginController
 
     public function __invoke(Request $request, Response $response)
     {
+        session_destroy();
 
         /** @var UserRepository $repository */
         $repository = $this->container->get('user_repo');
@@ -75,12 +77,26 @@ final class LoginController
                     'password' => $user->getPassword(),
                 ]);
             }
+            if(!$repository->isValidatedByEmail($user->getEmail(), $user->getPassword())){
+                return $this->container->get('view')->render($response, 'login.twig', [
+                    'error' => self::USER_NOT_VALIDATED_ERROR,
+                    'email' => $user->getEmail(),
+                    'password' => $user->getPassword(),
+                ]);
+            }
         }else{
             //Search for existing user in db
             if(!$repository->findUserByLoginUser($user->getUsername(), $user->getPassword())){
                 return $this->container->get('view')->render($response, 'login.twig', [
                     'error' => self::USER_NOT_FOUND_ERROR,
-                    'email' => $user->getEmail(),
+                    'email' => $user->getUsername(),
+                    'password' => $user->getPassword(),
+                ]);
+            }
+            if(!$repository->isValidatedByUser($user->getUsername(), $user->getPassword())){
+                return $this->container->get('view')->render($response, 'login.twig', [
+                    'error' => self::USER_NOT_VALIDATED_ERROR,
+                    'email' => $user->getUsername(),
                     'password' => $user->getPassword(),
                 ]);
             }
