@@ -50,7 +50,6 @@ final class FileController
         $num = $_POST['price'];
         $des = $_POST['description'];
         $cat = $_POST['cat'];
-        echo $cat;
 
 
         //validacion de las imagenes

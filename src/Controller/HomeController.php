@@ -31,7 +31,6 @@ final class HomeController {
 
         $products = $this->container
             ->get('home');
-
         $categ = $this->checkProductCategory($products);
         $images = $repository->getImagesOfProductById();
 
