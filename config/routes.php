@@ -12,6 +12,7 @@ use SallePW\SlimApp\Controller\FileController;
 use SallePW\SlimApp\Controller\FavouritesController;
 use SallePW\SlimApp\Controller\AccountValidationController;
 use SallePW\SlimApp\Controller\LoginController;
+use SallePW\SlimApp\Controller\ProfileController;
 
 $app
     ->get('/hello/{name}', HelloController::class)
@@ -45,4 +46,6 @@ $app->get('/files', FileController::class . ':indexAction');
 
 $app->post('/upload', FileController::class . ':uploadAction')
     ->setName('upload');
+
+$app->get('/profile', ProfileController::class);
 
