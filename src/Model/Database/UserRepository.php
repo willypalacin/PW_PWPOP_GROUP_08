@@ -23,7 +23,7 @@ class UserRepository implements UserRepositoryInterface
     public function save(User $user)
     {
         $statement = $this->database->connection->prepare(
-            "INSERT INTO User(name,username,email_address,birthday,phone_number,password,validated) VALUES (:name,:username,:email,:birthday,:phone,MD5(:password),FALSE);"
+            "INSERT INTO User(name,username,email_address,birthday,phone_number,password,validated,profile_image) VALUES (:name,:username,:email,:birthday,:phone,MD5(:password),FALSE, :profile_image);"
         );
 
         $statement->bindParam('name',$user->getName(),PDO::PARAM_STR);
@@ -32,16 +32,8 @@ class UserRepository implements UserRepositoryInterface
         $statement->bindParam('birthday',$user->getBirthday(),PDO::PARAM_STR);
         $statement->bindParam('phone',$user->getPhoneNumber(),PDO::PARAM_STR);
         $statement->bindParam('password',$user->getPassword(),PDO::PARAM_STR);
-
+        $statement->bindParam('profile_image',$user->getProfileImage(), PDO::PARAM_STR);
         $statement->execute();
-        foreach ($user->getProfileImage() as $profileImage){
-            $statement = $this->database->connection->prepare(
-                "INSERT INTO Image(id_user, profile_image) VALUES (:username,:image);"
-            );
-            $statement->bindParam('username',$user->getUsername(), PDO::PARAM_STR);
-            $statement->bindParam('image',$profileImage,PDO::PARAM_STR);
-            $statement->execute();
-        }
     }
 
     public function findUser(User $user): bool
