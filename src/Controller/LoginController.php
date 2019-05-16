@@ -20,6 +20,7 @@ final class LoginController
     const PASSWORD_ERROR = 'Please introduce more than 5 characters';
     const ALPHANUMERIC_ERROR = 'Please only use alphanumeric characters';
     const USER_NOT_FOUND_ERROR = 'User not found';
+    const USER_NOT_VALIDATED_ERROR = 'User not validated';
 
     private $container;
 
@@ -34,15 +35,22 @@ final class LoginController
 
     public function __invoke(Request $request, Response $response)
     {
-        if ($_POST == null) return $this->container->get('view')->render($response, 'login.twig');
+        session_destroy();
 
         /** @var UserRepository $repository */
         $repository = $this->container->get('user_repo');
+        if(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id'])) ||
+            isset($_COOKIE['user_id']) && strlen($repository->findUserById($_COOKIE['user_id'])))
+            return $this->container->get('view')->render($response, 'home.twig',[
+                'products' => $products = $this->container->get('home'),
+            ]);
+        if($_POST == null) return $this->container->get('view')->render($response, 'login.twig');
 
         $user = new User(null);
         $user->setEmail($_POST['email_address']);
         $user->setUsername($_POST['email_address']);
         $user->setPassword($_POST['password']);
+        $checkBox = $_POST['checkbox'];
 
         //Login validations
         $errors['username_error'] = $this->validateUsername($user->getUsername());
@@ -69,18 +77,36 @@ final class LoginController
                     'password' => $user->getPassword(),
                 ]);
             }
+            if(!$repository->isValidatedByEmail($user->getEmail(), $user->getPassword())){
+                return $this->container->get('view')->render($response, 'login.twig', [
+                    'error' => self::USER_NOT_VALIDATED_ERROR,
+                    'email' => $user->getEmail(),
+                    'password' => $user->getPassword(),
+                ]);
+            }
         }else{
             //Search for existing user in db
             if(!$repository->findUserByLoginUser($user->getUsername(), $user->getPassword())){
                 return $this->container->get('view')->render($response, 'login.twig', [
                     'error' => self::USER_NOT_FOUND_ERROR,
-                    'email' => $user->getEmail(),
+                    'email' => $user->getUsername(),
+                    'password' => $user->getPassword(),
+                ]);
+            }
+            if(!$repository->isValidatedByUser($user->getUsername(), $user->getPassword())){
+                return $this->container->get('view')->render($response, 'login.twig', [
+                    'error' => self::USER_NOT_VALIDATED_ERROR,
+                    'email' => $user->getUsername(),
                     'password' => $user->getPassword(),
                 ]);
             }
         }
+
         $_SESSION['user_id'] = md5($user->getUsername());
-        return $this->container->get('view')->render($response, 'index.twig');
+        if(!is_null($checkBox)) setcookie("user_id",md5($user->getUsername()),time() + 60*60*24);
+        return $this->container->get('view')->render($response, 'home.twig',[
+            'products' => $products = $this->container->get('home'),
+        ]);
     }
 
     private function validateUsername($username) : string {

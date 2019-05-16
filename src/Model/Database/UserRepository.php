@@ -23,7 +23,7 @@ class UserRepository implements UserRepositoryInterface
     public function save(User $user)
     {
         $statement = $this->database->connection->prepare(
-            "INSERT INTO User(name,username,email_address,birthday,phone_number,password,validated) VALUES (:name,:username,:email,:birthday,:phone,MD5(:password),FALSE);"
+            "INSERT INTO User(name,username,email_address,birthday,phone_number,password,validated,profile_image) VALUES (:name,:username,:email,:birthday,:phone,MD5(:password),FALSE, :profile_image);"
         );
 
         $statement->bindParam('name',$user->getName(),PDO::PARAM_STR);
@@ -32,16 +32,8 @@ class UserRepository implements UserRepositoryInterface
         $statement->bindParam('birthday',$user->getBirthday(),PDO::PARAM_STR);
         $statement->bindParam('phone',$user->getPhoneNumber(),PDO::PARAM_STR);
         $statement->bindParam('password',$user->getPassword(),PDO::PARAM_STR);
-
+        $statement->bindParam('profile_image',$user->getProfileImage(), PDO::PARAM_STR);
         $statement->execute();
-        foreach ($user->getProfileImage() as $profileImage){
-            $statement = $this->database->connection->prepare(
-                "INSERT INTO Image(id_user, profile_image) VALUES (:username,:image);"
-            );
-            $statement->bindParam('username',$user->getUsername(), PDO::PARAM_STR);
-            $statement->bindParam('image',$profileImage,PDO::PARAM_STR);
-            $statement->execute();
-        }
     }
 
     public function findUser(User $user): bool
@@ -78,6 +70,24 @@ class UserRepository implements UserRepositoryInterface
         $statement = $this->database->connection->prepare("UPDATE User SET validated = TRUE WHERE username = :username");
         $statement->bindParam('username',$username,PDO::PARAM_STR);
         $statement->execute();
+    }
+
+    public function isValidatedByUser(string $username, string $password) : bool {
+        $statement = $this->database->connection->prepare("SELECT validated FROM User WHERE username = :username AND password = MD5(:password)");
+        $statement->bindParam('username',$username,PDO::PARAM_STR);
+        $statement->bindParam('password',$password,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results[0]['validated'];
+    }
+
+    public function isValidatedByEmail(string $email, string $password) : bool {
+        $statement = $this->database->connection->prepare("SELECT validated FROM User WHERE email_address = :email AND password = MD5(:password)");
+        $statement->bindParam('email',$email,PDO::PARAM_STR);
+        $statement->bindParam('password',$password,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results[0]['validated'];
     }
 
     //Product

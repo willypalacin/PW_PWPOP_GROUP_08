@@ -27,7 +27,6 @@ class User
         $this->phone_number = $data['phone_number'];
         $this->password = $data['password'];
         $this->confirm_password = $data['confirm_password'];
-        $this->profile_image = array();
     }
 
 
@@ -154,11 +153,8 @@ class User
     /**
      * @param mixed $profile_image
      */
-    public function addProfileImage($profile_image)
+    public function setProfileImage($profile_image): void
     {
-        array_push($this->profile_image,$profile_image);
+        $this->profile_image = $profile_image;
     }
-
-
-
 }
