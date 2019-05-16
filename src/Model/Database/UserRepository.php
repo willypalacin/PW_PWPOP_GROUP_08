@@ -147,6 +147,19 @@ class UserRepository implements UserRepositoryInterface
         $statement = $this->database->connection->prepare('SELECT * FROM Product;');
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+    }
+
+    public function getImagesOfProductById() {
+
+        $statement = $this->database->connection->prepare("SELECT * FROM ImageProduct;");
+        //$statement->bindParam('id_prod',$id_prod,PDO::PARAM_STR);
+        $statement->execute();
+
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        echo "count results" . count( $results);
         return $results;
     }
 

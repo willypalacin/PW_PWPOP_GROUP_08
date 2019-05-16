@@ -33,15 +33,19 @@ final class HomeController {
             ->get('home');
 
         $categ = $this->checkProductCategory($products);
+        $images = $repository->getImagesOfProductById();
 
-        echo $products[0]['category'];
+
+        //echo $images[0]['id_product'];
+
         //$repository->saveProduct($products[0]);
 
 
         return $this->container->get('view')->render($response, 'home.twig',[
 
             'products' => $products,
-            'categ' => $categ
+            'categ' => $categ,
+            'images' => $images
 
         ]);
 
