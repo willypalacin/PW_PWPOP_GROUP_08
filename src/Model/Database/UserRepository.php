@@ -28,10 +28,8 @@ class UserRepository implements UserRepositoryInterface
         $statement->bindParam('birthday',$user->getBirthday(),PDO::PARAM_STR);
         $statement->bindParam('phone',$user->getPhoneNumber(),PDO::PARAM_STR);
         $statement->bindParam('password',$user->getPassword(),PDO::PARAM_STR);
-<<<<<<< HEAD
         $statement->bindParam('profile_image',$user->getProfileImage(), PDO::PARAM_STR);
-=======
->>>>>>> 5e7f25b79f49dec7c20175721b65367c1e3e5dad
+
         $statement->execute();
     }
     public function findUser(User $user): bool
@@ -64,7 +62,6 @@ class UserRepository implements UserRepositoryInterface
         $statement->bindParam('username',$username,PDO::PARAM_STR);
         $statement->execute();
     }
-<<<<<<< HEAD
 
     public function isValidatedByUser(string $username, string $password) : bool {
         $statement = $this->database->connection->prepare("SELECT validated FROM User WHERE username = :username AND password = MD5(:password)");
@@ -84,8 +81,6 @@ class UserRepository implements UserRepositoryInterface
         return $results[0]['validated'];
     }
 
-=======
->>>>>>> 5e7f25b79f49dec7c20175721b65367c1e3e5dad
     //Product
     public function saveProduct(Product $product) {
         $title = $product->getTitle();

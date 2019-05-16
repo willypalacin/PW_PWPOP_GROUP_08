@@ -12,12 +12,8 @@ use SallePW\SlimApp\Controller\FileController;
 use SallePW\SlimApp\Controller\FavouritesController;
 use SallePW\SlimApp\Controller\AccountValidationController;
 use SallePW\SlimApp\Controller\LoginController;
-<<<<<<< HEAD
 use SallePW\SlimApp\Controller\ProfileController;
-=======
 use SallePW\SlimApp\Controller\MyProductController;
-
->>>>>>> 5e7f25b79f49dec7c20175721b65367c1e3e5dad
 
 $app
     ->get('/hello/{name}', HelloController::class)
