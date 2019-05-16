@@ -31,6 +31,7 @@ final class RegisterController
     const IMAGE_EXCEPTION_ERROR = 'Unexpected error occurs while uploading image';
     const ALPHANUMERIC_ERROR = 'Please only use alphanumeric characters';
     const REGISTER_SUCCESSFUL_MESSAGE = 'Register successful! Please validate your email';
+    const DEFAULT_IMAGE_PATH = 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
 
     private $container;
 
@@ -54,7 +55,6 @@ final class RegisterController
         $uploadedFiles = $request->getUploadedFiles();
 
         $user = new User($_POST);
-        $filenames = array();
         //Form validations
         $errors['name_error'] = $this->validateName($user->getName());
         $errors['username_error'] = $this->validateUsername($user->getUsername());
@@ -63,7 +63,7 @@ final class RegisterController
         $errors['phone_error'] = $this->validatePhone($user->getPhoneNumber());
         $errors['password_error'] = $this->validatePassword($user->getPassword());
         $errors['confirm_password_error'] = $this->validConfirmPassword($user->getPassword(),$user->getConfirmPassword());
-        $errors['image_error'] = $this->validateImage($uploadedFiles['profile_image'],$filenames);
+        $errors['image_error'] = $this->validateImage($uploadedFiles['profile_image']);
 
         //Exists any error?
         if(strlen($errors['name_error']) != 0 || strlen($errors['username_error']) != 0 || strlen($errors['email_error']) != 0 ||
@@ -100,8 +100,15 @@ final class RegisterController
                 'confirm_password' => $user->getConfirmPassword(),
             ]);
 
+        $this->prepareUploads();
+
         //Save image
-        if($errors['image_error'] == '') $this->writeImage($uploadedFiles['profile_image'],$filenames,$user);
+        if($errors['image_error'] == ''){
+            $this->writeImage($uploadedFiles['profile_image'],$user);
+        } else if ($errors['image_error'] == '0'){
+            $user->setProfileImage($this->container->get('default_image'));
+        }
+
 
         //Save user
         $repository->save($user);
@@ -181,36 +188,35 @@ final class RegisterController
         return '';
     }
 
-    private function validateImage(array $pathImages, array &$filenames) : string {
-        /** @var UploadedFile $uploadedFile */
-        foreach($pathImages as $uploadedFile){
-            if(strlen($uploadedFile->getClientFilename()) == 0) return '0';
-            $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-            if(strcmp($extension,'jpg') != 0 && strcmp($extension,'png') != 0){        //Extension error?
-                return self::IMAGE_EXTENSION_ERROR;
-            }else if($uploadedFile->getError() === UPLOAD_ERR_FORM_SIZE){                                                   //Surpassed file max size defined on .twig ?
-                return self::IMAGE_SIZE_ERROR;
-            }else if($uploadedFile->getError() === UPLOAD_ERR_OK){
-                try {
-                    $basename = bin2hex(random_bytes(8));                                                           //Random filename
-                    array_push($filenames,sprintf('%s.%0.8s',$basename,$extension));
-                } catch (\Exception $e) {
-                    echo $e->getMessage();
-                    return self::IMAGE_EXCEPTION_ERROR;
-                }
-            }
-        }
+    private function validateImage(UploadedFile $uploadedFile) : string {
 
-        return '';
+        if(strlen($uploadedFile->getClientFilename()) == 0) return '0';
+        $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+        if(strcmp($extension,'jpg') != 0 && strcmp($extension,'png') != 0){        //Extension error?
+            return self::IMAGE_EXTENSION_ERROR;
+        }else if($uploadedFile->getError() === UPLOAD_ERR_FORM_SIZE){                                                   //Surpassed file max size defined on .twig ?
+            return self::IMAGE_SIZE_ERROR;
+        }else if($uploadedFile->getError() === UPLOAD_ERR_OK){
+            return '';
+        }
     }
 
-    private function writeImage(array $pathImages,array $filenames, User $user){
+    private function prepareUploads(){
         if (!file_exists($this->container->get('upload_directory'))) {
             mkdir($this->container->get('upload_directory'), 0777, true);
+            file_put_contents($this->container->get('upload_directory') . DIRECTORY_SEPARATOR . $this->container->get('default_image') ,
+                file_get_contents(self::DEFAULT_IMAGE_PATH));
         }
-        for($i = 0; $i < sizeof($pathImages); $i++){
-            $pathImages[$i]->moveTo($this->container->get('upload_directory') . DIRECTORY_SEPARATOR . $filenames[$i]);      //Write image on ./uploads
-            $user->addProfileImage($filenames[$i]);                                                                         //Relate user with their own images
+    }
+
+    private function writeImage(UploadedFile $uploadedFile,User $user){
+        try {
+            $filename = sprintf('%s.%0.8s',bin2hex(random_bytes(8)),pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION)); //Random filename
+            $uploadedFile->moveTo($this->container->get('upload_directory') . DIRECTORY_SEPARATOR . $filename);      //Write image on ./uploads
+            $user->setProfileImage($filename);                                                                         //Relate user with their own images
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            return self::IMAGE_EXCEPTION_ERROR;
         }
     }
 
