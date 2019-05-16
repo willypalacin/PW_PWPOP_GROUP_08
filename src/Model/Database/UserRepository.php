@@ -143,6 +143,26 @@ class UserRepository implements UserRepositoryInterface
         $statement->execute();
     }
 
+    public function  getProductsFromDDBB() {
+        $statement = $this->database->connection->prepare('SELECT * FROM Product;');
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+    }
+
+    public function getImagesOfProductById() {
+
+        $statement = $this->database->connection->prepare("SELECT * FROM ImageProduct;");
+        //$statement->bindParam('id_prod',$id_prod,PDO::PARAM_STR);
+        $statement->execute();
+
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        echo "count results" . count( $results);
+        return $results;
+    }
+
 
     public function findUserByLoginEmail(string $email, string $pass) : bool{
         $statement = $this->database->connection->prepare("SELECT username FROM User WHERE email_address = :email AND password = MD5(:password)");
