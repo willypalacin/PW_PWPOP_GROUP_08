@@ -10,7 +10,7 @@ use SallePW\SlimApp\Model\Database\Database;
 use Slim\Container;
 $container = $app->getContainer();
 $numItems = 5;
-$container['upload_directory'] = __DIR__ . '/../uploads';
+$container['upload_directory'] = __DIR__ . '/../public/uploads';
 $container['default_image'] = 'avatar.png';
 $container['view'] = function ($c) {
     $view = new Twig(__DIR__ . '/../templates', [
