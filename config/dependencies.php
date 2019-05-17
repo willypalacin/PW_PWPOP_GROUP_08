@@ -14,7 +14,7 @@ $container = $app->getContainer();
 $numItems = 5;
 $container['upload_directory'] = __DIR__ . '/../public/uploads';
 $container['default_image'] = 'avatar.png';
-$container['view'] = function ($c) {
+$container['view'] = function (Container $c) {
     $view = new Twig(__DIR__ . '/../templates', [
         'cache' => false,
     ]);
@@ -39,7 +39,7 @@ $container['db'] = function (Container $c) {
             $c['settings']['db']['dbName']
         );
     };
-    $container['user_repo'] = function ( $c) {
+    $container['user_repo'] = function (Container $c) {
         return new UserRepository($c->get('db'));
     };
     return Database::getInstance(
