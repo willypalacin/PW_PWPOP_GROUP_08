@@ -28,7 +28,6 @@ final class RegisterController
     const CONFIRM_PASSWORD_ERROR = "Passwords don't match";
     const IMAGE_EXTENSION_ERROR = 'Images must be .jpg or .png';
     const IMAGE_SIZE_ERROR = 'Images size must not exceed 500Kb';
-    const IMAGE_EXCEPTION_ERROR = 'Unexpected error occurs while uploading image';
     const ALPHANUMERIC_ERROR = 'Please only use alphanumeric characters';
     const REGISTER_SUCCESSFUL_MESSAGE = 'Register successful! Please validate your email';
     const DEFAULT_IMAGE_PATH = 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
@@ -221,7 +220,6 @@ final class RegisterController
             $user->setProfileImage($filename);                                                                         //Relate user with their own images
         } catch (\Exception $e) {
             echo $e->getMessage();
-            return self::IMAGE_EXCEPTION_ERROR;
         }
     }
 
