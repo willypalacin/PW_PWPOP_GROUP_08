@@ -264,3 +264,13 @@ label {
     display: flex;
     flex-direction: row;
 }
+
+.bs-example{
+    margin: 20px;
+}
+
+.modal-dialog {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
