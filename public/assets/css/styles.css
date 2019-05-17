@@ -99,7 +99,8 @@ body{
 .cor{
     height: 20px;
     width: 20px;
-    margin-right: -8px
+    margin-right: -8px;
+
 }
 
 .tag{
@@ -117,6 +118,10 @@ body{
     color: gray;
     margin-top: 12px;
 
+}
+
+.description{
+    margin-top: 30px;
 }
 
 .price_title{

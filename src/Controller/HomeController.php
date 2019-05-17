@@ -89,5 +89,35 @@ final class HomeController {
 
     }
 
+    public function refresh(Request $request, Response $response) {
+        $repository = $this->container->get('user_repo');
+
+        $id_product = $_POST["prod_id"];
+        //$id_user = $_SESSION['user_id'];
+        $id_user = "guille32";
+        $this->container->get('user_repo')->saveFavouriteProduct($id_user, $id_product);
+        $products = $this->container
+            ->get('home');
+
+
+
+        $categ = $this->checkProductCategory($products);
+        $images = $repository->getImagesOfProductById();
+
+
+        echo $images[0]['id_product'];
+
+        //$repository->saveProduct($products[0]);
+
+
+        return $this->container->get('view')->render($response, 'home.twig',[
+
+            'products' => $products,
+            'categ' => $categ,
+            'images' => $images
+
+        ]);
+    }
+
 
 }

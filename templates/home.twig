@@ -54,22 +54,37 @@
                     </a>
                 </div>
             </div>
+
+
+
+
+
+
+
+            <form id="login-form"
+                  action="/home"
+                  method="POST">
             <div class="title_box">
                 <div class="title">{{product.title}}</div>
                 <div class="rating_box">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_vacio.png">
+                    <button class="corbutton" type="submit">
+                    <img class="cor" src= "{{ base_url() }}/assets/cor_vacio.png"></button>
                 </div>
+                <input type="hidden"  name="prod_id" value="{{ product.id_product }}">
             </div>
             <div class ="tag"> {{categ[counter]}}</div>
-            <div class ="description"> {{product.description}} </div>
+            <div class ="description">{{product.description}} </div>
             <div class ="price_title"> Price </div>
-            <div class ="price_box"> <div class = "price">{{product.price}}</div> </div>
+            <div class ="price_box"> <div class = "price">{{product.price}}€</div> </div>
             <div class = "button_container">
                 <button class = "button_buy" type="button">BUY</button>
-                <button class = "button_like" type="button">LIKE</button>
+
             </div>
+            </form>
         </div>
         </div>
+
+
 
 
 

@@ -151,6 +151,21 @@ class UserRepository implements UserRepositoryInterface
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $results;
     }
+
+    public function  getProductsFromDDBBbyID($id_product) {
+        $statement = $this->database->connection->prepare('SELECT * FROM Product WHERE id_product = :id_product;');
+        $statement->bindParam('id_product',$id_product,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+    public function  getFavouriteProduct($id_user) {
+        $statement = $this->database->connection->prepare('SELECT * FROM Product AS p, Favourite_Product AS fp WHERE p.id_product = fp.id_product AND fp.id_user LIKE :id_user;');
+        $statement->bindParam('id_user',$id_user,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
     public function getImagesOfProductById() {
         $statement = $this->database->connection->prepare("SELECT * FROM ImageProduct;");
         //$statement->bindParam('id_prod',$id_prod,PDO::PARAM_STR);
