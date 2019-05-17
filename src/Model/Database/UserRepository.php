@@ -19,7 +19,7 @@ class UserRepository implements UserRepositoryInterface
     public function save(User $user)
     {
         $statement = $this->database->connection->prepare(
-            "INSERT INTO User(name,username,email_address,birthday,phone_number,password,validated,profile_image) VALUES (:name,:username,:email,:birthday,:phone,MD5(:password),FALSE, :profile_image);"
+            "INSERT INTO User(name,username,email_address,birthday,phone_number,password,validated,profile_image,is_active) VALUES (:name,:username,:email,:birthday,:phone,MD5(:password),FALSE, :profile_image,TRUE);"
         );
         $statement->bindParam('name',$user->getName(),PDO::PARAM_STR);
         $statement->bindParam('username',$user->getUsername(),PDO::PARAM_STR);
@@ -89,13 +89,13 @@ class UserRepository implements UserRepositoryInterface
     }
 
     //Product
-    public function saveProduct(Product $product) {
+    public function saveProduct(Product $product,string $username) {
         $title = $product->getTitle();
         $description = $product->getDescription();
         $price = $product->getPrice();
         $cat = $product->getCategory();
         $statement = $this->database->connection->prepare(
-            "INSERT INTO Product (title, description, price, category) VALUES (:title, :description, :price, :category);");
+            "INSERT INTO Product (title, description, price, category,username,is_active) VALUES (:title, :description, :price, :category,:username,TRUE);");
         echo $cat;
         switch ($cat){
             case "Sports":
@@ -127,6 +127,7 @@ class UserRepository implements UserRepositoryInterface
         $statement->bindParam('description', $description,PDO::PARAM_STR);
         $statement->bindParam('price', $price, PDO::PARAM_STR);
         $statement->bindParam('category',$a,PDO::PARAM_STR);
+        $statement->bindParam('username',$username,PDO::PARAM_STR);
         $statement->execute();
     }
 
