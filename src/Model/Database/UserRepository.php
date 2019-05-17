@@ -4,9 +4,6 @@ use PDO;
 use SallePW\SlimApp\Model\User;
 use SallePW\SlimApp\Model\UserRepositoryInterface;
 use SallePW\SlimApp\Model\Product;
-use SallePW\SlimApp\Model\myProduct;
-
-use SallePW\SlimApp\Model\ImageProduct;
 class UserRepository implements UserRepositoryInterface
 {
     /** @var Database */
@@ -65,6 +62,14 @@ class UserRepository implements UserRepositoryInterface
         $statement->execute();
     }
 
+    public function isValidated(string $id) : bool {
+        $statement = $this->database->connection->prepare("SELECT validated FROM User WHERE MD5(username) = :id");
+        $statement->bindParam('id',$id,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results[0]['validated'];
+    }
+
     public function isValidatedByUser(string $username, string $password) : bool {
         $statement = $this->database->connection->prepare("SELECT validated FROM User WHERE username = :username AND password = MD5(:password)");
         $statement->bindParam('username',$username,PDO::PARAM_STR);
@@ -90,7 +95,7 @@ class UserRepository implements UserRepositoryInterface
         $price = $product->getPrice();
         $cat = $product->getCategory();
         $statement = $this->database->connection->prepare(
-            "INSERT INTO Product (title, username, description, price, category) VALUES (:title, :username, :description, :price, :category);");
+            "INSERT INTO Product (title, description, price, category) VALUES (:title, :description, :price, :category);");
         echo $cat;
         switch ($cat){
             case "Sports":
@@ -118,13 +123,20 @@ class UserRepository implements UserRepositoryInterface
                 $a = 1;
                 break;
         }
-        $username = "blanche";
         $statement->bindParam('title',$title,PDO::PARAM_STR);
-        $statement->bindParam('username',$username,PDO::PARAM_STR);
-
         $statement->bindParam('description', $description,PDO::PARAM_STR);
         $statement->bindParam('price', $price, PDO::PARAM_STR);
         $statement->bindParam('category',$a,PDO::PARAM_STR);
+        $statement->execute();
+    }
+
+    public function saveFavouriteProduct($id_user, $id_product) {
+
+        $statement = $this->database->connection->prepare(
+            "INSERT INTO Favourite_Product (id_user, id_product) VALUES (:id_user, :id_product);");
+
+        $statement->bindParam('id_user',$id_user,PDO::PARAM_STR);
+        $statement->bindParam('id_product', $id_product,PDO::PARAM_STR);
         $statement->execute();
     }
     //imageProduct
@@ -142,6 +154,21 @@ class UserRepository implements UserRepositoryInterface
     }
     public function  getProductsFromDDBB() {
         $statement = $this->database->connection->prepare('SELECT * FROM Product;');
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+
+    public function  getProductsFromDDBBbyID($id_product) {
+        $statement = $this->database->connection->prepare('SELECT * FROM Product WHERE id_product = :id_product;');
+        $statement->bindParam('id_product',$id_product,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+    public function  getFavouriteProduct($id_user) {
+        $statement = $this->database->connection->prepare('SELECT * FROM Product AS p, Favourite_Product AS fp WHERE p.id_product = fp.id_product AND fp.id_user LIKE :id_user;');
+        $statement->bindParam('id_user',$id_user,PDO::PARAM_STR);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $results;
@@ -172,16 +199,35 @@ class UserRepository implements UserRepositoryInterface
         if($results[0]['username'] == null) return '';
         return $results[0]['username'];
     }
-    public function  findProductAndImageByUsername(){
-        $user = "blanche";
-        $statement = $this->database->connection->prepare('SELECT p.title,p.description,p.price,p.category,p.username,ip.product_image FROM Product AS p,ImageProduct AS ip WHERE p.id_product = ip.id_product AND username = :username;');
-        $statement->bindParam('username',$user,PDO::PARAM_STR);
-
+    public function getUserById(string $id) : User{
+        $statement = $this->database->connection->prepare("SELECT * FROM User WHERE MD5(username) = :id");
+        $statement->bindParam('id',$id,PDO::PARAM_STR);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if($results[0]['username'] == null) return null;
 
+        $user = new User(null);
+        $user->setName($results[0]['name']);
+        $user->setUsername($results[0]['username']);
+        $user->setEmail($results[0]['email_address']);
+        $user->setBirthday($results[0]['birthday']);
+        $user->setPhoneNumber($results[0]['phone_number']);
+        $user->setPassword($results[0]['password']);
+        $user->setValidated($results[0]['validated']);
+        $user->setProfileImage($results[0]['profile_image']);
 
-
-        return $results;
+        return $user;
+    }
+    public function updateUser(User $user){
+        $statement = $this->database->connection->prepare("UPDATE User SET name = :name, email_address = :email_address, 
+                birthday = :birthday, phone_number = :phone_number, password = MD5(:password), profile_image = :profile_image WHERE username = :username");
+        $statement->bindParam('name',$user->getName(),PDO::PARAM_STR);
+        $statement->bindParam('email_address',$user->getEmail(),PDO::PARAM_STR);
+        $statement->bindParam('birthday',$user->getBirthday(),PDO::PARAM_STR);
+        $statement->bindParam('phone_number',$user->getPhoneNumber(),PDO::PARAM_STR);
+        $statement->bindParam('password',$user->getPassword(),PDO::PARAM_STR);
+        $statement->bindParam('profile_image',$user->getProfileImage(),PDO::PARAM_STR);
+        $statement->bindParam('username',$user->getUsername(),PDO::PARAM_STR);
+        $statement->execute();
     }
 }

@@ -1,29 +1,117 @@
 {% extends "base.twig" %} {% block title %} Profile Page {% endblock %}
 {% block content %}
 
-
+    <style>
+        .error{
+            color: red;
+        }
+    </style>
 
     <script>
-        $(document).ready(function() {
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
 
+                reader.onload = function (e) {
+                    $('#blah')
+                        .attr('src', e.target.result);
+                };
 
-            var readURL = function(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+    <script>
+        function validform() {
+            const NAME = document.forms["my-form"]["name"].value;
+            const EMAIL_ADDRESS = document.forms["my-form"]["email_address"].value;
+            const BIRTHDAY = document.forms["my-form"]["birthday"].value;
+            const PHONE_NUMBER = document.forms["my-form"]["phone_number"].value;
+            const PASSWORD = document.forms["my-form"]["password"].value;
+            const CONFIRM_PASSWORD = document.forms["my-form"]["confirm_password"].value;
 
-                    reader.onload = function (e) {
-                        $('.avatar').attr('src', e.target.result);
-                    };
+            if (!validName(NAME) | !validEmailAddress(EMAIL_ADDRESS) | !validBirthday(BIRTHDAY) |
+                !validPhoneNumber(PHONE_NUMBER) | !validPassword(PASSWORD) | !validConfirmPassword(PASSWORD,CONFIRM_PASSWORD)) return false;
+        }
 
-                    reader.readAsDataURL(input.files[0]);
-                }
-            };
+        function validName(name){
+            const ALPHANUMERIC_REGEXP = /^[a-z0-9]+$/i;
+            if(name==null || name===""){
+                document.getElementById('name_error').innerText = 'Please enter your name';
+                return false;
+            }else if(!ALPHANUMERIC_REGEXP.test(name)){
+                document.getElementById('name_error').innerText = 'Please only use alphanumeric characters';
+                return false;
+            }
+            document.getElementById('name_error').innerText = '';
+            return true;
+        }
 
+        function validEmailAddress(email_address){
+            const EMAIL_REGEXP = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if(email_address==null || email_address===""){
+                document.getElementById('email_error').innerText = 'Please enter your email';
+                return false;
+            }else if(!EMAIL_REGEXP.test(String(email_address).toLowerCase())) {
+                document.getElementById('email_error').innerText = 'Please introduce a valid email';
+                return false;
+            }
+            document.getElementById('email_error').innerText = '';
+            return true;
+        }
 
-            $(".file-upload").on('change', function(){
-                readURL(this);
-            });
-        });
+        function validBirthday(birthday){
+            const parts = birthday.split("-");
+            if(birthday === "") return true;
+            if(parts.length !== 3){
+                document.getElementById('birthday_error').innerText = 'Please introduce a valid date';
+                return false;
+            }else if(isNaN(Number(parts[0])) || Number(parts[0]) <= 1900 || Number(parts[0]) > new Date().getFullYear()){
+                document.getElementById('birthday_error').innerText = 'Please introduce a valid year';
+                return false;
+            }else if(isNaN(Number(parts[1])) || Number(parts[1]) <= 0 || (Number(parts[0]) >= new Date().getFullYear()) && Number(parts[1]) > new Date().getMonth()+1){
+                document.getElementById('birthday_error').innerText = 'Please introduce a valid month';
+                return false;
+            }else if(isNaN(Number(parts[2])) || Number(parts[2]) <= 0 || (Number(parts[0]) >= new Date().getFullYear()) && (Number(parts[1]) >= new Date().getMonth()+1) &&
+                (Number(parts[2]) > new Date().getDate())){
+                document.getElementById('birthday_error').innerText = 'Please introduce a valid day';
+                return false;
+            }
+            document.getElementById('birthday_error').innerText = '';
+            return true;
+        }
+
+        function validPhoneNumber(phone_number){
+            const parts = phone_number.split(" ");
+            if(parts.length !== 3 || isNaN(Number(parts[0])) ||
+                (parts[0].length > 3 || Number(parts[0]) < 100) || Number(parts[0]) > 999 ||
+                (parts[1].length > 3 || Number(parts[1]) < 100) || Number(parts[1]) > 999 ||
+                (parts[2].length > 3 || Number(parts[2]) < 100) || Number(parts[2]) > 999){
+                document.getElementById('phone_error').innerText = 'Please introduce a valid phone number';
+                return false;
+            }
+            document.getElementById('phone_error').innerText = '';
+            return true;
+        }
+
+        function validPassword(password){
+            if(password.length < 6 && password.length !== 0){
+                document.getElementById('password_error').innerText = 'Please introduce more than 5 characters';
+                return false;
+            }
+            document.getElementById('password_error').innerText = '';
+            return true;
+        }
+
+        function validConfirmPassword(password,confirmPassword){
+            if(password !== confirmPassword){
+                document.getElementById('confirm_password_error').innerText = "Passwords don't match";
+                return false
+            }
+            document.getElementById('confirm_password_error').innerText = '';
+            return true;
+        }
+
     </script>
 
     <div class="container bootstrap snippet">
@@ -38,75 +126,70 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="home">
                         <hr>
-                        <form class="form" action="profile" onsubmit="" method="POST" id="registrationForm" enctype="multipart/form-data">
+                        <form name="my-form" class="form" onsubmit="return validform()" action="/profile" method="POST" id="registrationForm" enctype="multipart/form-data">
 
                             <div class="text-center">
-                                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
+                                <img id="blah" src="{{ base_url()}}/uploads/{{ image }}" class="avatar img-circle img-thumbnail" alt="avatar">
                                 <h6>Upload a different photo...</h6>
-                                <input type="file" class="text-center center-block file-upload" name="image">
+                                <!-- Max size 500KB = (500*1024) = 512000 Bytes -->
+                                <input type="hidden" name="MAX_FILE_SIZE" value="512000" />
+                                <input type="file" class="text-center center-block file-upload" id="profile_image" name="profile_image" onchange="readURL(this);">
+                                <span class="error"><p id="image_error">{{ image_error }}</p></span>
                             </div></hr><br>
 
                             <div class="form-group">
                                 <div class="col-xs-6">
                                     <label for="first_name"><h4>Name</h4></label>
-                                    <input type="text" class="form-control" name="first_name" id="first_name" placeholder="name" title="enter your name if any.">
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="name" title="modify your name." value="{{ name }}">
+                                    <span class="error"><p id="name_error">{{ name_error }}</p></span>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <div class="col-xs-6">
-                                    <label for="last_name"><h4>Last name</h4></label>
-                                    <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-
-                                <div class="col-xs-6">
-                                    <label for="phone"><h4>Phone</h4></label>
-                                    <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-xs-6">
-                                    <label for="mobile"><h4>Mobile</h4></label>
-                                    <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
-                                </div>
-                            </div>
-                            <div class="form-group">
-
                                 <div class="col-xs-6">
                                     <label for="email"><h4>Email</h4></label>
-                                    <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
+                                    <input type="email" class="form-control" name="email_address" id="email_address" placeholder="email_address" title="modify your email." value="{{ email }}">
+                                    <span class="error"><p id="email_error">{{ email_error }}</p></span>
                                 </div>
                             </div>
-                            <div class="form-group">
 
+                            <div class="form-group">
                                 <div class="col-xs-6">
-                                    <label for="email"><h4>Location</h4></label>
-                                    <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
+                                    <label for="mobile"><h4><abbr
+                                                    title="Format xxx xxx xxx">Mobile/Phone</abbr></h4></label>
+                                    <input type="text" class="form-control" name="phone_number" id="phone_number" placeholder="enter mobile or phone number" title="modify your mobile or phone number." value="{{ phone }}">
+                                    <span class="error"><p id="phone_error">{{ phone_error }}</p></span>
                                 </div>
                             </div>
-                            <div class="form-group">
 
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="birthday"><h4><abbr
+                                                title="Format AAAA-MM-DD">Birthday</abbr></h4></label>
+                                    <input type="text" class="form-control" name="birthday" id="birthday" placeholder="enter birthday" title="modify your birthday." value="{{ birthday }}">
+                                    <span class="error"><p id="birthday_error">{{ birthday_error }}</p></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <div class="col-xs-6">
                                     <label for="password"><h4>Password</h4></label>
-                                    <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
+                                    <input type="password" class="form-control" name="password" id="password" placeholder="password" title="modify your password." value="{{ password }}">
+                                    <span class="error"><p id="password_error">{{ password_error }}</p></span>
                                 </div>
                             </div>
                             <div class="form-group">
 
                                 <div class="col-xs-6">
                                     <label for="password2"><h4>Verify</h4></label>
-                                    <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
+                                    <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="confirm_password" title="confirm your password." value="{{ confirm_password }}">
+                                    <span class="error"><p id="confirm_password_error">{{ confirm_password_error }}</p></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-12">
                                     <br>
-                                    <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
-                                    <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+                                    <button class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
                                 </div>
                             </div>
                         </form>

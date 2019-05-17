@@ -23,8 +23,8 @@ $app->get('/flash', FlashController::class);
 
 $app->add(SessionMiddleware::class);
 
-$app->get('/home', HomeController::class)
-    ->add(HomeController::class);
+$app->get('/home', HomeController::class);
+$app->post('/home', HomeController::class . ':refresh');
 
 
 $app->get('/register',RegisterController::class);
@@ -36,7 +36,9 @@ $app->post('/login',LoginController::class);
 $app->get('/upload', UploadController::class)
     ->add(UploadController::class);
 
+$app->post('/favourites', FavouritesController::class);
 $app->get('/favourites', FavouritesController::class);
+
 
 $app->get('/myproduct', MyProductController::class);
 
@@ -55,4 +57,5 @@ $app->post('/overview', ProductOverviewOwner::class . ':linkImageMyProduct')
     ->setName('overview');
 
 $app->get('/profile', ProfileController::class);
+$app->post('/profile', ProfileController::class);
 

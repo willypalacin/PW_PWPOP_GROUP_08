@@ -24,10 +24,25 @@ final class FavouritesController
 
     public function __invoke(Request $request, Response $response, array $args)
     {
+        $repository = $this->container->get('user_repo');
+        $id_user = "guille32";
+        $favourite = $repository->getFavouriteProduct($id_user);
+
+
+
+        $images = $repository->getImagesOfProductById();
+
+
 
 
         return $this->container->get('view')->render($response, 'favourites.twig', [
+            'products' => $favourite,
+
+            'images' => $images
+
 
         ]);
     }
+
+
 }

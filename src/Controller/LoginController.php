@@ -35,15 +35,23 @@ final class LoginController
 
     public function __invoke(Request $request, Response $response)
     {
-        session_destroy();
-
         /** @var UserRepository $repository */
         $repository = $this->container->get('user_repo');
         if(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id'])) ||
-            isset($_COOKIE['user_id']) && strlen($repository->findUserById($_COOKIE['user_id'])))
-            return $this->container->get('view')->render($response, 'home.twig',[
-                'products' => $products = $this->container->get('home'),
-            ]);
+            isset($_COOKIE['user_id']) && strlen($repository->findUserById($_COOKIE['user_id']))){
+
+            if(isset($_SESSION['user_id'])){
+                $usernameId = $_SESSION['user_id'];
+            }else{
+                $usernameId = $_COOKIE['user_id'];
+            }
+
+            if($repository->isValidated($usernameId))
+                return $this->container->get('view')->render($response, 'home.twig',[
+                    'products' => $products = $this->container->get('home'),
+                ]);
+
+        }
         if($_POST == null) return $this->container->get('view')->render($response, 'login.twig');
 
         $user = new User(null);
