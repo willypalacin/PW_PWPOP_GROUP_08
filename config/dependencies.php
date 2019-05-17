@@ -8,6 +8,8 @@ use \SallePW\SlimApp\Model\Product;
 use SallePW\SlimApp\Model\Database\UserRepository;
 use SallePW\SlimApp\Model\Database\Database;
 use Slim\Container;
+use SallePW\SlimApp\Controller\HomeController;
+
 $container = $app->getContainer();
 $numItems = 5;
 $container['upload_directory'] = __DIR__ . '/../public/uploads';
@@ -55,6 +57,9 @@ $container['mail_password'] = function(Container $c){
 };
 $container['user_repo'] = function (Container $c) {
     return new UserRepository($c->get('db'));
+};
+$container['home_repo'] = function (Container $c) {
+    return new HomeController($c);
 };
 $container['home'] = function (Container $c) {
     $a = $c->get('user_repo')->getProductsFromDDBB();
