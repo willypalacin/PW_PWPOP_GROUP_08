@@ -3,6 +3,7 @@
 
 namespace SallePW\SlimApp\Controller;
 
+use Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -205,7 +206,7 @@ final class ProfileController
             $user->setProfileImage($filename);
             if(strcmp($user->getProfileImage(),$this->container->get('default_image')) == 0) return;
             $uploadedFile->moveTo($this->container->get('upload_directory') . DIRECTORY_SEPARATOR . $filename);      //Write image on ./uploads                                                                       //Relate user with their own images
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
