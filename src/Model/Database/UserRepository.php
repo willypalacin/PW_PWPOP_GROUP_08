@@ -4,6 +4,8 @@ use PDO;
 use SallePW\SlimApp\Model\User;
 use SallePW\SlimApp\Model\UserRepositoryInterface;
 use SallePW\SlimApp\Model\Product;
+use SallePW\SlimApp\Model\myProduct;
+
 use SallePW\SlimApp\Model\ImageProduct;
 class UserRepository implements UserRepositoryInterface
 {
@@ -88,7 +90,7 @@ class UserRepository implements UserRepositoryInterface
         $price = $product->getPrice();
         $cat = $product->getCategory();
         $statement = $this->database->connection->prepare(
-            "INSERT INTO Product (title, description, price, category) VALUES (:title, :description, :price, :category);");
+            "INSERT INTO Product (title, username, description, price, category) VALUES (:title, :username, :description, :price, :category);");
         echo $cat;
         switch ($cat){
             case "Sports":
@@ -116,7 +118,10 @@ class UserRepository implements UserRepositoryInterface
                 $a = 1;
                 break;
         }
+        $username = "blanche";
         $statement->bindParam('title',$title,PDO::PARAM_STR);
+        $statement->bindParam('username',$username,PDO::PARAM_STR);
+
         $statement->bindParam('description', $description,PDO::PARAM_STR);
         $statement->bindParam('price', $price, PDO::PARAM_STR);
         $statement->bindParam('category',$a,PDO::PARAM_STR);
@@ -166,5 +171,17 @@ class UserRepository implements UserRepositoryInterface
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         if($results[0]['username'] == null) return '';
         return $results[0]['username'];
+    }
+    public function  findProductAndImageByUsername(){
+        $user = "blanche";
+        $statement = $this->database->connection->prepare('SELECT p.title,p.description,p.price,p.category,p.username,ip.product_image FROM Product AS p,ImageProduct AS ip WHERE p.id_product = ip.id_product AND username = :username;');
+        $statement->bindParam('username',$user,PDO::PARAM_STR);
+
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+        return $results;
     }
 }

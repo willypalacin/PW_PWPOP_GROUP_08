@@ -59,5 +59,10 @@ $container['home'] = function (Container $c) {
     $a = $c->get('user_repo')->getProductsFromDDBB();
     return $a;
 };
+$container['myproducts'] = function (Container $c) {
+    $a = $c->get('user_repo')->findProductAndImageByUsername();
+    return $a;
+};
+
 $container['numItems'] = function ($a) {
 };

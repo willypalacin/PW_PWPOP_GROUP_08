@@ -27,6 +27,18 @@ final class HomeController {
 
     public function __invoke(Request $request, Response $response)
     {
+        /*//WHOS LOGED IN?
+        if(isset($_SESSION['user_id'])){
+            echo "aLGU EESTA LOGED IN";
+
+        }else{
+            echo "ningu esta loged";
+
+        }
+*/
+
+
+
         $repository = $this->container->get('user_repo');
 
         $products = $this->container
@@ -82,6 +94,7 @@ final class HomeController {
 
             }
         }
+
         return $p;
 
     }
