@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use SallePW\SlimApp\Model\Product;
 
 
-final class HomeController {
+final class ProductOverviewOwner {
     private $container;
 
     public function __construct(ContainerInterface $container)
@@ -27,39 +27,19 @@ final class HomeController {
 
     public function __invoke(Request $request, Response $response)
     {
-        /*//WHOS LOGED IN?
-        if(isset($_SESSION['user_id'])){
-            echo "aLGU EESTA LOGED IN";
-
-        }else{
-            echo "ningu esta loged";
-
-        }
-*/
-
-
+        $prod_id = $_POST["prod_id"];
 
         $repository = $this->container->get('user_repo');
 
-        $products = $this->container
-            ->get('home');
-
-
-
-        $categ = $this->checkProductCategory($products);
+        $products = $repository->getProductsFromDDBBbyID($prod_id);
         $images = $repository->getImagesOfProductById();
 
 
-        //echo $images[0]['id_product'];
+        return $this->container->get('view')->render($response, 'overviewowner.twig',[
 
-        //$repository->saveProduct($products[0]);
+            'product' => $products[0],
+            'images' => $images,
 
-
-        return $this->container->get('view')->render($response, 'home.twig',[
-
-            'products' => $products,
-            'categ' => $categ,
-            'images' => $images
 
         ]);
 
@@ -97,40 +77,11 @@ final class HomeController {
 
             }
         }
-
         return $p;
 
     }
 
-    public function refresh(Request $request, Response $response) {
-        $repository = $this->container->get('user_repo');
 
-        $id_product = $_POST["prod_id"];
-        //$id_user = $_SESSION['user_id'];
-        $id_user = "guille32";
-        $this->container->get('user_repo')->saveFavouriteProduct($id_user, $id_product);
-        $products = $this->container
-            ->get('home');
-
-
-
-        $categ = $this->checkProductCategory($products);
-        $images = $repository->getImagesOfProductById();
-
-
-        echo $images[0]['id_product'];
-
-        //$repository->saveProduct($products[0]);
-
-
-        return $this->container->get('view')->render($response, 'home.twig',[
-
-            'products' => $products,
-            'categ' => $categ,
-            'images' => $images
-
-        ]);
-    }
 
 
 }

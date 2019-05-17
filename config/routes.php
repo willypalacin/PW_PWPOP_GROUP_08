@@ -15,6 +15,7 @@ use SallePW\SlimApp\Controller\LoginController;
 use SallePW\SlimApp\Controller\ProfileController;
 use SallePW\SlimApp\Controller\MyProductController;
 use SallePW\SlimApp\Controller\DeleteAccountController;
+use SallePW\SlimApp\Controller\ProductOverviewOwner;
 
 $app
     ->get('/hello/{name}', HelloController::class)
@@ -52,6 +53,10 @@ $app->get('/files', FileController::class . ':indexAction');
 
 $app->post('/upload', FileController::class . ':uploadAction')
     ->setName('upload');
+
+
+$app->post('/overview', ProductOverviewOwner::class)
+    ->setName('overview');
 
 $app->get('/profile', ProfileController::class);
 $app->post('/profile', ProfileController::class);
