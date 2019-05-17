@@ -63,6 +63,14 @@ class UserRepository implements UserRepositoryInterface
         $statement->execute();
     }
 
+    public function isValidated(string $id) : bool {
+        $statement = $this->database->connection->prepare("SELECT validated FROM User WHERE MD5(username) = :id");
+        $statement->bindParam('id',$id,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results[0]['validated'];
+    }
+
     public function isValidatedByUser(string $username, string $password) : bool {
         $statement = $this->database->connection->prepare("SELECT validated FROM User WHERE username = :username AND password = MD5(:password)");
         $statement->bindParam('username',$username,PDO::PARAM_STR);
@@ -176,5 +184,36 @@ class UserRepository implements UserRepositoryInterface
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         if($results[0]['username'] == null) return '';
         return $results[0]['username'];
+    }
+    public function getUserById(string $id) : User{
+        $statement = $this->database->connection->prepare("SELECT * FROM User WHERE MD5(username) = :id");
+        $statement->bindParam('id',$id,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if($results[0]['username'] == null) return null;
+
+        $user = new User(null);
+        $user->setName($results[0]['name']);
+        $user->setUsername($results[0]['username']);
+        $user->setEmail($results[0]['email_address']);
+        $user->setBirthday($results[0]['birthday']);
+        $user->setPhoneNumber($results[0]['phone_number']);
+        $user->setPassword($results[0]['password']);
+        $user->setValidated($results[0]['validated']);
+        $user->setProfileImage($results[0]['profile_image']);
+
+        return $user;
+    }
+    public function updateUser(User $user){
+        $statement = $this->database->connection->prepare("UPDATE User SET name = :name, email_address = :email_address, 
+                birthday = :birthday, phone_number = :phone_number, password = MD5(:password), profile_image = :profile_image WHERE username = :username");
+        $statement->bindParam('name',$user->getName(),PDO::PARAM_STR);
+        $statement->bindParam('email_address',$user->getEmail(),PDO::PARAM_STR);
+        $statement->bindParam('birthday',$user->getBirthday(),PDO::PARAM_STR);
+        $statement->bindParam('phone_number',$user->getPhoneNumber(),PDO::PARAM_STR);
+        $statement->bindParam('password',$user->getPassword(),PDO::PARAM_STR);
+        $statement->bindParam('profile_image',$user->getProfileImage(),PDO::PARAM_STR);
+        $statement->bindParam('username',$user->getUsername(),PDO::PARAM_STR);
+        $statement->execute();
     }
 }
