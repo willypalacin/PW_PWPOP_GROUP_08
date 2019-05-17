@@ -53,4 +53,5 @@ $app->post('/upload', FileController::class . ':uploadAction')
     ->setName('upload');
 
 $app->get('/profile', ProfileController::class);
+$app->post('/profile', ProfileController::class);
 
