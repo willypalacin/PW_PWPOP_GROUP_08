@@ -4,7 +4,6 @@ use PDO;
 use SallePW\SlimApp\Model\User;
 use SallePW\SlimApp\Model\UserRepositoryInterface;
 use SallePW\SlimApp\Model\Product;
-use SallePW\SlimApp\Model\ImageProduct;
 class UserRepository implements UserRepositoryInterface
 {
     /** @var Database */
