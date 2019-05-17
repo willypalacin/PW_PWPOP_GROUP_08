@@ -50,8 +50,12 @@ final class LoginController
                 $products = $this->container->get('home');
                 $home = $this->container->get('home_repo');
                 return $this->container->get('view')->render($response, 'home.twig',[
-                    'products' => $products = $this->container->get('home'),
+                    'products' => $products,
+                    'categ' =>  $home->checkProductCategory($products),
+                    'images' => $repository->getImagesOfProductById(),
                 ]);
+            }
+
 
         }
         if($_POST == null) return $this->container->get('view')->render($response, 'login.twig');
@@ -145,5 +149,4 @@ final class LoginController
         if(strlen($password) < 6) return self::PASSWORD_ERROR;
         return '';
     }
-
 }
