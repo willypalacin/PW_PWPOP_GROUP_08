@@ -231,4 +231,19 @@ class UserRepository implements UserRepositoryInterface
         $statement->bindParam('username',$user->getUsername(),PDO::PARAM_STR);
         $statement->execute();
     }
+    public function deleteUser(string $id){
+        $statement = $this->database->connection->prepare("UPDATE User SET is_active = FALSE WHERE MD5(username) = :username");
+        $statement->bindParam('username',$id,PDO::PARAM_STR);
+        $statement->execute();
+        $statement = $this->database->connection->prepare("UPDATE Product SET is_active = FALSE WHERE MD5(username) = :username");
+        $statement->bindParam('username',$id,PDO::PARAM_STR);
+        $statement->execute();
+    }
+    public function isDeletedUser(string $id){
+        $statement = $this->database->connection->prepare("SELECT is_active FROM User WHERE MD5(username) = :username");
+        $statement->bindParam('username',$id,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return !$results[0]['is_active'];
+    }
 }
