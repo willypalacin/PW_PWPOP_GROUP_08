@@ -65,6 +65,7 @@ final class ProfileController
         if($_POST == null){
             $user = $repository->getUserById($usernameId);
             return $this->container->get('view')->render($response, 'profile.twig', [
+                'username' => $user->getUsername(),
                 'image' => $user->getProfileImage(),
                 'name' => $user->getName(),
                 'email' => $user->getEmail(),
@@ -97,6 +98,7 @@ final class ProfileController
                 'password_error' => $errors['password_error'],
                 'confirm_password_error' => $errors['confirm_password_error'],
                 'image_error' => $errors['image_error'],
+                'username' => $user->getUsername(),
                 'name' => $user->getName(),
                 'email' => $user->getEmail(),
                 'birthday' => $user->getBirthday(),

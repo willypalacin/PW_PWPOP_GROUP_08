@@ -1,6 +1,65 @@
-{% extends "base.twig" %} {% block title %} Favourites {% endblock %} {% block
-    content %}
+{% extends "base.twig" %} {% block title %} Search page {% endblock %}
+{% set maxproduct = 6 %}
+{% block content %}
+    <!--
+        <img id = "lupa"src="{{ base_url() }}/assets/lupa.png">
+        <input id=search type="search">  -->
+    <div class="container">
+        <div class="row">
+            {% set counter = 0 %}
 
-    <p class="h1">My products</p>
+
+            {% for product in products %}
+
+
+                <div class="col-sm">
+                    <div class="product_card">
+
+
+
+
+
+
+
+
+                        <form id="myproducts-form"
+                              name="my-form"
+                              action="{{ path_for('overview') }}"
+                              method="POST">
+
+                            <div class="title_box">
+                                <h1 class="title">{{product.title}}</h1>
+                                <input type="hidden"  name="prod_id" value="{{ product.id_product }}">
+                            </div>
+
+                            {% for image in images %}
+                                {% if image.id_product == product.id_product %}
+                                    <input type="image"  value="{{product.id_product }}" src="{{ base_url()}}/pictures/{{image.product_image}}" alt="Submit" height="129" width="229">
+                                {% endif %}
+                            {% endfor %}
+
+
+                        </form>
+                    </div>
+                </div>
+
+
+
+
+
+                {% set counter = counter + 1 %}
+
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
 
 {% endblock %}

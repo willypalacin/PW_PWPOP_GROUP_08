@@ -52,6 +52,10 @@ $app->get('/files', FileController::class . ':indexAction');
 $app->post('/upload', FileController::class . ':uploadAction')
     ->setName('upload');
 
+
+$app->post('/overview', ProductOverviewOwner::class . ':linkImageMyProduct')
+    ->setName('overview');
+
 $app->get('/profile', ProfileController::class);
 $app->post('/profile', ProfileController::class);
 
