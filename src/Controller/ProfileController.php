@@ -57,7 +57,7 @@ final class ProfileController
             $usernameId = $_COOKIE['user_id'];
         }
 
-        if(!$repository->isValidated($usernameId)){
+        if(!$repository->isValidated($usernameId) || $repository->isDeletedUser($usernameId)){
             http_response_code(403);
             die('Forbidden');
         }

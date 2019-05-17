@@ -46,7 +46,9 @@ final class LoginController
                 $usernameId = $_COOKIE['user_id'];
             }
 
-            if($repository->isValidated($usernameId))
+            if($repository->isValidated($usernameId) && !$repository->isDeletedUser($usernameId)){
+                $products = $this->container->get('home');
+                $home = $this->container->get('home_repo');
                 return $this->container->get('view')->render($response, 'home.twig',[
                     'products' => $products = $this->container->get('home'),
                 ]);
