@@ -37,7 +37,7 @@ final class ProductOverviewOwner {
 
         return $this->container->get('view')->render($response, 'overviewowner.twig',[
 
-            'product' => $products,
+            'product' => $products[0],
             'images' => $images,
 
 
