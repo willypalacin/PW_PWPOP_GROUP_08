@@ -1,0 +1,29 @@
+
+{% extends "base.twig" %} {% block title %} Search page {% endblock %}
+{% set maxproduct = 6 %}
+{% block content %}
+    <!--
+        <img id = "lupa"src="{{ base_url() }}/assets/lupa.png">
+        <input id=search type="search">  -->
+    <div class="container">
+        <div class="row">
+            <h1> {{product.title}}</h1>
+            <h3> {{product.description}}</h3>
+            <h4> {{product.price }}</h4>
+            <h4> {{product.category }}</h4>
+
+            {% for image in images %}
+                {% if image.id_product == product.id_product %}
+                    <img style = "height: 129px; width: 229px;" class="d-block w-100" id = product_image src = "{{ base_url()}}/pictures/{{image.product_image}}" alt="">
+                {% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}
