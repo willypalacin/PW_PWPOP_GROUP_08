@@ -12,6 +12,7 @@ class User
     private $phone_number;
     private $password;
     private $confirm_password;
+    private $validated;
     private $profile_image;
 
     /**
@@ -28,7 +29,6 @@ class User
         $this->password = $data['password'];
         $this->confirm_password = $data['confirm_password'];
     }
-
 
     /**
      * @return mixed
@@ -145,6 +145,24 @@ class User
     /**
      * @return mixed
      */
+    public function getValidated()
+    {
+        return $this->validated;
+    }
+
+    /**
+     * @param mixed $validated
+     */
+    public function setValidated($validated): void
+    {
+        $this->validated = $validated;
+    }
+
+
+
+    /**
+     * @return mixed
+     */
     public function getProfileImage()
     {
         return $this->profile_image;
@@ -157,4 +175,6 @@ class User
     {
         $this->profile_image = $profile_image;
     }
+
+
 }
