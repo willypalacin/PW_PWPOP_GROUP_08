@@ -196,6 +196,33 @@
 
                         <hr>
 
+                        <div class="bs-example text-right">
+                            <!-- Button HTML (to Trigger Modal) -->
+                            <a href="#myModal" role="button" class="btn btn-lg btn-danger" data-toggle="modal">Delete Account</a>
+
+                            <!-- Modal HTML -->
+                            <div id="myModal" class="modal fade text-center" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Delete account</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to delete your account?</p>
+                                            <p class="text-secondary"><small>You will drop all your products and the possibility to login.</small></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <form method="get" action="/delete-account">
+                                                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div><!--/tab-pane-->
                 </div><!--/tab-pane-->
             </div><!--/tab-content-->
