@@ -37,6 +37,7 @@ final class HomeController {
 
         $categ = $this->checkProductCategory($products);
         $images = $repository->getImagesOfProductById();
+        $user_id = $repository->getUserByid($_SESSION['user_id']);
 
 
         //echo $images[0]['id_product'];
@@ -52,6 +53,8 @@ final class HomeController {
                 'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
                 'logged' => true,
                 'validated' => $repository->isValidated($_SESSION['user_id']),
+                'user_id' => $user_id
+
             ]);
         }else{
             return $this->container->get('view')->render($response, 'home.twig',[

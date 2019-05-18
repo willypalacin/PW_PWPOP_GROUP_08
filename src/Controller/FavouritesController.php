@@ -28,6 +28,24 @@ final class FavouritesController
         $id_user = $_SESSION["user_id"];
         $id_user = $repository->findUserById($id_user);
 
+        if(!(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id']))) &&
+            !(isset($_COOKIE['user_id']) && strlen($repository->findUserById($_COOKIE['user_id'])))){
+            http_response_code(404);
+            die('Forbidden');
+        }
+
+        if(!isset($_SESSION['user_id'])){
+            $_SESSION['user_id'] = $_COOKIE['user_id'];
+        }
+
+
+
+        if($repository->isDeletedUser($_SESSION['user_id'])){
+            http_response_code(403);
+            die('Forbidden');
+        }
+
+
         $favourite = $repository->getFavouriteProduct($id_user);
 
 
@@ -39,8 +57,11 @@ final class FavouritesController
 
         return $this->container->get('view')->render($response, 'favourites.twig', [
             'products' => $favourite,
+            'images' => $images,
+            'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
+            'logged' => true,
+            'validated' => $repository->isValidated($_SESSION['user_id']),
 
-            'images' => $images
 
 
         ]);
