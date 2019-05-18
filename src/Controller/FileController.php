@@ -46,11 +46,12 @@ final class FileController
                 continue;
             }
             $name = $uploadedFile->getClientFilename();
+            $size = $uploadedFile->getSize();
             $fileInfo = pathinfo($name);
             $fileNames[$counterImg] = $fileInfo;
             $format = $fileInfo['extension'];
             $counterImg=3;
-            if (!$this->isValidFormat($format)) {
+            if (!$this->isValidFormat($format) | !$this->isValidSize($size) ) {
                 $errors[] = sprintf(self::INVALID_EXTENSION_ERROR, $format);
                 return $this->container->get('view')->render($response, 'upload.twig', [
                     'errors' => $errors,
@@ -93,11 +94,23 @@ final class FileController
     {
         return in_array($extension, self::ALLOWED_EXTENSIONS, true);
     }
-    private function validTitle(string $title): bool{
-        if($title==null || $title==="blanca"){
+
+    private function isValidSize($size) : bool {
+
+        if($size > 1000000){                                                   //Surpassed file max size defined on .twig ?
             return false;
         }
-        if(strlen($title)>10){
+        return true;
+
+    }
+    private function validTitle(string $title): bool{
+        if($title==null || $title===""){
+            return false;
+        }
+        if(strlen($title)>5){
+            return false;
+        }
+        if(!preg_match("/^[a-z0-9]+$/i", $title)){
             return false;
         }
         return true;
@@ -109,6 +122,9 @@ final class FileController
         //if(isNaN($num)){
         //  return false;
         //}else{
+        if(!preg_match("/^[1-9][0-9]*$/", $num)){
+            return false;
+        }
         if($num <= 0){
             return false;
         }
@@ -126,6 +142,9 @@ final class FileController
             return true;
         }
         if(strlen($des) > 100) {
+            return false;
+        }
+        if(!preg_match("/^[a-z0-9]+$/i", $des)){
             return false;
         }
         return true;

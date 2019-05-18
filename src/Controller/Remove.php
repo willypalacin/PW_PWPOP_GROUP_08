@@ -25,8 +25,7 @@ final class Remove
     public function __invoke(Request $request, Response $response, array $args)
     {
         $repository = $this->container->get('user_repo');
-        var_dump($_SESSION['user_id']);
-        $repository->deleteProduct($_SESSION['user_id']);
+        $repository->deleteProduct($_POST['id_product']);
 
         $products = $this->container
             ->get('home');

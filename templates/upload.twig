@@ -37,7 +37,7 @@
             const DESCRIPTION = document.forms["my-form"]["description"].value;
             const FOTO = document.forms["my-form"]["files[]"].value;
 
-            if (!validTitle(TITLE)| !validNumber(NUM) | !validDescription(DESCRIPTION) | !validFotos(FOTO)){
+            if (!validTitle(TITLE)| !validNumber(NUM) | !validDescription(DESCRIPTION)){
                 return false;
             }
         }
@@ -93,7 +93,7 @@
         }
         function validTitle(title){
             var text;
-            const ALPHANUMERIC_REGEXP = /^[a-z0-9]+$/i;
+            const ALPHANUMERIC_REGEXP = /[a-zA-Z0-9 ]+/i;
             if(title==null || title===""){
                 text = "This field can not be empty";
                 document.getElementById("errorText title_error").innerHTML = text;
