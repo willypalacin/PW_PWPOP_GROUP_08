@@ -40,17 +40,21 @@ final class LoginController
         if(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id'])) ||
             isset($_COOKIE['user_id']) && strlen($repository->findUserById($_COOKIE['user_id']))){
 
-            if(isset($_SESSION['user_id'])){
-                $usernameId = $_SESSION['user_id'];
-            }else{
-                $usernameId = $_COOKIE['user_id'];
+            if(!isset($_SESSION['user_id'])){
+                $_SESSION['user_id'] = $_COOKIE['user_id'];
             }
-
-            if($repository->isValidated($usernameId))
-                return $this->container->get('view')->render($response, 'home.twig',[
-                    'products' => $products = $this->container->get('home'),
+            if(!$repository->isDeletedUser($_SESSION['user_id'])) {
+                $products = $this->container->get('home');
+                $home = $this->container->get('home_repo');
+                return $this->container->get('view')->render($response, 'home.twig', [
+                    'products' => $products,
+                    'categ' => $home->checkProductCategory($products),
+                    'images' => $repository->getImagesOfProductById(),
+                    'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
+                    'logged' => true,
+                    'validated' => $repository->isValidated($_SESSION['user_id']),
                 ]);
-
+            }
         }
         if($_POST == null) return $this->container->get('view')->render($response, 'login.twig');
 
@@ -75,19 +79,13 @@ final class LoginController
                 'password' => $user->getPassword(),
             ]);
 
+
         if(strlen($errors['email_error']) == 0){
             //Search for existing user in db
             $user->setUsername($repository->findUserByLoginEmail($user->getEmail(), $user->getPassword()));
             if ($user->getUsername() == '') {
                 return $this->container->get('view')->render($response, 'login.twig', [
                     'error' => self::USER_NOT_FOUND_ERROR,
-                    'email' => $user->getEmail(),
-                    'password' => $user->getPassword(),
-                ]);
-            }
-            if(!$repository->isValidatedByEmail($user->getEmail(), $user->getPassword())){
-                return $this->container->get('view')->render($response, 'login.twig', [
-                    'error' => self::USER_NOT_VALIDATED_ERROR,
                     'email' => $user->getEmail(),
                     'password' => $user->getPassword(),
                 ]);
@@ -101,20 +99,20 @@ final class LoginController
                     'password' => $user->getPassword(),
                 ]);
             }
-            if(!$repository->isValidatedByUser($user->getUsername(), $user->getPassword())){
-                return $this->container->get('view')->render($response, 'login.twig', [
-                    'error' => self::USER_NOT_VALIDATED_ERROR,
-                    'email' => $user->getUsername(),
-                    'password' => $user->getPassword(),
-                ]);
-            }
         }
 
         $_SESSION['user_id'] = md5($user->getUsername());
 
         if(!is_null($checkBox)) setcookie("user_id",md5($user->getUsername()),time() + 60*60*24);
+        $products = $this->container->get('home');
+        $home = $this->container->get('home_repo');
         return $this->container->get('view')->render($response, 'home.twig',[
-            'products' => $products = $this->container->get('home'),
+            'products' => $products,
+            'categ' =>  $home->checkProductCategory($products),
+            'images' => $repository->getImagesOfProductById(),
+            'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
+            'logged' => true,
+            'validated' => $repository->isValidated($_SESSION['user_id']),
         ]);
     }
 
@@ -144,5 +142,4 @@ final class LoginController
         if(strlen($password) < 6) return self::PASSWORD_ERROR;
         return '';
     }
-
 }

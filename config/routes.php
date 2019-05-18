@@ -14,6 +14,7 @@ use SallePW\SlimApp\Controller\AccountValidationController;
 use SallePW\SlimApp\Controller\LoginController;
 use SallePW\SlimApp\Controller\ProfileController;
 use SallePW\SlimApp\Controller\MyProductController;
+use SallePW\SlimApp\Controller\DeleteAccountController;
 use SallePW\SlimApp\Controller\ProductOverviewOwner;
 use SallePW\SlimApp\Controller\UploadProductController;
 use SallePW\SlimApp\Controller\UpdateBBDDController;
@@ -93,4 +94,6 @@ $app->post('/upload', FileController::class . ':uploadAction')
 
 $app->get('/profile', ProfileController::class);
 $app->post('/profile', ProfileController::class);
+
+$app->get('/delete-account',DeleteAccountController::class);
 

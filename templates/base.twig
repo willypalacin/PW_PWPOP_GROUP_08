@@ -14,7 +14,24 @@
     {% endblock %}
 
 
+    <script>
+        function displaySigns(status){
+            document.getElementById('signIn').style.visibility = status;
+            document.getElementById('signUp').style.visibility = status;
+        }
+        function displayImage(status){
+            document.getElementById('profile').style.visibility = status;
+        }
+        function displayWarning(status){
+            document.getElementById('warningValidation').style.display = status;
+        }
+    </script>
 
+    <style>
+        #profile{
+            margin-right: 2em;
+        }
+    </style>
 
 </head>
 
@@ -33,16 +50,41 @@
                 <li ><a class="navbar-brand" href="/upload">Page 1</a></li>
                 <li ><a class="navbar-brand"  href="#">Page 2</a></li>
                 <li ><a class="navbar-brand" href="/favourites">Favourite Products</a></li>
+                <li ><a id="signIn" class="navbar-brand" href="/login">Sign in</a></li>
+                <li ><a id="signUp" class="navbar-brand" href="/register">Sign up</a></li>
+                <li ><a id="profile" href="/profile">
+                        <img width="37px" height="37px" src="{{ base_url() }}/uploads/{{ profile_image }}">
+                    </a></li>
                 <li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                         <img width="10px" height="10px" src="{{ base_url() }}/assets/lupa.png">
                     </button></li>
-
             </ul>
 
         </div>
     </nav>
     {% block content %} {% endblock %}
 </div>
+
+<div id="warningValidation" class="alert alert-warning text-center">
+    <strong>Warning!</strong> Please, validate your account.
+</div>
+
+<script>
+    {% if logged %}
+    displaySigns('hidden');
+    displayImage('visible');
+        {% if validated %}
+            displayWarning('none');
+        {% else %}
+            displayWarning('block');
+        {% endif %}
+    {% else %}
+    displaySigns('visible');
+    displayImage('hidden');
+    displayWarning('none');
+    {% endif %}
+
+</script>
 
 {% block scripts %}
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

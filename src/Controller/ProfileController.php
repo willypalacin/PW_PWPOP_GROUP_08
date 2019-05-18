@@ -57,7 +57,7 @@ final class ProfileController
             $usernameId = $_COOKIE['user_id'];
         }
 
-        if(!$repository->isValidated($usernameId)){
+        if($repository->isDeletedUser($usernameId)){
             http_response_code(403);
             die('Forbidden');
         }
@@ -71,6 +71,9 @@ final class ProfileController
                 'email' => $user->getEmail(),
                 'phone' => $user->getPhoneNumber(),
                 'birthday' => $user->getBirthday(),
+                'profile_image' => $user->getProfileImage(),
+                'logged' => true,
+                'validated' => $repository->isValidated($_SESSION['user_id']),
             ]);
         }
 
@@ -105,6 +108,9 @@ final class ProfileController
                 'phone' => $user->getPhoneNumber(),
                 'password' => $user->getPassword(),
                 'confirm_password' => $user->getConfirmPassword(),
+                'profile_image' => $user->getProfileImage(),
+                'logged' => true,
+                'validated' => $repository->isValidated($_SESSION['user_id']),
             ]);
 
         //Update other parameters
@@ -125,8 +131,15 @@ final class ProfileController
         $repository->updateUser($user);
 
         //Return to home
-        return $this->container->get('view')->render($response, 'home.twig',[
-            'products' => $products = $this->container->get('home'),
+        $products = $this->container->get('home');
+        $home = $this->container->get('home_repo');
+        return $this->container->get('view')->render($response, 'home.twig', [
+            'products' => $products,
+            'categ' => $home->checkProductCategory($products),
+            'images' => $repository->getImagesOfProductById(),
+            'profile_image' => $user->getProfileImage(),
+            'logged' => true,
+            'validated' => $repository->isValidated($_SESSION['user_id']),
         ]);
     }
 

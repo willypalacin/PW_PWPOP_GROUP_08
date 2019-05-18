@@ -230,28 +230,4 @@ class UserRepository implements UserRepositoryInterface
         $statement->bindParam('username',$user->getUsername(),PDO::PARAM_STR);
         $statement->execute();
     }
-
-
-
-
-    public function updateProduct(Product $user, string $id_product){
-       var_dump($user);
-       var_dump($id_product);
-       var_dump($user->getTitle());
-       $title = $user->getTitle();
-       $des = $user->getDescription();
-       $price =$user->getPrice();
-       $cat = $user->getCategory();
-        $statement = $this->database->connection->prepare("UPDATE Product SET title = :title, description = :description, price = :price, category = :category WHERE id_product = :id_product");
-        $statement->bindParam(":title",$title,PDO::PARAM_STR);
-        $statement->bindParam(':description',$des,PDO::PARAM_STR);
-        $statement->bindParam(':price',$price,PDO::PARAM_STR);
-        $statement->bindParam(':category',$cat,PDO::PARAM_STR);
-        $statement->bindParam(':id_product',$id_product,PDO::PARAM_STR);
-
-        $statement->execute();
-    }
-
 }
-
-
