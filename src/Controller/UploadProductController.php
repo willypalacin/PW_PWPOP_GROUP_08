@@ -3,7 +3,6 @@
 namespace SallePW\SlimApp\Controller;
 
 use Psr\Container\ContainerInterface;
-use SallePW\SlimApp\Model\Database\UserRepository;
 use \SallePW\SlimApp\Model\Product;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -49,6 +48,7 @@ final class UploadProductController
             $_SESSION['user_id'] = $_COOKIE['user_id'];
         }
 
+//tot aixo al ELSE
         if($repository->isDeletedUser($_SESSION['user_id'])){
             http_response_code(403);
             die('Forbidden');

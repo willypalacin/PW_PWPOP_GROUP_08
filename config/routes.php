@@ -101,6 +101,7 @@ $app->post('/search', SearchController::class);
 //$app->get('/files', FileController::class . ':formAction');
 
 $app->get('/files', FileController::class . ':indexAction');
+$app->get('/', HomeController::class);
 
 $app->post('/upload', FileController::class . ':uploadAction')
     ->setName('uploadd');

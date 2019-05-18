@@ -1,9 +1,9 @@
 
 
 
-var counter = 0;
+var counter = document.getElementById("hiden").value;
 
-for(i = counter; i<counter+5; i++) {
+for(i = 0; i < 5 && i<counter; i++) {
     document.getElementById("p"+i).style.display = "block";
 }
 

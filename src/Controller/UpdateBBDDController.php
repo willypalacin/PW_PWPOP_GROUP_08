@@ -61,33 +61,51 @@ final class UpdateBBDDController
         $cat = $_POST["cat"];
 
 
-        $repository = $this->container->get('user_repo');
-       // $p = $repository->getProductsFromDDBBbyID($prod_id);
-        $categ = $this->checkProductCategory($cat);
-        $p = new Product($title,$des, $price, [], $categ);
+        if(!$this->validTitle($title)| !$this->validNumber($price) | !$this->validDescription($des)){
+            $prod_id = $_POST["id_product"];
+            $repository = $this->container->get('user_repo');
+            $p = $repository->getProductsFromDDBBbyID($prod_id);
+            $categ = $this->checkkProductCategory($p[0]['category']);
+            $p = new Product($p[0]['title'], $p[0]['description'], $p[0]['price'], [], $p[0]['category']);
 
-       // $p = new Product($p[0]['title'], $p[0]['description'], $p[0]['price'], [], $p[0]['category']);
-        $repository->updateProduct($p, $prod_id);
+            return $this->container->get('view')->render($response, 'uploadProduct.twig', [
+                'title' => $p->getTitle(),
+                'price' => $p->getPrice(),
+                'cat' => $categ,
+                'description' => $p->getDescription(),
+            ]);
+        }else {
+            //tot aixo al ELSE
+            $repository = $this->container->get('user_repo');
+            var_dump($repository);
+
+            // $p = $repository->getProductsFromDDBBbyID($prod_id);
+            $categ = $this->checkProductCategory($cat);
+            $p = new Product($title,$des, $price, [], $categ);
+            var_dump($p);
+
+            // $p = new Product($p[0]['title'], $p[0]['description'], $p[0]['price'], [], $p[0]['category']);
+            $repository->updateProduct($p, $prod_id);
 
 
 
 
 
-        $products = $this->container
-        ->get('home');
+            $products = $this->container
+                ->get('home');
 
 
 
-        $categ = $this->checkProductCategory($products);
-        $images = $repository->getImagesOfProductById();
+            $categ = $this->checkProductCategory($products);
+            $images = $repository->getImagesOfProductById();
 
 
-        echo $images[0]['id_product'];
+            echo $images[0]['id_product'];
 
-        //$repository->saveProduct($products[0]);
+            //$repository->saveProduct($products[0]);
 
 
-        return $this->container->get('view')->render($response, 'home.twig',[
+            return $this->container->get('view')->render($response, 'home.twig',[
 
             'products' => $products,
             'categ' => $categ,
@@ -96,7 +114,10 @@ final class UpdateBBDDController
             'logged' => true,
             'validated' => $repository->isValidated($_SESSION['user_id']),
 
-        ]);
+            ]);
+
+        }
+
 
     }
     public function checkProductCategory($cat)
@@ -129,6 +150,83 @@ final class UpdateBBDDController
         }
         return $a;
     }
+    private function validTitle(string $title): bool{
+        if($title==null || $title===""){
+            return false;
+        }
 
+        if(!preg_match("/^[a-z0-9]+$/i", $title)){
+            return false;
+        }
+        return true;
+    }
+    private function validNumber(string $num): bool{
+        if($num==null || $num=="") {
+            return false;
+        }
+        //if(isNaN($num)){
+        //  return false;
+        //}else{
+        if(!preg_match("/^[1-9][0-9]*$/", $num)){
+            return false;
+        }
+        if($num <= 0){
+            return false;
+        }
+        //}
+        return true;
+    }
+    private function validDescription(string $des) :bool{
+        if($des==null || $des==="") {
+            return false;
+        }
+        if(strlen($des) < 20) {
+            return false;
+        }
+        if(strlen($des) > 20 && strlen($des) < 100) {
+            return true;
+        }
+        if(strlen($des) > 100) {
+            return false;
+        }
+        if(!preg_match("/^[a-z0-9]+$/i", $des)){
+            return false;
+        }
+        return true;
+    }
+
+    public function checkkProductCategory($cat) {
+
+
+        echo $cat;
+        switch ($cat){
+            case 0:
+                $p= "Sports";
+                break;
+            case 1:
+                $p = "Fashion";
+                break;
+            case 2:
+                $p= "Computers and electronic";
+                break;
+            case 3:
+                $p = "Cars";
+                break;
+            case 4:
+                $p ="Games";
+                break;
+            case 5:
+                $p = "Home";
+                break;
+            case 6:
+                $p= "Other";
+                break;
+
+
+        }
+
+        return $p;
+
+    }
 
 }
