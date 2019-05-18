@@ -77,12 +77,10 @@ final class UpdateBBDDController
         }else {
             //tot aixo al ELSE
             $repository = $this->container->get('user_repo');
-            var_dump($repository);
 
             // $p = $repository->getProductsFromDDBBbyID($prod_id);
             $categ = $this->checkProductCategory($cat);
             $p = new Product($title,$des, $price, [], $categ);
-            var_dump($p);
 
             // $p = new Product($p[0]['title'], $p[0]['description'], $p[0]['price'], [], $p[0]['category']);
             $repository->updateProduct($p, $prod_id);
