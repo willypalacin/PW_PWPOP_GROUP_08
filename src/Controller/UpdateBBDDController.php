@@ -3,6 +3,7 @@
 namespace SallePW\SlimApp\Controller;
 
 use Psr\Container\ContainerInterface;
+use SallePW\SlimApp\Model\Database\UserRepository;
 use \SallePW\SlimApp\Model\Product;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -35,6 +36,24 @@ final class UpdateBBDDController
     //get de upload
     public function __invoke(Request $request, Response $response, array $args)
     {
+        /** @var UserRepository $repository */
+        $repository = $this->container->get('user_repo');
+        if(!(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id']))) &&
+            !(isset($_COOKIE['user_id']) && strlen($repository->findUserById($_COOKIE['user_id'])))){
+            http_response_code(404);
+            die('Forbidden');
+        }
+
+        if(!isset($_SESSION['user_id'])){
+            $_SESSION['user_id'] = $_COOKIE['user_id'];
+        }
+
+        if($repository->isDeletedUser($_SESSION['user_id'])){
+            http_response_code(403);
+            die('Forbidden');
+        }
+
+
         $prod_id = $_POST["id_product"];
         $title = $_POST["title"];
         $des = $_POST["description"];
@@ -76,7 +95,10 @@ final class UpdateBBDDController
 
             'products' => $products,
             'categ' => $categ,
-            'images' => $images
+            'images' => $images,
+            'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
+            'logged' => true,
+            'validated' => $repository->isValidated($_SESSION['user_id']),
 
         ]);
 
