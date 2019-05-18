@@ -241,7 +241,6 @@ class UserRepository implements UserRepositoryInterface
 
 
     public function getProductByUsername(string $id){
-        var_dump($id);
         $statement = $this->database->connection->prepare("SELECT * FROM Product WHERE MD5(username) = :id");
         $statement->bindParam('id',$id,PDO::PARAM_STR);
         $statement->execute();
@@ -262,11 +261,19 @@ class UserRepository implements UserRepositoryInterface
         $statement->bindParam('username',$user->getUsername(),PDO::PARAM_STR);
         $statement->execute();
     }
+    public function updateUserWithoutPass(User $user){
+        $statement = $this->database->connection->prepare("UPDATE User SET name = :name, email_address = :email_address, 
+                birthday = :birthday, phone_number = :phone_number, profile_image = :profile_image WHERE username = :username");
+        $statement->bindParam('name',$user->getName(),PDO::PARAM_STR);
+        $statement->bindParam('email_address',$user->getEmail(),PDO::PARAM_STR);
+        $statement->bindParam('birthday',$user->getBirthday(),PDO::PARAM_STR);
+        $statement->bindParam('phone_number',$user->getPhoneNumber(),PDO::PARAM_STR);
+        $statement->bindParam('profile_image',$user->getProfileImage(),PDO::PARAM_STR);
+        $statement->bindParam('username',$user->getUsername(),PDO::PARAM_STR);
+        $statement->execute();
+    }
 
     public function updateProduct(Product $user, string $id_product){
-        var_dump($user);
-        var_dump($id_product);
-        var_dump($user->getTitle());
         $title = $user->getTitle();
         $des = $user->getDescription();
         $price =$user->getPrice();

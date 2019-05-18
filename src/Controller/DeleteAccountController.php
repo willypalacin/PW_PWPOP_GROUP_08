@@ -41,7 +41,7 @@ final class DeleteAccountController
 
         if(!$repository->isValidated($usernameId)){
             http_response_code(403);
-            die('Forbidden');
+            die('Please, accept validation mail in order to delete account');
         }
 
         $repository->deleteUser($usernameId);

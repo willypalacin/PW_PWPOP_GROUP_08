@@ -16,14 +16,23 @@
 
     <script>
         function displaySigns(status){
-            document.getElementById('signIn').style.visibility = status;
-            document.getElementById('signUp').style.visibility = status;
+            document.getElementById('signIn').style.display = status;
+            document.getElementById('signUp').style.display = status;
         }
         function displayImage(status){
-            document.getElementById('profile').style.visibility = status;
+            document.getElementById('profile').style.display = status;
         }
         function displayWarning(status){
             document.getElementById('warningValidation').style.display = status;
+        }
+        function displayMyProduct(status){
+            document.getElementById('myProducts').style.display = status;
+        }
+        function displayUpload(status){
+            document.getElementById('upload').style.display = status;
+        }
+        function displayFavouriteProducts(status){
+            document.getElementById('favouriteProducts').style.display = status;
         }
     </script>
 
@@ -47,9 +56,9 @@
 
             <ul class="nav navbar-nav" id="horizontal">
                 <li ><a class="navbar-brand" href="/home">Home</a></li>
-                <li ><a class="navbar-brand" href="/upload">Page 1</a></li>
-                <li ><a class="navbar-brand"  href="#">Page 2</a></li>
-                <li ><a class="navbar-brand" href="/favourites">Favourite Products</a></li>
+                <li ><a id="upload" class="navbar-brand" href="/upload">Upload Product</a></li>
+                <li ><a id="favouriteProducts" class="navbar-brand" href="/favourites">Favourite Products</a></li>
+                <li ><a id="myProducts" class="navbar-brand" href="/myproduct">My Products</a></li>
                 <li ><a id="signIn" class="navbar-brand" href="/login">Sign in</a></li>
                 <li ><a id="signUp" class="navbar-brand" href="/register">Sign up</a></li>
                 <li ><a id="profile" href="/profile">
@@ -71,8 +80,11 @@
 
 <script>
     {% if logged %}
-    displaySigns('hidden');
+    displaySigns('none');
     displayImage('visible');
+    displayMyProduct('visible');
+    displayUpload('visible');
+    displayFavouriteProducts('visible');
         {% if validated %}
             displayWarning('none');
         {% else %}
@@ -80,8 +92,11 @@
         {% endif %}
     {% else %}
     displaySigns('visible');
-    displayImage('hidden');
+    displayImage('none');
     displayWarning('none');
+    displayMyProduct('none');
+    displayUpload('none');
+    displayFavouriteProducts('none');
     {% endif %}
 
 </script>
