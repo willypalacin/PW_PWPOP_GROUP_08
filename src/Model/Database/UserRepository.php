@@ -181,7 +181,7 @@ class UserRepository implements UserRepositoryInterface
         echo "count results" . count( $results);
         return $results;
     }
-    public function findUserByLoginEmail(string $email, string $pass) : bool{
+    public function findUserByLoginEmail(string $email, string $pass) : string{
         $statement = $this->database->connection->prepare("SELECT username FROM User WHERE email_address = :email AND password = MD5(:password)");
         $statement->bindParam('email',$email,PDO::PARAM_STR);
         $statement->bindParam('password',$pass,PDO::PARAM_STR);
