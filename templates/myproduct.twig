@@ -8,6 +8,7 @@
 
 
             {% for product in products %}
+                {% if product.is_active%}
 
 
                 <div class="col-sm">
@@ -23,10 +24,14 @@
                             </div>
 
                             {% for image in images %}
-                                {% if image.id_product == product.id_product %}
-                                        <input type="image"  name="prod_id" value="{{product.id_product }}" src="{{ base_url()}}/pictures/{{image.product_image}}" alt="Submit" height="129" width="229">
-                                {% endif %}
+
+                                    {% if image.id_product == product.id_product %}
+                                            <input type="image"  name="prod_id" value="{{product.id_product }}" src="{{ base_url()}}/pictures/{{image.product_image}}" alt="Submit" height="129" width="229">
+                                    {% endif %}
+
                             {% endfor %}
+                            {% endif %}
+
                         </form>
                     </div>
                 </div>

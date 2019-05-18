@@ -18,6 +18,7 @@ use SallePW\SlimApp\Controller\DeleteAccountController;
 use SallePW\SlimApp\Controller\ProductOverviewOwner;
 use SallePW\SlimApp\Controller\UploadProductController;
 use SallePW\SlimApp\Controller\UpdateBBDDController;
+use SallePW\SlimApp\Controller\Remove;
 
 $app
     ->get('/hello/{name}', HelloController::class)
@@ -62,6 +63,11 @@ $app->post('/overview', UploadProductController::class)
 
 $app->post('/uploadBBDD', UpdateBBDDController::class)
     ->setName('uploadBBDD');
+
+$app->post('/remove', Remove::class)
+    ->setName('remove');
+
+
 
 
 

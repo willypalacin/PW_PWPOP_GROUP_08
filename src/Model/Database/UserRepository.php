@@ -219,6 +219,18 @@ class UserRepository implements UserRepositoryInterface
 
         return $user;
     }
+
+
+    public function getProductByUsername(string $id){
+        var_dump($id);
+        $statement = $this->database->connection->prepare("SELECT * FROM Product WHERE MD5(username) = :id");
+        $statement->bindParam('id',$id,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if($results[0]['username'] == null) return null;
+
+        return $results;
+    }
     public function updateUser(User $user){
         $statement = $this->database->connection->prepare("UPDATE User SET name = :name, email_address = :email_address, 
                 birthday = :birthday, phone_number = :phone_number, password = MD5(:password), profile_image = :profile_image WHERE username = :username");
@@ -255,6 +267,12 @@ class UserRepository implements UserRepositoryInterface
         $statement->execute();
         $statement = $this->database->connection->prepare("UPDATE Product SET is_active = FALSE WHERE MD5(username) = :username");
         $statement->bindParam('username',$id,PDO::PARAM_STR);
+        $statement->execute();
+    }
+    public function deleteProduct(string $id)
+    {
+        $statement = $this->database->connection->prepare("UPDATE Product SET is_active = FALSE WHERE MD5(username) = :username");
+        $statement->bindParam('username', $id, PDO::PARAM_STR);
         $statement->execute();
     }
     public function isDeletedUser(string $id){

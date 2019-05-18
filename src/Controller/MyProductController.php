@@ -29,11 +29,11 @@ final class MyProductController {
     {
         $repository = $this->container->get('user_repo');
 
-        $products = $this->container
-            ->get('home');
+        /*$products = $this->container
+            ->get('home');*/
+        $products = $repository->getProductByUsername($_SESSION['user_id']);
         $categ = $this->checkProductCategory($products);
         $images = $repository->getImagesOfProductById();
-        var_dump($this->checkProductCategory($products));
 
         //echo $images[0]['id_product'];
 
@@ -188,5 +188,5 @@ final class MyProductController {
 
     }
 
-  
+
 }

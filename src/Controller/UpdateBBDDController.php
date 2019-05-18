@@ -59,7 +59,7 @@ final class UpdateBBDDController
 
 
         $products = $this->container
-            ->get('home');
+        ->get('home');
 
 
 

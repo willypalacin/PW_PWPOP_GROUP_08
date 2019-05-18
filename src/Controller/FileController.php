@@ -72,8 +72,9 @@ final class FileController
             /*$p = $this->container
                 ->get('home');
             */
+
             $p = new Product($title, $des, $num, [], $cat);
-            $repository->saveProduct($p);
+            $repository->saveProduct($p, $repository->findUserById($_SESSION['user_id']));
             /*return $this->container->get('view')->render($response, 'home.twig',[
                 'products' => $p
             ]);*/
