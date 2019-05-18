@@ -37,7 +37,7 @@ final class HomeController {
 
 
         //echo $images[0]['id_product'];
-     
+
 
 
         if(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id'])) && !$repository->isDeletedUser($_SESSION['user_id'])){
