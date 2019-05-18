@@ -15,6 +15,8 @@ use SallePW\SlimApp\Controller\LoginController;
 use SallePW\SlimApp\Controller\ProfileController;
 use SallePW\SlimApp\Controller\MyProductController;
 use SallePW\SlimApp\Controller\ProductOverviewOwner;
+use SallePW\SlimApp\Controller\UploadProductController;
+use SallePW\SlimApp\Controller\UpdateBBDDController;
 
 $app
     ->get('/hello/{name}', HelloController::class)
@@ -44,6 +46,40 @@ $app->get('/favourites', FavouritesController::class);
 $app->get('/myproduct', MyProductController::class);
 
 
+
+
+
+$app->post('/myproduct', ProductOverviewOwner::class)
+    ->setName('myproduct');
+
+
+
+$app->post('/overview', UploadProductController::class)
+    ->setName('overview');
+
+
+
+$app->post('/uploadBBDD', UpdateBBDDController::class)
+    ->setName('uploadBBDD');
+
+
+
+
+
+
+
+/*
+
+$app->get('/uploadProduct', UploadProductController::class)
+    ->setName('uploadProduct');
+
+
+$app->post('/uploadProduct', ProductOverviewOwner::class . ':uploadAction')
+    ->setName('owner');
+
+$app->post('/uploadProduct', UploadProductController::class . ':update')
+    ->setName('update');*/
+
 $app->post('/search', SearchController::class);
 
 //$app->get('/files', FileController::class . ':formAction');
@@ -51,11 +87,9 @@ $app->post('/search', SearchController::class);
 $app->get('/files', FileController::class . ':indexAction');
 
 $app->post('/upload', FileController::class . ':uploadAction')
-    ->setName('upload');
+    ->setName('uploadd');
 
 
-$app->post('/overview', ProductOverviewOwner::class)
-    ->setName('overview');
 
 $app->get('/profile', ProfileController::class);
 $app->post('/profile', ProfileController::class);

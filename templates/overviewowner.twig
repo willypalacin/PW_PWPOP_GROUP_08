@@ -12,13 +12,33 @@
             <h1> {{product.title}}</h1>
             <h4> {{product.description}}</h4>
             <h5> {{product.price }}€</h5>
-            <h5> {{product.category }}</h5>
+            <h5> {{categ}}</h5>
 
             {% for image in images %}
                 {% if image.id_product == product.id_product %}
                     <img   id = product_image src = "{{ base_url()}}/pictures/{{image.product_image}}" alt="">
                 {% endif %}
             {% endfor %}
+
+            <form name="my-form"
+                  id="upload-form"
+                  onsubmit="return validFormUpload()"
+                  action="{{ path_for('overview')}}"
+                  enctype="multipart/form-data"
+                  method="POST">
+
+
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" name="id_product" class="btn btn-primary" value="{{product.id_product }}">UPDATE !!!! PRODUCT</button>
+                    </div>
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary" value="{{product.id_product }}">REMOVE PRODUCT</button>
+                    </div>
+                </div>
+            </form>
+
+
 
         </div>
     </div>
