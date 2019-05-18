@@ -29,6 +29,7 @@ final class ProfileController
     const ALPHANUMERIC_ERROR = 'Please only use alphanumeric characters';
     const REGISTER_SUCCESSFUL_MESSAGE = 'Register successful! Please validate your email';
     const DEFAULT_IMAGE_PATH = 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
+    const UPDATE_PROFILE_SUCCESSFUL = '<strong>INFO!</strong> User successfully updated';
 
     private $container;
 
@@ -140,6 +141,7 @@ final class ProfileController
             'profile_image' => $user->getProfileImage(),
             'logged' => true,
             'validated' => $repository->isValidated($_SESSION['user_id']),
+            'message' => self::UPDATE_PROFILE_SUCCESSFUL,
         ]);
     }
 
