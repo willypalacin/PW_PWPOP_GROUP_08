@@ -271,8 +271,8 @@ class UserRepository implements UserRepositoryInterface
     }
     public function deleteProduct(string $id)
     {
-        $statement = $this->database->connection->prepare("UPDATE Product SET is_active = FALSE WHERE MD5(username) = :username");
-        $statement->bindParam('username', $id, PDO::PARAM_STR);
+        $statement = $this->database->connection->prepare("UPDATE Product SET is_active = FALSE WHERE id_product = :id_product");
+        $statement->bindParam('id_product', $id, PDO::PARAM_STR);
         $statement->execute();
     }
     public function isDeletedUser(string $id){
