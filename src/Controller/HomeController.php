@@ -37,8 +37,7 @@ final class HomeController {
 
 
         //echo $images[0]['id_product'];
-
-        //$repository->saveProduct($products[0]);
+     
 
 
         if(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id'])) && !$repository->isDeletedUser($_SESSION['user_id'])){
@@ -49,7 +48,7 @@ final class HomeController {
                 'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
                 'logged' => true,
                 'validated' => $repository->isValidated($_SESSION['user_id']),
-                'user_id' => $repository->getUserByid($_SESSION['user_id'])
+                'user_id' => $repository->findUserById($_SESSION['user_id'])
 
             ]);
         }else{
