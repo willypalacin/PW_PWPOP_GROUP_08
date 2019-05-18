@@ -109,9 +109,6 @@ final class HomeController {
             ->get('home');
         $size = count($products);
 
-
-
-
         return $response->withJson(["counter"=> $size], 200);
 
     }
