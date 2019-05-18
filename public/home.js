@@ -2,6 +2,8 @@
 
 
 var counter = document.getElementById("hiden").value;
+if(counter>5) counter = 5;
+console.log("Counter" + counter);
 
 for(i = 0; i < 5 && i<counter; i++) {
     document.getElementById("p"+i).style.display = "block";
@@ -22,12 +24,12 @@ $(document).ready(function() {
         })
             .done(function (data) {
                 console.log(counter);
-                counter = counter + 5;
+
                 console.log(data["counter"]);
-                for (i = counter; i < counter + 5; i++) {
+                for (i = counter; i < counter + 5 && i < data["counter"] ; i++) {
                     document.getElementById("p" + i).style.display = "block";
                 }
-
+                counter = counter + 5;
 
             })
             .fail(function (error) {

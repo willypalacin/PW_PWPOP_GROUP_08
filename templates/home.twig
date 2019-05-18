@@ -13,8 +13,11 @@
 
     {% for product in products%}
         {% if product.is_active %}
+
          {% if logged == true %}
              {% if product.username != user_id %}
+
+
 
         <div class="col-sm" id = "p{{ counter }}" style = "display :none;">
         <div class="product_card">
@@ -87,6 +90,7 @@
 
         </div>
         </div>
+
              {% endif %}
              {% else %}
 
@@ -163,8 +167,8 @@
 
              {% endif %}
 
+            {% set counter = counter + 1 %}
 
-        {% set counter = counter + 1 %}
         {% endif %}
 
     {% endfor %}
