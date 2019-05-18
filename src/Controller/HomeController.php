@@ -15,6 +15,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 
 final class HomeController {
+
     private $container;
 
     public function __construct(ContainerInterface $container)
@@ -25,6 +26,8 @@ final class HomeController {
     public function __invoke(Request $request, Response $response)
     {
         /** @var UserRepository $repository */
+        error_reporting(0);
+
         $repository = $this->container->get('user_repo');
 
         $products = $this->container

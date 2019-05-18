@@ -12,7 +12,6 @@ use SallePW\SlimApp\Model\User;
 
 final class LoginController
 {
-
     const USERNAME_ERROR = 'Please enter your username';
     const USERNAME_MAX_CHARACTERS_ERROR = 'Maximum 20 characters. Offset of ';
     const EMAIL_ERROR = 'Please enter your email';
@@ -30,6 +29,8 @@ final class LoginController
      */
     public function __construct(ContainerInterface $container)
     {
+        error_reporting(E_ERROR | E_PARSE);
+
         $this->container = $container;
     }
 

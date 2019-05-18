@@ -41,8 +41,10 @@ class UserRepository implements UserRepositoryInterface
         return true;
     }
     public function findUserByUsername(User $user): bool {
+        $u = $user->getUsername();
         $statement = $this->database->connection->prepare("SELECT COUNT(*) FROM User WHERE username =:username");
-        $statement->bindParam('username',$user->getUsername(),PDO::PARAM_STR);
+
+        $statement->bindParam('username',$u,PDO::PARAM_STR);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         if($results[0]['COUNT(*)'] == 0) return false;
