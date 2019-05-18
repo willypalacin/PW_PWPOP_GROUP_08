@@ -38,7 +38,7 @@ final class UploadProductController
 
 
 
-
+//tot aixo al ELSE
         $prod_id = $_POST["id_product"];
         $repository = $this->container->get('user_repo');
         $p = $repository->getProductsFromDDBBbyID($prod_id);

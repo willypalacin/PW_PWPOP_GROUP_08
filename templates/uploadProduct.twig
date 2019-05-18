@@ -115,7 +115,7 @@
     <div class="container my-form">
         <form name="my-form"
               id="upload-form"
-              onsubmit="return FormUpload()"
+              onsubmit=""
               action="{{ path_for('uploadBBDD')}}"
               enctype="multipart/form-data"
               method="POST">
@@ -210,8 +210,8 @@
 
             <div class="form-group row">
                 <div class="col-sm-10">
-                    <input type="hidden"  name="id_product" value="{{id_product }}">
-                    <button type="submit" name="id_product" class="btn btn-primary" value="{{id_product }}">Update Changes</button>
+                    <input type="hidden"  name="id_product" value="{{id_product}}">
+                    <button type="submit" name="id_product" class="btn btn-primary" value="{{id_product}}">Update Changes</button>
                 </div>
             </div>
 
