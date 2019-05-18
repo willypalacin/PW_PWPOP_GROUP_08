@@ -9,10 +9,6 @@
     <p id="eltot">{{length}}</p>
     {% set counter = 0 %}
 
-        <div class="alert alert-info">
-            {{ message }}
-        </div>
-
 
     {% for product in products%}
         {% if product.is_active %}
@@ -174,15 +170,25 @@
 
 
 
-        <form id="login-form"
-              action="/home"
-              method="POST">
 
-            <input type="submit" value="load 5 more">
-        </form>
 
     </div>
     </div>
+
+    {% if success %}
+    <div class="alert alert-info">
+        <strong>Info!</strong> Indicates a neutral informative change or action.
+    </div>
+    {% endif %}
+
+    <form id="login-form"
+          action="/home"
+          method="POST">
+
+        <input type="submit" value="load 5 more">
+    </form>
+
+
 
 
 
