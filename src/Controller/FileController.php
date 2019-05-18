@@ -1,6 +1,7 @@
 <?php
 namespace SallePW\SlimApp\Controller;
 use Psr\Container\ContainerInterface;
+use SallePW\SlimApp\Model\Database\UserRepository;
 use \SallePW\SlimApp\Model\Product;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -29,6 +30,25 @@ final class FileController
     }
     //post del form de upload
     public function uploadAction(Request $request, Response $response): Response {
+        /** @var UserRepository $repository */
+        $repository = $this->container->get('user_repo');
+        if(!(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id']))) &&
+            !(isset($_COOKIE['user_id']) && strlen($repository->findUserById($_COOKIE['user_id'])))){
+            http_response_code(404);
+            die('Forbidden');
+        }
+
+        if(!isset($_SESSION['user_id'])){
+            $_SESSION['user_id'] = $_COOKIE['user_id'];
+        }
+
+
+
+        if($repository->isDeletedUser($_SESSION['user_id'])){
+            http_response_code(403);
+            die('Forbidden');
+        }
+
         $errors = [];
         $counterImg = 111;
         $fileNames[] = "";
@@ -55,6 +75,9 @@ final class FileController
                 $errors[] = sprintf(self::INVALID_EXTENSION_ERROR, $format);
                 return $this->container->get('view')->render($response, 'upload.twig', [
                     'errors' => $errors,
+                    'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
+                    'logged' => true,
+                    'validated' => $repository->isValidated($_SESSION['user_id']),
                 ]);
                 //continue;
             }
@@ -65,6 +88,9 @@ final class FileController
             $errors[] = "Something was wrong with your info, please try again!";
             return $this->container->get('view')->render($response, 'upload.twig', [
                 'errors' => $errors,
+                'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
+                'logged' => true,
+                'validated' => $repository->isValidated($_SESSION['user_id']),
             ]);
         }else {
             //todo OK, guardo a la BBDD
@@ -87,6 +113,9 @@ final class FileController
             }
             return $this->container->get('view')->render($response, 'upload.twig', [
                 'errors' => $errors,
+                'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
+                'logged' => true,
+                'validated' => $repository->isValidated($_SESSION['user_id']),
             ]);
         }
     }

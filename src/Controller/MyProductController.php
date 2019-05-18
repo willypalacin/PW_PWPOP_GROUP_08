@@ -14,6 +14,7 @@ use Dflydev\FigCookies\SetCookie;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use SallePW\SlimApp\Model\Database\UserRepository;
 use SallePW\SlimApp\Model\Product;
 
 
@@ -27,94 +28,39 @@ final class MyProductController {
 
     public function __invoke(Request $request, Response $response)
     {
+        /** @var UserRepository $repository */
         $repository = $this->container->get('user_repo');
+        if(!(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id']))) &&
+            !(isset($_COOKIE['user_id']) && strlen($repository->findUserById($_COOKIE['user_id'])))){
+            http_response_code(404);
+            die('Forbidden');
+        }
 
-        /*$products = $this->container
-            ->get('home');*/
+        if(!isset($_SESSION['user_id'])){
+            $_SESSION['user_id'] = $_COOKIE['user_id'];
+        }
+
+        if($repository->isDeletedUser($_SESSION['user_id'])){
+            http_response_code(403);
+            die('Forbidden');
+        }
+
         $products = $repository->getProductByUsername($_SESSION['user_id']);
         $categ = $this->checkProductCategory($products);
         $images = $repository->getImagesOfProductById();
-
-        //echo $images[0]['id_product'];
-
-        //$repository->saveProduct($products[0]);
 
 
         return $this->container->get('view')->render($response, 'myproduct.twig',[
 
             'products' => $products,
             'categ' => $categ,
-            'images' => $images
+            'images' => $images,
+            'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
+            'logged' => true,
+            'validated' => $repository->isValidated($_SESSION['user_id']),
 
         ]);
-/*
-        $repository = $this->container->get('user_repo');
-
-        $products = $this->container
-            ->get('myproducts');
-
-
-        $titles = $this->seaechTitles($products);
-        for ($i = 0; $i < count($titles); $i++) {
-            $ti[$i] = $this->searchImg($titles[$i], $products);
-        }
-        var_dump($ti);
-
-
-        //var_dump($products);
-
-        return $this->container->get('view')->render($response, 'myproduct.twig',[
-
-            'title' => $titles,
-
-            'imgSegonsTitle' => $ti,
-
-        ]);
-
-
-
-        //return $this->container->get('view')->render($response, 'myproduct.twig',[]);
-*/
-
     }
-    /*public function searchImg($titles, $pro) {
-        $imgT = [];
-        for ($j = 0; $j < count($pro); $j++) {
-            $p = $pro[$j];
-                if ($titles == $p['title']) {
-                array_push($imgT, $p['product_image']);
-            }
-
-        }
-        return $imgT;
-
-    }
-    public function seaechTitles($products){
-        $t = [];
-
-        for($x = 0; $x < count($products); $x++){
-            $prod = $products[$x];
-            if(!$this->checkIfExist($prod['title'], $t, $x)){
-                array_push($t,$prod['title']);
-            }
-
-        }
-        return $t;
-    }
-    public function checkIfExist($tit, $arr, $fi){
-
-        for($j = 0; $j < $fi; $j++){
-            $aux = $arr[$j];
-            if($aux == $tit){
-                return true;
-            }
-
-
-        }
-        return false;
-    }
-
-*/
 
     public function checkProductCategory($products) {
         $p = [];
