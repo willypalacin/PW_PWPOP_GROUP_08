@@ -129,6 +129,9 @@ final class FileController
                 'products' => $p,
                  'images' => $images,
                 'categ' => $categ,
+                'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
+                'logged' => true,
+                'validated' => $repository->isValidated($_SESSION['user_id']),
 
             ]);
         }
