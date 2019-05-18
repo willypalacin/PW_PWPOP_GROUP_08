@@ -114,22 +114,22 @@ final class ProfileController
                 'validated' => $repository->isValidated($_SESSION['user_id']),
             ]);
 
-        //Update other parameters
-        $user->setUsername($repository->findUserById($usernameId));
-        $user->setProfileImage($repository->getUserById($usernameId)->getProfileImage());
-        if(strlen($user->getPassword() == 0)){
-            $user->setPassword($repository->getUserById($usernameId)->getPassword());
-            $user->setConfirmPassword($repository->getUserById($usernameId)->getConfirmPassword());
-        }
-
         //Delete and Save image
         if($errors['image_error'] == ''){
             $this->deleteImage($user);
             $this->writeImage($uploadedFiles['profile_image'],$user);
         }
 
-        //Update user
-        $repository->updateUser($user);
+        //Update other parameters && Update user
+        $user->setUsername($repository->findUserById($usernameId));
+        $user->setProfileImage($repository->getUserById($usernameId)->getProfileImage());
+        if(strlen($user->getPassword() == 0)){
+            $user->setPassword($repository->getUserById($usernameId)->getPassword());
+            $user->setConfirmPassword($repository->getUserById($usernameId)->getConfirmPassword());
+            $repository->updateUserWithoutPass($user);
+        }else{
+            $repository->updateUser($user);
+        }
 
         //Return to home
         $products = $this->container->get('home');

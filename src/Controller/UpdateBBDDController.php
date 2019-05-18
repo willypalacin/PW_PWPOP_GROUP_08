@@ -3,6 +3,7 @@
 namespace SallePW\SlimApp\Controller;
 
 use Psr\Container\ContainerInterface;
+use SallePW\SlimApp\Model\Database\UserRepository;
 use \SallePW\SlimApp\Model\Product;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
