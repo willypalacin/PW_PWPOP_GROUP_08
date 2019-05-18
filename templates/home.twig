@@ -11,6 +11,8 @@
 
 
     {% for product in products%}
+        {% if product.is_active %}
+
 
 
         <div class="col-sm" id = "p{{ counter }}" style = "display :none;">
@@ -71,20 +73,29 @@
             <div class ="description">{{product.description}} </div>
             <div class ="price_title"> Price </div>
             <div class ="price_box"> <div class = "price">{{product.price}}€</div> </div>
+            </form>
+                <form
+                      action="/buyed"
+                      method="POST">
             <div class = "button_container">
-                <button class = "button_buy" type="button">BUY</button>
+                <input type="hidden"  name="prod_id2" value="{{ product.id_product }}">
+                <input type = "submit" class = "button_buy" value="BUY" type="button"></input>
 
             </div>
-            </form>
+                </form>
+
         </div>
         </div>
+
+
+
 
 
 
 
 
         {% set counter = counter + 1 %}
-
+        {% endif %}
     {% endfor %}
 
 

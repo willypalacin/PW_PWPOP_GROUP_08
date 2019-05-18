@@ -25,7 +25,9 @@ final class FavouritesController
     public function __invoke(Request $request, Response $response, array $args)
     {
         $repository = $this->container->get('user_repo');
-        $id_user = "guille32";
+        $id_user = $_SESSION["user_id"];
+        $id_user = $repository->findUserById($id_user);
+
         $favourite = $repository->getFavouriteProduct($id_user);
 
 

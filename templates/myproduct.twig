@@ -1,30 +1,21 @@
 {% extends "base.twig" %} {% block title %} Search page {% endblock %}
 {% set maxproduct = 6 %}
 {% block content %}
-    <!--
-        <img id = "lupa"src="{{ base_url() }}/assets/lupa.png">
-        <input id=search type="search">  -->
+
     <div class="container">
         <div class="row">
             {% set counter = 0 %}
 
 
             {% for product in products %}
+                {% if product.is_active%}
 
 
                 <div class="col-sm">
                     <div class="product_card">
-
-
-
-
-
-
-
-
                         <form id="myproducts-form"
                               name="my-form"
-                              action="{{ path_for('overview') }}"
+                              action="{{ path_for('myproduct')}}"
                               method="POST">
 
                             <div class="title_box">
@@ -33,11 +24,13 @@
                             </div>
 
                             {% for image in images %}
-                                {% if image.id_product == product.id_product %}
-                                    <input type="image"  value="{{product.id_product }}" src="{{ base_url()}}/pictures/{{image.product_image}}" alt="Submit" height="129" width="229">
-                                {% endif %}
-                            {% endfor %}
 
+                                    {% if image.id_product == product.id_product %}
+                                            <input type="image"  name="prod_id" value="{{product.id_product }}" src="{{ base_url()}}/pictures/{{image.product_image}}" alt="Submit" height="129" width="229">
+                                    {% endif %}
+
+                            {% endfor %}
+                            {% endif %}
 
                         </form>
                     </div>

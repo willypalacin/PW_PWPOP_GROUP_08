@@ -64,6 +64,7 @@ $(document).ready(function() {
            })
            .fail(function (error) {
 
+
            });
 
        // stop the form from submitting the normal way and refreshing the page

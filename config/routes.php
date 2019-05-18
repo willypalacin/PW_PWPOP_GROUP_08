@@ -14,14 +14,23 @@ use SallePW\SlimApp\Controller\AccountValidationController;
 use SallePW\SlimApp\Controller\LoginController;
 use SallePW\SlimApp\Controller\ProfileController;
 use SallePW\SlimApp\Controller\MyProductController;
+use SallePW\SlimApp\Controller\DeleteAccountController;
 use SallePW\SlimApp\Controller\ProductOverviewOwner;
+use SallePW\SlimApp\Controller\UploadProductController;
+use SallePW\SlimApp\Controller\UpdateBBDDController;
+use SallePW\SlimApp\Controller\Remove;
 use SallePW\SlimApp\Controller\HomeCorController;
+use SallePW\SlimApp\Controller\BuyProductController;
 
 $app
     ->get('/hello/{name}', HelloController::class)
     ->add(TestMiddleware::class);
 
 $app->get('/flash', FlashController::class);
+
+
+$app->post('/buyed', BuyProductController::class);
+
 
 $app->add(SessionMiddleware::class);
 
@@ -48,6 +57,45 @@ $app->get('/favourites', FavouritesController::class);
 $app->get('/myproduct', MyProductController::class);
 
 
+
+
+
+$app->post('/myproduct', ProductOverviewOwner::class)
+    ->setName('myproduct');
+
+
+
+$app->post('/overview', UploadProductController::class)
+    ->setName('overview');
+
+
+
+$app->post('/uploadBBDD', UpdateBBDDController::class)
+    ->setName('uploadBBDD');
+
+$app->post('/remove', Remove::class)
+    ->setName('remove');
+
+
+
+
+
+
+
+
+
+/*
+
+$app->get('/uploadProduct', UploadProductController::class)
+    ->setName('uploadProduct');
+
+
+$app->post('/uploadProduct', ProductOverviewOwner::class . ':uploadAction')
+    ->setName('owner');
+
+$app->post('/uploadProduct', UploadProductController::class . ':update')
+    ->setName('update');*/
+
 $app->post('/search', SearchController::class);
 
 //$app->get('/files', FileController::class . ':formAction');
@@ -55,12 +103,12 @@ $app->post('/search', SearchController::class);
 $app->get('/files', FileController::class . ':indexAction');
 
 $app->post('/upload', FileController::class . ':uploadAction')
-    ->setName('upload');
+    ->setName('uploadd');
 
 
-$app->post('/overview', ProductOverviewOwner::class)
-    ->setName('overview');
 
 $app->get('/profile', ProfileController::class);
 $app->post('/profile', ProfileController::class);
+
+$app->get('/delete-account',DeleteAccountController::class);
 

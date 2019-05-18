@@ -19,7 +19,7 @@ class UserRepository implements UserRepositoryInterface
     public function save(User $user)
     {
         $statement = $this->database->connection->prepare(
-            "INSERT INTO User(name,username,email_address,birthday,phone_number,password,validated,profile_image) VALUES (:name,:username,:email,:birthday,:phone,MD5(:password),FALSE, :profile_image);"
+            "INSERT INTO User(name,username,email_address,birthday,phone_number,password,validated,profile_image,is_active) VALUES (:name,:username,:email,:birthday,:phone,MD5(:password),FALSE, :profile_image,TRUE);"
         );
         $statement->bindParam('name',$user->getName(),PDO::PARAM_STR);
         $statement->bindParam('username',$user->getUsername(),PDO::PARAM_STR);
@@ -89,13 +89,13 @@ class UserRepository implements UserRepositoryInterface
     }
 
     //Product
-    public function saveProduct(Product $product) {
+    public function saveProduct(Product $product,string $username) {
         $title = $product->getTitle();
         $description = $product->getDescription();
         $price = $product->getPrice();
         $cat = $product->getCategory();
         $statement = $this->database->connection->prepare(
-            "INSERT INTO Product (title, description, price, category) VALUES (:title, :description, :price, :category);");
+            "INSERT INTO Product (title, description, price, category,username,is_active) VALUES (:title, :description, :price, :category,:username,TRUE);");
         echo $cat;
         switch ($cat){
             case "Sports":
@@ -127,6 +127,7 @@ class UserRepository implements UserRepositoryInterface
         $statement->bindParam('description', $description,PDO::PARAM_STR);
         $statement->bindParam('price', $price, PDO::PARAM_STR);
         $statement->bindParam('category',$a,PDO::PARAM_STR);
+        $statement->bindParam('username',$username,PDO::PARAM_STR);
         $statement->execute();
     }
 
@@ -181,8 +182,8 @@ class UserRepository implements UserRepositoryInterface
         echo "count results" . count( $results);
         return $results;
     }
-    public function findUserByLoginEmail(string $email, string $pass) : bool{
-        $statement = $this->database->connection->prepare("SELECT username FROM User WHERE email_address = :email AND password = MD5(:password)");
+    public function findUserByLoginEmail(string $email, string $pass) : string{
+        $statement = $this->database->connection->prepare("SELECT username FROM User WHERE email_address = :email AND password = MD5(:password) AND is_active = TRUE");
         $statement->bindParam('email',$email,PDO::PARAM_STR);
         $statement->bindParam('password',$pass,PDO::PARAM_STR);
         $statement->execute();
@@ -191,13 +192,13 @@ class UserRepository implements UserRepositoryInterface
         return $results[0]['username'];
     }
     public function findUserByLoginUser(string $user, string $pass) : bool{
-        $statement = $this->database->connection->prepare("SELECT username FROM User WHERE username = :user AND password = MD5(:password)");
+        $statement = $this->database->connection->prepare("SELECT username FROM User WHERE username = :user AND password = MD5(:password) AND is_active = TRUE");
         $statement->bindParam('user',$user,PDO::PARAM_STR);
         $statement->bindParam('password',$pass,PDO::PARAM_STR);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        if($results[0]['username'] == null) return '';
-        return $results[0]['username'];
+        if($results[0]['username'] == null) return false;
+        return true;
     }
     public function getUserById(string $id) : User{
         $statement = $this->database->connection->prepare("SELECT * FROM User WHERE MD5(username) = :id");
@@ -218,6 +219,37 @@ class UserRepository implements UserRepositoryInterface
 
         return $user;
     }
+
+    public function getUserByUsername(string $id) : User{
+        $statement = $this->database->connection->prepare("SELECT * FROM User WHERE username = :id");
+        $statement->bindParam('id',$id,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $user = new User(null);
+        $user->setName($results[0]['name']);
+        $user->setUsername($results[0]['username']);
+        $user->setEmail($results[0]['email_address']);
+        $user->setBirthday($results[0]['birthday']);
+        $user->setPhoneNumber($results[0]['phone_number']);
+        $user->setPassword($results[0]['password']);
+        $user->setValidated($results[0]['validated']);
+        $user->setProfileImage($results[0]['profile_image']);
+
+        return $user;
+    }
+
+
+    public function getProductByUsername(string $id){
+        var_dump($id);
+        $statement = $this->database->connection->prepare("SELECT * FROM Product WHERE MD5(username) = :id");
+        $statement->bindParam('id',$id,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if($results[0]['username'] == null) return null;
+
+        return $results;
+    }
     public function updateUser(User $user){
         $statement = $this->database->connection->prepare("UPDATE User SET name = :name, email_address = :email_address, 
                 birthday = :birthday, phone_number = :phone_number, password = MD5(:password), profile_image = :profile_image WHERE username = :username");
@@ -229,5 +261,44 @@ class UserRepository implements UserRepositoryInterface
         $statement->bindParam('profile_image',$user->getProfileImage(),PDO::PARAM_STR);
         $statement->bindParam('username',$user->getUsername(),PDO::PARAM_STR);
         $statement->execute();
+    }
+
+    public function updateProduct(Product $user, string $id_product){
+        var_dump($user);
+        var_dump($id_product);
+        var_dump($user->getTitle());
+        $title = $user->getTitle();
+        $des = $user->getDescription();
+        $price =$user->getPrice();
+        $cat = $user->getCategory();
+        $statement = $this->database->connection->prepare("UPDATE Product SET title = :title, description = :description, price = :price, category = :category WHERE id_product = :id_product");
+        $statement->bindParam(":title",$title,PDO::PARAM_STR);
+        $statement->bindParam(':description',$des,PDO::PARAM_STR);
+        $statement->bindParam(':price',$price,PDO::PARAM_STR);
+        $statement->bindParam(':category',$cat,PDO::PARAM_STR);
+        $statement->bindParam(':id_product',$id_product,PDO::PARAM_STR);
+
+        $statement->execute();
+    }
+    public function deleteUser(string $id){
+        $statement = $this->database->connection->prepare("UPDATE User SET is_active = FALSE WHERE MD5(username) = :username");
+        $statement->bindParam('username',$id,PDO::PARAM_STR);
+        $statement->execute();
+        $statement = $this->database->connection->prepare("UPDATE Product SET is_active = FALSE WHERE MD5(username) = :username");
+        $statement->bindParam('username',$id,PDO::PARAM_STR);
+        $statement->execute();
+    }
+    public function deleteProduct(string $id)
+    {
+        $statement = $this->database->connection->prepare("UPDATE Product SET is_active = FALSE WHERE id_product = :id_product");
+        $statement->bindParam('id_product', $id, PDO::PARAM_STR);
+        $statement->execute();
+    }
+    public function isDeletedUser(string $id){
+        $statement = $this->database->connection->prepare("SELECT is_active FROM User WHERE MD5(username) = :username");
+        $statement->bindParam('username',$id,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return !$results[0]['is_active'];
     }
 }

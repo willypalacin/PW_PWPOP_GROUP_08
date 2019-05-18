@@ -29,11 +29,11 @@ final class MyProductController {
     {
         $repository = $this->container->get('user_repo');
 
-        $products = $this->container
-            ->get('home');
+        /*$products = $this->container
+            ->get('home');*/
+        $products = $repository->getProductByUsername($_SESSION['user_id']);
         $categ = $this->checkProductCategory($products);
         $images = $repository->getImagesOfProductById();
-
 
         //echo $images[0]['id_product'];
 
@@ -148,9 +148,45 @@ final class MyProductController {
 
             }
         }
+        return $p;
+
+    }
+
+
+
+    public function checkkProductCategory($cat) {
+
+
+        echo $cat;
+        switch ($cat){
+            case 0:
+                $p= "Sports";
+                break;
+            case 1:
+                $p = "Fashion";
+                break;
+            case 2:
+                $p= "Computers and electronic";
+                break;
+            case 3:
+                $p = "Cars";
+                break;
+            case 4:
+                $p ="Games";
+                break;
+            case 5:
+                $p = "Home";
+                break;
+            case 6:
+                $p= "Other";
+                break;
+
+
+        }
 
         return $p;
 
     }
+
 
 }

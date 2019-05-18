@@ -27,7 +27,7 @@ final class ProductOverviewOwner {
 
     public function __invoke(Request $request, Response $response)
     {
-        $prod_id = $_POST["prod_id"];
+       $prod_id = $_POST["prod_id"];
 
         $repository = $this->container->get('user_repo');
 
@@ -81,6 +81,59 @@ final class ProductOverviewOwner {
 
     }
 
+
+
+    public function uploadAction(Request $request, Response $response): Response {
+        $prod_id = $_POST["id_product"];
+        $repository = $this->container->get('user_repo');
+        $p = $repository->getProductsFromDDBBbyID($prod_id);
+        $categ = $this->checkkProductCategory($p[0]['category']);
+        $p = new Product($p[0]['title'], $p[0]['description'], $p[0]['price'], [], $p[0]['category']);
+
+        return $this->container->get('view')->render($response, 'uploadProduct.twig', [
+            'title' => $p->getTitle(),
+            'price' => $p->getPrice(),
+            'cat' => $categ,
+            'description' => $p->getDescription(),
+        ]);
+
+
+    }
+
+
+    public function checkkProductCategory($cat) {
+
+
+        echo $cat;
+        switch ($cat){
+            case 0:
+                $p= "Sports";
+                break;
+            case 1:
+                $p = "Fashion";
+                break;
+            case 2:
+                $p= "Computers and electronic";
+                break;
+            case 3:
+                $p = "Cars";
+                break;
+            case 4:
+                $p ="Games";
+                break;
+            case 5:
+                $p = "Home";
+                break;
+            case 6:
+                $p= "Other";
+                break;
+
+
+        }
+
+        return $p;
+
+    }
 
 
 

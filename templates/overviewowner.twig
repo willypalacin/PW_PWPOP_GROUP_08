@@ -12,7 +12,7 @@
             <h1> {{product.title}}</h1>
             <h4> {{product.description}}</h4>
             <h5> {{product.price }}€</h5>
-            <h5> {{product.category }}</h5>
+            <h5> {{categ}}</h5>
 
             {% for image in images %}
                 {% if image.id_product == product.id_product %}
@@ -20,9 +20,60 @@
                 {% endif %}
             {% endfor %}
 
+            <form name="my-form"
+                  id="upload-form"
+                  action="{{ path_for('overview')}}"
+                  enctype="multipart/form-data"
+                  method="POST">
+
+
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" name="id_product" class="btn btn-primary" value="{{product.id_product }}">UPDATE !!!! PRODUCT</button>
+                    </div>
+                </div>
+            </form>
+
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+
+
         </div>
     </div>
 
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">REMOVE WARNING</h4>
+                </div>
+                <div class="modal-body">
+                    <p>If you accept the product it will be permanently deleted!</p>
+                </div>
+                <form name="my-form"
+                      id="upload-form"
+                      action="{{ path_for('remove')}}"
+                      enctype="multipart/form-data"
+                      method="POST">
+
+
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <button type="submit" name="id_product" class="btn btn-primary" value="{{product.id_product }}">CONTINUE AND REMOVE PRODUCT</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">CONTINUE</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
 

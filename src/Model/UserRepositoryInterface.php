@@ -7,7 +7,7 @@ interface UserRepositoryInterface
     public function findUserByUsername(User $user) : bool;
     public function findUserById(string $id) : string;
     public function validateAccount(string $username);
-    public function findUserByLoginEmail(string $email, string $pass) : bool;
+    public function findUserByLoginEmail(string $email, string $pass) : string;
     public function findUserByLoginUser(string $user, string $pass) : bool;
     public function getUserById(string $id) : User;
 }
