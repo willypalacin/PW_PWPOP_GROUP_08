@@ -1,19 +1,21 @@
 
 {% extends "base.twig" %} {% block title %} Search page {% endblock %}
-{% set maxproduct = 6 %}
 {% block content %}
     <!--
         <img id = "lupa"src="{{ base_url() }}/assets/lupa.png">
         <input id=search type="search">  -->
     <div class="container">
     <div class="row">
+    <p id="eltot">{{length}}</p>
     {% set counter = 0 %}
 
 
-    {% for product in products if counter < maxproduct %}
+    {% for product in products%}
+        {% if product.is_active %}
 
 
-        <div class="col-sm">
+
+        <div class="col-sm" id = "p{{ counter }}" style = "display :none;">
         <div class="product_card">
             <div class="product_image">
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -55,20 +57,15 @@
                 </div>
             </div>
 
-
-
-
-
-
-
-            <form id="login-form"
+            
+            <form id="login-form2"
                   action="/home"
                   method="POST">
             <div class="title_box">
                 <div class="title">{{product.title}}</div>
                 <div class="rating_box">
-                    <button class="corbutton" type="submit">
-                    <img class="cor" src= "{{ base_url() }}/assets/cor_vacio.png"></button>
+                    <button onclick= "clickado({{ product.id_product}}, {{counter}})" class="corbutton" >
+                    <img id = "{{counter}}" class="cor" src= "{{ base_url() }}/assets/cor_vacio.png"></button>
                 </div>
                 <input type="hidden"  name="prod_id" value="{{ product.id_product }}">
             </div>
@@ -76,31 +73,50 @@
             <div class ="description">{{product.description}} </div>
             <div class ="price_title"> Price </div>
             <div class ="price_box"> <div class = "price">{{product.price}}€</div> </div>
+            </form>
+                <form
+                      action="/buyed"
+                      method="POST">
             <div class = "button_container">
-                <button class = "button_buy" type="button">BUY</button>
+                <input type="hidden"  name="prod_id2" value="{{ product.id_product }}">
+                <input type = "submit" class = "button_buy" value="BUY" type="button"></input>
 
             </div>
-            </form>
+                </form>
+
         </div>
         </div>
+
+
+
 
 
 
 
 
         {% set counter = counter + 1 %}
-
+        {% endif %}
     {% endfor %}
-        </div>
+
+
+
+        <form id="login-form"
+              action="/home"
+              method="POST">
+
+            <input type="submit" value="load 5 more">
+        </form>
+
+    </div>
     </div>
 
 
 
+{% endblock %}
 
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-
-
-
-
+    <script src = "{{ base_url() }}/home.js"> </script>
 
 {% endblock %}

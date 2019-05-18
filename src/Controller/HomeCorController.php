@@ -13,11 +13,11 @@ use Dflydev\FigCookies\FigResponseCookies;
 use Dflydev\FigCookies\SetCookie;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Response as Response;
 use SallePW\SlimApp\Model\Product;
 
 
-final class HomeController {
+final class HomeCorController {
     private $container;
 
     public function __construct(ContainerInterface $container)
@@ -27,41 +27,7 @@ final class HomeController {
 
     public function __invoke(Request $request, Response $response)
     {
-        /** @var UserRepository $repository */
-        $repository = $this->container->get('user_repo');
 
-        $products = $this->container
-            ->get('home');
-
-
-
-        $categ = $this->checkProductCategory($products);
-        $images = $repository->getImagesOfProductById();
-
-
-        //echo $images[0]['id_product'];
-
-        //$repository->saveProduct($products[0]);
-
-
-        if(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id'])) && !$repository->isDeletedUser($_SESSION['user_id'])){
-            return $this->container->get('view')->render($response, 'home.twig',[
-                'products' => $products,
-                'categ' => $categ,
-                'images' => $images,
-                'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
-                'logged' => true,
-                'validated' => $repository->isValidated($_SESSION['user_id']),
-            ]);
-        }else{
-            return $this->container->get('view')->render($response, 'home.twig',[
-                'products' => $products,
-                'categ' => $categ,
-                'images' => $images,
-                'logged' => false,
-                'validated' => true,
-            ]);
-        }
 
 
 
@@ -106,14 +72,22 @@ final class HomeController {
 
     public function refresh(Request $request, Response $response) {
 
+
+
+        $data = $request->getParsedBody();
+
         $products = $this->container
             ->get('home');
         $size = count($products);
 
+        $repository = $this->container->get('user_repo');
+        $id_product = $data["id_product"];
+        $id_user = $_SESSION['user_id'];
+        $id_user = $repository->findUserById($id_user);
+        $this->container->get('user_repo')->saveFavouriteProduct($id_user, $id_product);
 
 
-
-        return $response->withJson(["counter"=> $size], 200);
+        return $response->withJson([], 200);
 
     }
 
