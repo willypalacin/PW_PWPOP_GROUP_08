@@ -66,42 +66,42 @@ final class HomeController {
 
     }
 
-    public function checkProductCategory($products) {
-        $p = [];
+        public function checkProductCategory($products) {
+            $p = [];
 
-        for ($i = 0; $i < count($products); $i++) {
-            $prod = $products[$i];
+            for ($i = 0; $i < count($products); $i++) {
+                $prod = $products[$i];
 
-            switch ($prod['category']){
-                case 0:
-                    $prod[$i] = "Sports";
-                    break;
-                case 1:
-                    $prod[$i] = "Fashion";
-                    break;
-                case 2:
-                    $prod[$i] = "Computers and electronic";
-                    break;
-                case 3:
-                    $prod[$i] = "Cars";
-                    break;
-                case 4:
-                    $prod[$i] ="Games";
-                    break;
-                case 5:
-                    $prod[$i] = "Home";
-                    break;
-                case 6:
-                    $prod[$i] = "Other";
-                    break;
+                switch ($prod['category']){
+                    case 0:
+                        $prod[$i] = "Sports";
+                        break;
+                    case 1:
+                        $prod[$i] = "Fashion";
+                        break;
+                    case 2:
+                        $prod[$i] = "Computers and electronic";
+                        break;
+                    case 3:
+                        $prod[$i] = "Cars";
+                        break;
+                    case 4:
+                        $prod[$i] ="Games";
+                        break;
+                    case 5:
+                        $prod[$i] = "Home";
+                        break;
+                    case 6:
+                        $prod[$i] = "Other";
+                        break;
 
 
+                }
             }
+
+            return $p;
+
         }
-
-        return $p;
-
-    }
 
     public function refresh(Request $request, Response $response) {
 

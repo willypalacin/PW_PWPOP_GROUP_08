@@ -111,11 +111,25 @@ final class FileController
                 $name = $uploadedFile->getClientFilename();
                 $repository->saveImageProduct($name);
             }
-            return $this->container->get('view')->render($response, 'upload.twig', [
+            /*return $this->container->get('view')->render($response, 'upload.twig', [
                 'errors' => $errors,
                 'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
                 'logged' => true,
                 'validated' => $repository->isValidated($_SESSION['user_id']),
+            ]);*/
+
+
+            $p = $this->container
+                ->get('home');
+
+            $categ = $this->checkProductCategory($p);
+            $images = $repository->getImagesOfProductById();
+
+            return $this->container->get('view')->render($response, 'home.twig',[
+                'products' => $p,
+                 'images' => $images,
+                'categ' => $categ,
+
             ]);
         }
     }
@@ -177,5 +191,41 @@ final class FileController
             return false;
         }
         return true;
+    }
+    public function checkProductCategory($products) {
+        $p = [];
+
+        for ($i = 0; $i < count($products); $i++) {
+            $prod = $products[$i];
+
+            switch ($prod['category']){
+                case 0:
+                    $prod[$i] = "Sports";
+                    break;
+                case 1:
+                    $prod[$i] = "Fashion";
+                    break;
+                case 2:
+                    $prod[$i] = "Computers and electronic";
+                    break;
+                case 3:
+                    $prod[$i] = "Cars";
+                    break;
+                case 4:
+                    $prod[$i] ="Games";
+                    break;
+                case 5:
+                    $prod[$i] = "Home";
+                    break;
+                case 6:
+                    $prod[$i] = "Other";
+                    break;
+
+
+            }
+        }
+
+        return $p;
+
     }
 }
