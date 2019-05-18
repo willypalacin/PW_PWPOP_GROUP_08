@@ -28,20 +28,22 @@ final class SearchController {
     {
 
         $title = $_POST['title'];
-        echo $title;
 
 
         $products = $this->container
             ->get('home');
 
         $products2 = [];
-        for ($i = 0; $i < sizeof($products); $i++) {
-
-
-            if( strpos($products[$i]->getTitle(), $title) !== false ) {
+        $counter = 0;
+        for ($i = 0; $i < count($products); $i++) {
+            if( strpos($products[$i]['title'], $title) !== false ) {
 
                 array_push($products2, $products[$i]);
             }
+        }
+        if($counter == 0){
+           echo "                                 NO RESULTS FOUND, PLEASE RETURN TO THE HOME PAGE :(";
+
         }
 
 

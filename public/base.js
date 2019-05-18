@@ -1,18 +1,24 @@
 function validarModal() {
-    let min_price = document.getElementById("group_modal_min").value;
-    let max_price = document.getElementById("group_modal_max").value;
+ let min_price = document.getElementById("group_modal_min").value;
+ let max_price = document.getElementById("group_modal_max").value;
+ let title = document.getElementById("group_modal").value;
 
-    if (!/^([0-9999])*$/.test(min_price)) {
-        alert("el numero de minimo precio no es un numero");
-        return false;
-    } else if (!/^([0-9999])*$/.test(max_price)) {
-        alert("el numero de maximo precio no es un numero");
-        return false;
+ if (!/^([0-9999])*$/.test(min_price)) {
+     alert("el numero de minimo precio no es un numero");
+     return false;
+ } else if (!/^([0-9999])*$/.test(max_price)) {
+     alert("el numero de maximo precio no es un numero");
+     return false;
 
-    }
-}
+ }else if(!/[a-zA-Z0-9 ]+/i){
+     alert("El titulo contiene errores");
 
-    /*$(document).ready(function() {
+     return false;
+ }
+
+
+
+    $(document).ready(function() {
         $('#login-form').submit(function(event) {
             var payload = {
                 username: $('input[name=username]').val(),
@@ -36,5 +42,6 @@ function validarModal() {
             // stop the form from submitting the normal way and refreshing the page
             event.preventDefault();
         });
-    });*/
+    });
 
+}
