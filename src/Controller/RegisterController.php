@@ -51,23 +51,22 @@ final class RegisterController
         if(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id'])) ||
             isset($_COOKIE['user_id']) && strlen($repository->findUserById($_COOKIE['user_id']))){
 
-            if(isset($_SESSION['user_id'])){
-                $usernameId = $_SESSION['user_id'];
-            }else{
-                $usernameId = $_COOKIE['user_id'];
+            if(!isset($_SESSION['user_id'])){
+                $_SESSION['user_id'] = $_COOKIE['user_id'];
             }
-
-            if($repository->isValidated($usernameId) && !$repository->isDeletedUser($usernameId)){
+            if(!$repository->isDeletedUser($_SESSION['user_id'])) {
                 $products = $this->container->get('home');
                 $home = $this->container->get('home_repo');
-                return $this->container->get('view')->render($response, 'home.twig',[
+
+                return $this->container->get('view')->render($response, 'home.twig', [
                     'products' => $products,
-                    'categ' =>  $home->checkProductCategory($products),
+                    'categ' => $home->checkProductCategory($products),
                     'images' => $repository->getImagesOfProductById(),
+                    'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
+                    'logged' => true,
+                    'validated' => $repository->isValidated($_SESSION['user_id']),
                 ]);
             }
-
-
         }
         if($_POST == null) return $this->container->get('view')->render($response, 'register.twig');
 

@@ -14,6 +14,7 @@ use Dflydev\FigCookies\SetCookie;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use SallePW\SlimApp\Model\Database\UserRepository;
 use SallePW\SlimApp\Model\Product;
 
 
@@ -27,18 +28,7 @@ final class HomeController {
 
     public function __invoke(Request $request, Response $response)
     {
-        /*//WHOS LOGED IN?
-        if(isset($_SESSION['user_id'])){
-            echo "aLGU EESTA LOGED IN";
-
-        }else{
-            echo "ningu esta loged";
-
-        }
-*/
-
-
-
+        /** @var UserRepository $repository */
         $repository = $this->container->get('user_repo');
 
         $products = $this->container
@@ -55,13 +45,26 @@ final class HomeController {
         //$repository->saveProduct($products[0]);
 
 
-        return $this->container->get('view')->render($response, 'home.twig',[
+        if(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id'])) && !$repository->isDeletedUser($_SESSION['user_id'])){
+            return $this->container->get('view')->render($response, 'home.twig',[
+                'products' => $products,
+                'categ' => $categ,
+                'images' => $images,
+                'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
+                'logged' => true,
+                'validated' => $repository->isValidated($_SESSION['user_id']),
+            ]);
+        }else{
+            return $this->container->get('view')->render($response, 'home.twig',[
+                'products' => $products,
+                'categ' => $categ,
+                'images' => $images,
+                'logged' => false,
+                'validated' => true,
+            ]);
+        }
 
-            'products' => $products,
-            'categ' => $categ,
-            'images' => $images
 
-        ]);
 
     }
 
