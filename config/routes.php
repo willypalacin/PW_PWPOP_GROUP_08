@@ -15,6 +15,7 @@ use SallePW\SlimApp\Controller\LoginController;
 use SallePW\SlimApp\Controller\ProfileController;
 use SallePW\SlimApp\Controller\MyProductController;
 use SallePW\SlimApp\Controller\ProductOverviewOwner;
+use SallePW\SlimApp\Controller\HomeCorController;
 
 $app
     ->get('/hello/{name}', HelloController::class)
@@ -26,6 +27,9 @@ $app->add(SessionMiddleware::class);
 
 $app->get('/home', HomeController::class);
 $app->post('/home', HomeController::class . ':refresh');
+
+$app->post('/homeCor', HomeCorController::class . ':refresh');
+
 
 
 $app->get('/register',RegisterController::class);

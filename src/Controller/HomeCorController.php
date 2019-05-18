@@ -17,7 +17,7 @@ use Slim\Http\Response as Response;
 use SallePW\SlimApp\Model\Product;
 
 
-final class HomeController {
+final class HomeCorController {
     private $container;
 
     public function __construct(ContainerInterface $container)
@@ -27,44 +27,9 @@ final class HomeController {
 
     public function __invoke(Request $request, Response $response)
     {
-        /*//WHOS LOGED IN?
-        if(isset($_SESSION['user_id'])){
-            echo "aLGU EESTA LOGED IN";
-
-        }else{
-            echo "ningu esta loged";
-
-        }
-*/
 
 
 
-        $repository = $this->container->get('user_repo');
-        $max_products = 5;
-
-        $products = $this->container
-            ->get('home');
-
-
-
-        $categ = $this->checkProductCategory($products);
-        $images = $repository->getImagesOfProductById();
-
-
-
-        //echo $images[0]['id_product'];
-
-        //$repository->saveProduct($products[0]);
-
-
-        return $this->container->get('view')->render($response, 'home.twig',[
-
-            'products' => $products,
-            'categ' => $categ,
-            'images' => $images,
-            'maxproduct' => $max_products
-
-        ]);
 
     }
 
@@ -107,15 +72,20 @@ final class HomeController {
 
     public function refresh(Request $request, Response $response) {
 
+        $data = $request->getParsedBody();
 
         $products = $this->container
             ->get('home');
         $size = count($products);
 
+        $repository = $this->container->get('user_repo');
+        $id_product = $data["id_product"];
+        //$id_user = $_SESSION['user_id'];
+        $id_user = "guille32";
+        $this->container->get('user_repo')->saveFavouriteProduct($id_user, $id_product);
 
 
-
-        return $response->withJson(["counter"=> $size], 200);
+        return $response->withJson([], 200);
 
     }
 

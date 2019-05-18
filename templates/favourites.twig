@@ -22,6 +22,15 @@
                                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                                 </ol>
+
+
+
+
+
+                                <form id="myproducts-form"
+                                      name="my-form"
+                                      action="{{ path_for('overview') }}"
+                                      method="POST">
                                 <div class="carousel-inner">
                                     {% set active = 0 %}
                                     {% for image in images %}
@@ -29,7 +38,8 @@
                                             {% set active = active + 1%}
                                             {% if active == 1 %}
                                                 <div class="carousel-item active">
-                                                    <img style = "height: 129px; width: 229px;" class="d-block w-100" id = product_image src = "{{ base_url()}}/pictures/{{image.product_image}}" alt="">
+                                                    <input type="hidden"  name="prod_id" value="{{ product.id_product }}">
+                                                    <input type="image"  value="{{product.id_product }}" src="{{ base_url()}}/pictures/{{image.product_image}}" alt="Submit" height="129" width="229">
                                                 </div>
                                             {% endif %}
 
@@ -43,6 +53,7 @@
                                     {% endfor %}
 
                                 </div>
+                                </form>
 
                                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
