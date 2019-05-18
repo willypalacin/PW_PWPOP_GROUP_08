@@ -8,13 +8,20 @@
 
 namespace SallePW\SlimApp\Controller;
 
+use Dflydev\FigCookies\FigRequestCookies;
+use Dflydev\FigCookies\FigResponseCookies;
+use Dflydev\FigCookies\SetCookie;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use SallePW\SlimApp\Model\Product;
+use SallePW\SlimApp\Model\Database\UserRepository;
+use SallePW\SlimApp\Controller\RegisterController;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 
-
-final class HomeController {
+final class BuyProductController {
     private $container;
 
     public function __construct(ContainerInterface $container)
@@ -24,8 +31,15 @@ final class HomeController {
 
     public function __invoke(Request $request, Response $response)
     {
+        $repository = $this->container->get('user_repo');
+        $prod_id = $_POST["prod_id2"];
+        $prod = $repository->getProductsFromDDBBbyID($prod_id);
+
+        $user_name = $prod[0]["username"];
+
         /** @var UserRepository $repository */
         $repository = $this->container->get('user_repo');
+        $repository -> deleteProduct($prod_id);
 
         $products = $this->container
             ->get('home');
@@ -34,6 +48,13 @@ final class HomeController {
 
         $categ = $this->checkProductCategory($products);
         $images = $repository->getImagesOfProductById();
+        $user = $repository->getUserByUsername($user_name);
+        $user2 = $repository->getUserById($_SESSION['user_id']);
+
+
+        $this->sendMailProduct($user, $prod[0]["title"], $user2->getPhoneNumber(), $user2->getUsername());
+
+
 
 
         //echo $images[0]['id_product'];
@@ -49,8 +70,6 @@ final class HomeController {
                 'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
                 'logged' => true,
                 'validated' => $repository->isValidated($_SESSION['user_id']),
-                'user_id' => $repository->getUserByid($_SESSION['user_id'])
-
             ]);
         }else{
             return $this->container->get('view')->render($response, 'home.twig',[
@@ -103,18 +122,46 @@ final class HomeController {
 
     }
 
-    public function refresh(Request $request, Response $response) {
+    public function sendMailProduct($user, $name_product, $telefono, $userInteresado){
+        try {
 
-        $products = $this->container
-            ->get('home');
-        $size = count($products);
+            $mail = new PHPMailer(true);
+            $mail->CharSet = 'UTF-8';
+            $body = "<!DOCTYPE html>
+                    <html lang='en'>
+                        <head>
+                            <title>El usuario $userInteresado esta interesado en tu producto $name_product</title>
+                        </head>
+                        <body>
+                        <div>El usuario $userInteresado esta interesado en tu producto $name_product</div>
+                            <div>Su telefono es $telefono, contacta con el</div>
+                                      
+                        </body>
+                    </html>";
 
+            $mail->IsSMTP();
+            $mail->Host = 'smtp.gmail.com';
 
+            $mail->SMTPSecure = 'tls';
+            $mail->Port       = 587;
+            $mail->SMTPDebug  = 0;
+            $mail->SMTPAuth   = true;
 
+            $mail->Username   = $this->container['mail_address'];
+            $mail->Password   = $this->container['mail_password'];
 
-        return $response->withJson(["counter"=> $size], 200);
+            $mail->SetFrom($this->container['mail_address'], 'PWPOP' );
+            $mail->Subject    = 'PWPOP Validation Account';
+            $mail->MsgHTML($body);
+            $mail->AddAddress($user->getEmail(), 'user');
 
+            $mail->send();
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
+        }
     }
+
+
 
 
 }

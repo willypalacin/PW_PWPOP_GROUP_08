@@ -190,7 +190,7 @@ final class RegisterController
 
     private function validatePhone($phone) : string {
         $parts = explode(' ', $phone);
-        if(sizeof($parts) != 3 || is_nan(intval($parts[0])) ||
+        if(sizeof($parts) != 3 || is_nan(intval($parts[0])) ||  is_nan(intval($parts[1])) ||  is_nan(intval($parts[2])) ||
             (strlen($parts[0]) > 3 || intval($parts[0]) < 100 || intval($parts[0]) > 999) ||
             (strlen($parts[1]) > 3 || intval($parts[1]) < 100 || intval($parts[1]) > 999) ||
             (strlen($parts[2]) > 3 || intval($parts[2]) < 100 || intval($parts[2]) > 999)) return self::PHONE_ERROR;
@@ -275,4 +275,6 @@ final class RegisterController
             var_dump($e->getMessage());
         }
     }
+
+
 }

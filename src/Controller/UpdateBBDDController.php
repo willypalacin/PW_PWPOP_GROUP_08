@@ -35,6 +35,24 @@ final class UpdateBBDDController
     //get de upload
     public function __invoke(Request $request, Response $response, array $args)
     {
+        /** @var UserRepository $repository */
+        $repository = $this->container->get('user_repo');
+        if(!(isset($_SESSION['user_id']) && strlen($repository->findUserById($_SESSION['user_id']))) &&
+            !(isset($_COOKIE['user_id']) && strlen($repository->findUserById($_COOKIE['user_id'])))){
+            http_response_code(404);
+            die('Forbidden');
+        }
+
+        if(!isset($_SESSION['user_id'])){
+            $_SESSION['user_id'] = $_COOKIE['user_id'];
+        }
+
+        if($repository->isDeletedUser($_SESSION['user_id'])){
+            http_response_code(403);
+            die('Forbidden');
+        }
+
+
         $prod_id = $_POST["id_product"];
         $title = $_POST["title"];
         $des = $_POST["description"];
@@ -88,9 +106,12 @@ final class UpdateBBDDController
 
             return $this->container->get('view')->render($response, 'home.twig',[
 
-                'products' => $products,
-                'categ' => $categ,
-                'images' => $images
+            'products' => $products,
+            'categ' => $categ,
+            'images' => $images,
+            'profile_image' => $repository->getUserById($_SESSION['user_id'])->getProfileImage(),
+            'logged' => true,
+            'validated' => $repository->isValidated($_SESSION['user_id']),
 
             ]);
 

@@ -220,6 +220,25 @@ class UserRepository implements UserRepositoryInterface
         return $user;
     }
 
+    public function getUserByUsername(string $id) : User{
+        $statement = $this->database->connection->prepare("SELECT * FROM User WHERE username = :id");
+        $statement->bindParam('id',$id,PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $user = new User(null);
+        $user->setName($results[0]['name']);
+        $user->setUsername($results[0]['username']);
+        $user->setEmail($results[0]['email_address']);
+        $user->setBirthday($results[0]['birthday']);
+        $user->setPhoneNumber($results[0]['phone_number']);
+        $user->setPassword($results[0]['password']);
+        $user->setValidated($results[0]['validated']);
+        $user->setProfileImage($results[0]['profile_image']);
+
+        return $user;
+    }
+
 
     public function getProductByUsername(string $id){
         var_dump($id);

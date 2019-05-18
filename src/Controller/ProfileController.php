@@ -30,6 +30,7 @@ final class ProfileController
     const REGISTER_SUCCESSFUL_MESSAGE = 'Register successful! Please validate your email';
     const DEFAULT_IMAGE_PATH = 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png';
 
+
     private $container;
 
     /**
@@ -140,6 +141,7 @@ final class ProfileController
             'profile_image' => $user->getProfileImage(),
             'logged' => true,
             'validated' => $repository->isValidated($_SESSION['user_id']),
+            'success' => true,
         ]);
     }
 

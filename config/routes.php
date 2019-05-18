@@ -19,6 +19,8 @@ use SallePW\SlimApp\Controller\ProductOverviewOwner;
 use SallePW\SlimApp\Controller\UploadProductController;
 use SallePW\SlimApp\Controller\UpdateBBDDController;
 use SallePW\SlimApp\Controller\Remove;
+use SallePW\SlimApp\Controller\HomeCorController;
+use SallePW\SlimApp\Controller\BuyProductController;
 
 $app
     ->get('/hello/{name}', HelloController::class)
@@ -26,10 +28,17 @@ $app
 
 $app->get('/flash', FlashController::class);
 
+
+$app->post('/buyed', BuyProductController::class);
+
+
 $app->add(SessionMiddleware::class);
 
 $app->get('/home', HomeController::class);
 $app->post('/home', HomeController::class . ':refresh');
+
+$app->post('/homeCor', HomeCorController::class . ':refresh');
+
 
 
 $app->get('/register',RegisterController::class);
