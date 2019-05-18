@@ -37,7 +37,7 @@
             const DESCRIPTION = document.forms["my-form"]["description"].value;
             const FOTO = document.forms["my-form"]["files[]"].value;
 
-            if (!validTitle(TITLE)| !validNumber(NUM) | !validDescription(DESCRIPTION)){
+            if (!validTitle(TITLE)| !validNumber(NUM) | !validDescription(DESCRIPTION) | (!validImage(FOTO))){
                 return false;
             }
         }
@@ -110,6 +110,18 @@
             }
             return true;
         }
+
+        function validImage(foto){
+            var text;
+            if( document.getElementById("videoUploadFile").files.length == 0 ){
+                text = "You have to upload a picture!";
+                document.getElementById("errorText file_error").innerHTML = text;
+                console.log("no files selected");
+                return false;
+            }
+            return true;
+        }
+
     </script>
 
 
@@ -171,7 +183,10 @@
 
             </div>
             <div class="form-group row">
-                <input type="file" name="files[]" multiple>
+
+                <input type="file" name="files[]" id="videoUploadFile" multiple>
+                <p id="errorText file_error"></p>
+
                 {% if errors is defined %}
                     <ol>
                         {% for error in errors %}
