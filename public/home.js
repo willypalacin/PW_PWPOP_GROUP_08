@@ -10,6 +10,7 @@ for(i = 0; i < 5 && i<counter; i++) {
 }
 
 
+
 $(document).ready(function() {
 
     $('#login-form').submit(function (event) {
